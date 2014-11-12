@@ -10,7 +10,9 @@
 
 (defpage page [cursor owner opts]
   (render-state [st]
-                (menu-h {:text (:menu-h cursor)})
+                (menu-h {:text (:menu-h cursor)}
+                        (link {:text "Home"})
+                        (link {:text "About"}))
                 (ui/p nil (:texto st))
                 (ui/p nil (:panel-text cursor))))
 

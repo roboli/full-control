@@ -17,8 +17,17 @@
   (binding [*tags* page-tags]
     (conj (map apply-syntax body) nil 'full-control.ui/page*)))
 
+(defn- parse-links-h [body]
+  (->> body
+       (partition-by #(= (first %) 'link))
+       (map #(if (= (ffirst %) 'link)
+               (list (list 'full-control.ui/links-group {:links (into [] (mapcat rest %))}))
+               %))
+       (mapcat identity)))
+
 (defn- process-menu-h [processor & body]
-  (let [[attrs body] (parse-attrs body)]
+  (let [[attrs body] (parse-attrs body)
+        body (parse-links-h body)]
     (conj (map processor body) attrs 'full-control.ui/menu-h*)))
 
 (def ^:private page-tags
