@@ -25,9 +25,22 @@
                %))
        (mapcat identity)))
 
+(defn- apply-spacers [body]
+  (if-let [idx (first (keep-indexed #(if (= (first %2) 'spacer) %1) body))]
+    (let [[left right] (split-at idx body)
+          right (->> right
+                     rest
+                     (#(conj % '(om.dom/span (js-obj {:className "navbar-right"})))) ; Hack (bootstrap 3.x): prepend empty span so right aligned buttons display margins correctly
+                     reverse
+                     (map #(if (map? (second %)) (list (first %) (assoc (second %) :float :right)) %)))]
+      (concat left right))
+    body))
+
 (defn- process-menu-h [processor & body]
   (let [[attrs body] (parse-attrs body)
-        body (parse-links-h body)]
+        body (-> body
+                 parse-links-h
+                 apply-spacers)]
     (conj (map processor body) attrs 'full-control.ui/menu-h*)))
 
 (def ^:private page-tags

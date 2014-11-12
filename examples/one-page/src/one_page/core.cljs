@@ -12,7 +12,9 @@
   (render-state [st]
                 (menu-h {:text (:menu-h cursor)}
                         (link {:text "Home"})
-                        (link {:text "About"}))
+                        (link {:text "About"})
+                        (spacer)
+                        (link {:text "Logout"}))
                 (ui/p nil (:texto st))
                 (ui/p nil (:panel-text cursor))))
 
