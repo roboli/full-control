@@ -1,8 +1,30 @@
 (ns full-control.ui)
 
-(def ^:dynamic *attrs*)
+(defn- parse-attrs [body]
+  (if (map? (first body))
+    [(first body) (rest body)]
+    [nil body]))
 
-(defn parse-render-state [body]
+(def ^{:dynamic true :private true} *attrs* nil)
+(def ^{:dynamic true :private true} *tags* nil)
+
+(defn- apply-syntax [[tag & body :as form]]
+  (apply (get *tags* tag (fn [& _] form)) body))
+
+(declare page-tags)
+
+(defn- process-page [body]
+  (binding [*tags* page-tags]
+    (conj (map apply-syntax body) nil 'full-control.ui/page*)))
+
+(defn- process-menu-h [processor & body]
+  (let [[attrs body] (parse-attrs body)]
+    (conj (map processor body) attrs 'full-control.ui/menu-h*)))
+
+(def ^:private page-tags
+  {'menu-h (partial process-menu-h apply-syntax)})
+
+(defn- parse-render-state [body]
   (let [xs (->> body
                 (filter #(= (first %) 'render-state))
                 first
@@ -14,5 +36,8 @@
   (let [[params body :as render-state] (parse-render-state body)]
     (if render-state
       `(defn ~name ~args
-         (->Page (apply (fn ~args (fn ~params (page* nil ~@body))) ~args)))
+         (->Page (apply (fn ~args
+                          (fn ~params
+                            ~(process-page body)))
+                        ~args)))
       (throw (RuntimeException. "No render-state form provided")))))
