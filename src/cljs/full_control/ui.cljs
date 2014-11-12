@@ -5,7 +5,7 @@
 (defrecord Page [f]
   om/IRenderState
   (render-state [_ state]
-    (f)))
+    (f state)))
 
 (defn root [f value options]
   (om/root f value options))

@@ -2,7 +2,14 @@
 
 (def ^:dynamic *attrs*)
 
+(defn parse-render-state [body]
+  (if-let [xs (->> body
+                   (filter #(= (first %) 'render-state))
+                   first
+                   rest)]
+    [(first xs) (rest xs)]))
+
 (defmacro defpage [name args & body]
-  `(defn ~name ~args
-     (let [page# (->Page (apply (fn ~args (fn [] (page* nil ~@body))) ~args))]
-       page#)))
+  (let [[params body] (parse-render-state body)]
+    `(defn ~name ~args
+       (->Page (apply (fn ~args (fn ~params (page* nil ~@body))) ~args)))))

@@ -9,6 +9,9 @@
                       :menu-v "MyMenuV"}))
 
 (defpage page [cursor owner opts]
-  (ui/p nil (:panel-text cursor)))
+  (render-state [st]
+                (ui/p nil (:texto st))
+                (ui/p nil (:panel-text cursor))))
 
-(ui/root page app-state {:target (. js/document (getElementById "app"))})
+(ui/root page app-state {:target (. js/document (getElementById "app"))
+                         :state {:texto "Hey you, hey me..."}})
