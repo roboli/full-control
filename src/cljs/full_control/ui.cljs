@@ -5,10 +5,13 @@
 (defrecord Page [f]
   om/IRenderState
   (render-state [_ state]
-    (apply om.dom/div nil (f))))
+    (f)))
 
 (defn root [f value options]
   (om/root f value options))
+
+(defn page* [attrs & body]
+  (apply om.dom/div nil body))
 
 (defn p [attrs value]
   (dom/p nil value))
