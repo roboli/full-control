@@ -7,12 +7,12 @@
 (defn- parse-attrs [body]
   (if (map? (first body))
     [(first body) (rest body)]
-    [nil body]))
+    [{} body]))
 
 (defn parse-with-attrs [body]
   (if (= (ffirst body) 'with-attrs)
     [(second (first body)) (rest (rest (first body)))]
-    [nil body]))
+    [{} body]))
 
 (defn- expand-tags [tags]
   (fn [[tag & body :as form]]
@@ -38,10 +38,13 @@
     body))
 
 (defn- process-control [-symbol attrs-parser expander transformers & body]
-  (let [[attrs body] (attrs-parser body)
-        body (if-not (empty? transformers) ((apply comp (reverse transformers)) body) body)]
+  (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      (conj (doall (map expander body)) attrs -symbol))))
+      (conj (->> body
+                 (map expander)
+                 doall
+                 ((apply comp (reverse transformers))))
+            attrs -symbol))))
 
 (defn- process-page [body]
   (apply process-control 'full-control.ui/page* parse-with-attrs (expand-tags page-tags) [] body))
