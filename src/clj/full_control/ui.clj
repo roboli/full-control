@@ -45,7 +45,9 @@
 
 (def ^:private page-tags
   {'page   (partial process-control 'full-control.ui/page* parse-with-attrs expand-tags [])
-   'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs identity [parse-links-h apply-spacers])})
+   'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs identity [parse-links-h apply-spacers])
+   'p      (partial process-control 'full-control.ui/p* parse-attrs identity [])
+   'button (partial process-control 'full-control.ui/button* parse-attrs identity [])})
 
 (defn- parse-render-state [body]
   (let [xs (->> body
