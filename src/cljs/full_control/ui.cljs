@@ -48,3 +48,6 @@
   (apply dom/button #js {:type "button"
                          :className (str "btn btn-default " (:class-names attrs))
                          :onClick (:on-click attrs)} body))
+
+(defn menu-h-button* [attrs & body]
+  (apply button* (assoc attrs :class-names (str "navbar-btn " (get float-class (:float attrs)))) body))
