@@ -41,11 +41,11 @@
   (let [[attrs body] (attrs-parser body)
         body (if-not (empty? transformers) ((apply comp (reverse transformers)) body) body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      (conj (map expander body) attrs -symbol))))
+      (conj (doall (map expander body)) attrs -symbol))))
 
 (def ^:private page-tags
   {'page   (partial process-control 'full-control.ui/page* parse-with-attrs expand-tags [])
-   'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs expand-tags [parse-links-h apply-spacers])})
+   'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs identity [parse-links-h apply-spacers])})
 
 (defn- parse-render-state [body]
   (let [xs (->> body
