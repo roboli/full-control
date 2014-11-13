@@ -15,7 +15,7 @@
     [(second (first body)) (rest (rest (first body)))]
     [nil body]))
 
-(defn- apply-syntax [[tag & body :as form]]
+(defn- expand-tags [[tag & body :as form]]
   (apply (get *tags* tag (fn [& _] form)) body))
 
 (defn- parse-links-h [body]
@@ -44,8 +44,8 @@
       (conj (map expander body) attrs -symbol))))
 
 (def ^:private page-tags
-  {'page   (partial process-control 'full-control.ui/page* parse-with-attrs apply-syntax [])
-   'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs apply-syntax [parse-links-h apply-spacers])})
+  {'page   (partial process-control 'full-control.ui/page* parse-with-attrs expand-tags [])
+   'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs expand-tags [parse-links-h apply-spacers])})
 
 (defn- parse-render-state [body]
   (let [xs (->> body
@@ -62,6 +62,6 @@
          (->Page (apply (fn ~args
                           (fn ~params
                             ~(binding [*tags* page-tags]
-                               (apply-syntax (cons 'page body)))))
+                               (expand-tags (cons 'page body)))))
                         ~args)))
       (throw (RuntimeException. "No render-state form provided")))))
