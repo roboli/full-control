@@ -1,17 +1,17 @@
 (ns full-control.ui)
 
+(declare page-tags)
+
+(def ^{:dynamic true :private true} *attrs* nil)
+(def ^{:dynamic true :private true} *tags* nil)
+
 (defn- parse-attrs [body]
   (if (map? (first body))
     [(first body) (rest body)]
     [nil body]))
 
-(def ^{:dynamic true :private true} *attrs* nil)
-(def ^{:dynamic true :private true} *tags* nil)
-
 (defn- apply-syntax [[tag & body :as form]]
   (apply (get *tags* tag (fn [& _] form)) body))
-
-(declare page-tags)
 
 (defn- process-page [body]
   (binding [*tags* page-tags]
@@ -36,15 +36,14 @@
       (concat left right))
     body))
 
-(defn- process-menu-h [processor & body]
-  (let [[attrs body] (parse-attrs body)
-        body (-> body
-                 parse-links-h
-                 apply-spacers)]
-    (conj (map processor body) attrs 'full-control.ui/menu-h*)))
+(defn- process-control [-symbol attrs-parser expander transformers & body]
+  (let [[attrs body] (attrs-parser body)
+        body ((apply comp (reverse transformers)) body)]
+    (binding [*attrs* (merge *attrs* attrs)]
+      (conj (map expander body) attrs -symbol))))
 
 (def ^:private page-tags
-  {'menu-h (partial process-menu-h apply-syntax)})
+  {'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs apply-syntax [parse-links-h apply-spacers])})
 
 (defn- parse-render-state [body]
   (let [xs (->> body
