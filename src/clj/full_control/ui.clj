@@ -10,12 +10,13 @@
     [(first body) (rest body)]
     [nil body]))
 
+(defn parse-with-attrs [body]
+  (if (= (ffirst body) 'with-attrs)
+    [(second (first body)) (rest (rest (first body)))]
+    [nil body]))
+
 (defn- apply-syntax [[tag & body :as form]]
   (apply (get *tags* tag (fn [& _] form)) body))
-
-(defn- process-page [body]
-  (binding [*tags* page-tags]
-    (conj (map apply-syntax body) nil 'full-control.ui/page*)))
 
 (defn- parse-links-h [body]
   (->> body
@@ -38,12 +39,13 @@
 
 (defn- process-control [-symbol attrs-parser expander transformers & body]
   (let [[attrs body] (attrs-parser body)
-        body ((apply comp (reverse transformers)) body)]
+        body (if-not (empty? transformers) ((apply comp (reverse transformers)) body) body)]
     (binding [*attrs* (merge *attrs* attrs)]
       (conj (map expander body) attrs -symbol))))
 
 (def ^:private page-tags
-  {'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs apply-syntax [parse-links-h apply-spacers])})
+  {'page   (partial process-control 'full-control.ui/page* parse-with-attrs apply-syntax [])
+   'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs apply-syntax [parse-links-h apply-spacers])})
 
 (defn- parse-render-state [body]
   (let [xs (->> body
@@ -59,6 +61,7 @@
       `(defn ~name ~args
          (->Page (apply (fn ~args
                           (fn ~params
-                            ~(process-page body)))
+                            ~(binding [*tags* page-tags]
+                               (apply-syntax (cons 'page body)))))
                         ~args)))
       (throw (RuntimeException. "No render-state form provided")))))
