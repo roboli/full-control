@@ -3,7 +3,6 @@
 (declare page-tags)
 
 (def ^{:dynamic true :private true} *attrs* nil)
-(def ^{:dynamic true :private true} *tags* nil)
 
 (defn- parse-attrs [body]
   (if (map? (first body))
@@ -15,8 +14,9 @@
     [(second (first body)) (rest (rest (first body)))]
     [nil body]))
 
-(defn- expand-tags [[tag & body :as form]]
-  (apply (get *tags* tag (fn [& _] form)) body))
+(defn- expand-tags [tags]
+  (fn [[tag & body :as form]]
+    (apply (get tags tag (fn [& _] form)) body)))
 
 (defn- parse-links-h [body]
   (->> body
@@ -43,9 +43,11 @@
     (binding [*attrs* (merge *attrs* attrs)]
       (conj (doall (map expander body)) attrs -symbol))))
 
+(defn- process-page [body]
+  (apply process-control 'full-control.ui/page* parse-with-attrs (expand-tags page-tags) [] body))
+
 (def ^:private page-tags
-  {'page   (partial process-control 'full-control.ui/page* parse-with-attrs expand-tags [])
-   'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs identity [parse-links-h apply-spacers])
+  {'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs identity [parse-links-h apply-spacers])
    'p      (partial process-control 'full-control.ui/p* parse-attrs identity [])
    'button (partial process-control 'full-control.ui/button* parse-attrs identity [])})
 
@@ -62,8 +64,6 @@
     (if render-state
       `(defn ~name ~args
          (->Page (apply (fn ~args
-                          (fn ~params
-                            ~(binding [*tags* page-tags]
-                               (expand-tags (cons 'page body)))))
+                          (fn ~params ~(process-page body)))
                         ~args)))
       (throw (RuntimeException. "No render-state form provided")))))
