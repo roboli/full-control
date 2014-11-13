@@ -43,3 +43,8 @@
 
 (defn p [attrs value]
   (dom/p nil value))
+
+(defn button* [attrs & body]
+  (apply dom/button #js {:type "button"
+                         :className (str "btn btn-default " (:class-names attrs))
+                         :onClick (:on-click attrs)} body))

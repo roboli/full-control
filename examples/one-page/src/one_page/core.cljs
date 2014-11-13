@@ -16,7 +16,8 @@
                         (spacer)
                         (link {:text "Logout"}))
                 (ui/p nil (:texto st))
-                (ui/p nil (:panel-text cursor))))
+                (ui/p nil (:panel-text cursor))
+                (ui/button* nil "boton")))
 
 (ui/root page app-state {:target (. js/document (getElementById "app"))
                          :state {:texto "Hey you, hey me..."}})
