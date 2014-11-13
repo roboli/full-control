@@ -46,8 +46,11 @@
 (defn- process-page [body]
   (apply process-control 'full-control.ui/page* parse-with-attrs (expand-tags page-tags) [] body))
 
+(def ^:private menu-h-tags
+  {'button (partial process-control 'full-control.ui/menu-h-button* parse-attrs identity [])})
+
 (def ^:private page-tags
-  {'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs identity [parse-links-h apply-spacers])
+  {'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs (expand-tags menu-h-tags) [parse-links-h apply-spacers])
    'p      (partial process-control 'full-control.ui/p* parse-attrs identity [])
    'button (partial process-control 'full-control.ui/button* parse-attrs identity [])})
 
