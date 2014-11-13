@@ -41,8 +41,8 @@
                    (dom/a #js {:href (:href lnk)
                                :onClick (:on-click lnk)} (:text lnk))))))
 
-(defn p [attrs value]
-  (dom/p nil value))
+(defn p* [attrs & body]
+  (apply dom/p #js {:className (:class-names attrs)} body))
 
 (defn button* [attrs & body]
   (apply dom/button #js {:type "button"
