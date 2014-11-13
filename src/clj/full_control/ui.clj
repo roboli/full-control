@@ -33,7 +33,7 @@
                      rest
                      (#(conj % '(om.dom/span (js-obj {:className "navbar-right"})))) ; Hack (bootstrap 3.x): prepend empty span so right aligned buttons display margins correctly
                      reverse
-                     (map #(if (map? (second %)) (list (first %) (assoc (second %) :float :right)) %)))]
+                     (map #(if (map? (second %)) (conj (drop 2 %) (assoc (second %) :float :right) (first %)) %)))]
       (concat left right))
     body))
 
