@@ -1,4 +1,4 @@
-(ns full-control.ui
+(ns full-control.core
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
 

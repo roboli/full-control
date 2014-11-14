@@ -1,4 +1,4 @@
-(ns full-control.ui)
+(ns full-control.core)
 
 (declare page-tags)
 
@@ -39,7 +39,7 @@
          (partition-by #(= (first %) 'link))
          (map (fn [coll]
                 (if (= (ffirst coll) 'link)
-                  (list (list 'full-control.ui/links-group
+                  (list (list 'full-control.core/links-group
                               {:links
                                (vec
                                 (map #(let [[attrs body] (attrs-parser (rest %))]
@@ -84,7 +84,7 @@
   "Begin the expanding and transformation process of the page control."
   [body]
   (apply process-control
-         'full-control.ui/page*
+         'full-control.core/page*
          parse-with-attrs
          (expand-tags page-tags)
          []
@@ -92,24 +92,24 @@
 
 (def ^:private menu-h-tags
   {'button (partial process-control
-                    'full-control.ui/menu-h-button*
+                    'full-control.core/menu-h-button*
                     parse-attrs
                     identity
                     [])})
 
 (def ^:private page-tags
   {'menu-h (partial process-control
-                    'full-control.ui/menu-h*
+                    'full-control.core/menu-h*
                     parse-attrs
                     (expand-tags menu-h-tags)
                     [(parse-links-h parse-attrs) apply-spacers])
    'p      (partial process-control
-                    'full-control.ui/p*
+                    'full-control.core/p*
                     parse-attrs
                     identity
                     [])
    'button (partial process-control
-                    'full-control.ui/button*
+                    'full-control.core/button*
                     parse-attrs
                     identity
                     [])})
@@ -125,9 +125,9 @@
       [(first xs) (rest xs)])))
 
 (defmacro defpage
-  "Defines a function which returns an instance of full-control.ui/Page record.
+  "Defines a function which returns an instance of full-control.core/Page record.
   The Page record implements the om.core/IRenderState protocol. See the Page
-  record definition in the cljs full-control.ui namespace for further explanation."
+  record definition in the cljs full-control.core namespace for further explanation."
   [name args & body]
   (let [[params body :as render-state] (parse-render-state body)]
     (if render-state

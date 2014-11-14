@@ -1,5 +1,5 @@
 (ns one-page.core
-  (:require [full-control.ui :as ui :include-macros true :refer [defpage]]))
+  (:require [full-control.core :as fc :include-macros true :refer [defpage]]))
 
 (enable-console-print!)
 
@@ -20,5 +20,5 @@
                 (p (:panel-text cursor))
                 (button "Button")))
 
-(ui/root page app-state {:target (. js/document (getElementById "app"))
+(fc/root page app-state {:target (. js/document (getElementById "app"))
                          :state {:texto "Hey you, hey me..."}})
