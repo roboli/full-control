@@ -2,10 +2,9 @@
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
 
-(def ^:private float-class
-  {:left "navbar-left"
-   :right "navbar-right"})
-
+;; Implements the om.core/IRenderState protocol. Expects f as its constructor
+;; first parameter. f must be a function which expects a state map and
+;; returns the body to be used in the render-state function.
 (defrecord Page [f]
   om/IRenderState
   (render-state [_ state]
@@ -17,7 +16,13 @@
 (defn page* [attrs & body]
   (apply om.dom/div nil body))
 
-(defn menu-h* [attrs & body]
+(def ^:private float-class
+  {:left "navbar-left"
+   :right "navbar-right"})
+
+(defn menu-h*
+  "Retuns bootstrap's navbar."
+  [attrs & body]
   (dom/nav #js {:className "navbar navbar-default navbar-static-top"
                 :role "navigation"}
            (dom/div #js {:className "container-fluid"}
@@ -34,22 +39,35 @@
                     (apply dom/div #js {:id "menu-h-collapse-items"
                                         :className "collapse navbar-collapse"} body))))
 
-(defn links-group [attrs]
+(defn links-group
+  "Returns a series of om.dom/li components inside a om.dom/ul. Basically it
+  constructs a menu list from the attrs map parameter. attrs must be in the form
+  of e.g. {:links [{:href '#/link1' :body ['link1']}
+                   {:href '#/link2' :body ['link2' ...] ...}
+                   ...]}"
+  [attrs]
   (apply dom/ul #js {:className (str "nav navbar-nav " (get float-class (:float attrs)))}
          (for [lnk (:links attrs)]
            (dom/li nil
                    (apply dom/a #js {:href (:href lnk)
                                      :onClick (:on-click lnk)} (:body lnk))))))
 
-(defn p* [attrs & body]
+(defn p*
+  "Attribute available in the attrs map is :class-names."
+  [attrs & body]
   (apply dom/p #js {:className (:class-names attrs)} body))
 
-(defn button* [attrs & body]
+(defn button*
+  "Attributes available in the attrs map are :class-names, :on-click."
+  [attrs & body]
   (apply dom/button #js {:type "button"
                          :className (str "btn btn-default " (:class-names attrs))
                          :onClick (:on-click attrs)} body))
 
-(defn menu-h-button* [attrs & body]
+(defn menu-h-button*
+  "Button to render inside the menu-h control. Attributes available in the attrs
+  map same as the button* control."
+  [attrs & body]
   (apply button* (assoc attrs
                    :class-names (str "navbar-btn " (get float-class (:float attrs)))
                    :on-click (:on-click attrs)) body))
