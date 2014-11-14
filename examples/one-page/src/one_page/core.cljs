@@ -12,10 +12,10 @@
   (render-state [st]
                 (menu-h {:text (:menu-h cursor)}
                         (link {:href "#"
-                               :on-click (fn [_] (js/alert "Home"))} "Home")
+                               :on-click (fn [_] (js/alert "You're home!"))} "Home")
                         (link "About")
                         (spacer)
-                        (button "Logout"))
+                        (button {:on-click (fn [_] (js/alert "You're out!"))} "Logout"))
                 (p (:texto st))
                 (p (:panel-text cursor))
                 (button "Button")))

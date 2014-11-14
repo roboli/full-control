@@ -50,4 +50,6 @@
                          :onClick (:on-click attrs)} body))
 
 (defn menu-h-button* [attrs & body]
-  (apply button* (assoc attrs :class-names (str "navbar-btn " (get float-class (:float attrs)))) body))
+  (apply button* (assoc attrs
+                   :class-names (str "navbar-btn " (get float-class (:float attrs)))
+                   :on-click (:on-click attrs)) body))
