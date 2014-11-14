@@ -125,9 +125,9 @@
       [(first xs) (rest xs)])))
 
 (defmacro defpage
-  "Defines a var which holds an instance of full-control.ui/Page record. The Page
-  record implements the om.core/IRenderState protocol. See the Page definition in
-  ui.cljs file for further explanation."
+  "Defines a function which returns an instance of full-control.ui/Page record.
+  The Page record implements the om.core/IRenderState protocol. See the Page
+  record definition in the cljs full-control.ui namespace for further explanation."
   [name args & body]
   (let [[params body :as render-state] (parse-render-state body)]
     (if render-state
