@@ -38,8 +38,8 @@
   (apply dom/ul #js {:className (str "nav navbar-nav " (get float-class (:float attrs)))}
          (for [lnk (:links attrs)]
            (dom/li nil
-                   (dom/a #js {:href (:href lnk)
-                               :onClick (:on-click lnk)} (:text lnk))))))
+                   (apply dom/a #js {:href (:href lnk)
+                                     :onClick (:on-click lnk)} (:body lnk))))))
 
 (defn p* [attrs & body]
   (apply dom/p #js {:className (:class-names attrs)} body))

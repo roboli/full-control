@@ -11,8 +11,9 @@
 (defpage page [cursor owner opts]
   (render-state [st]
                 (menu-h {:text (:menu-h cursor)}
-                        (link {:text "Home"})
-                        (link {:text "About"})
+                        (link {:href "#"
+                               :on-click (fn [_] (js/alert "Home"))} "Home")
+                        (link "About")
                         (spacer)
                         (button "Logout"))
                 (p (:texto st))

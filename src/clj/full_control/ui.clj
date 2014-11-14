@@ -18,13 +18,17 @@
   (fn [[tag & body :as form]]
     (apply (get tags tag (fn [& _] form)) body)))
 
-(defn- parse-links-h [body]
-  (->> body
-       (partition-by #(= (first %) 'link))
-       (map #(if (= (ffirst %) 'link)
-               (list (list 'full-control.ui/links-group {:links (into [] (mapcat rest %))}))
-               %))
-       (mapcat identity)))
+(defn- parse-links-h [attrs-parser]
+  (fn [body]
+    (->> body
+         (partition-by #(= (first %) 'link))
+         (map (fn [coll]
+                (if (= (ffirst coll) 'link)
+                  (list (list 'full-control.ui/links-group {:links (into [] (map #(let [[attrs body] (attrs-parser (rest %))]
+                                                                                    (assoc attrs :body (into [] body)))
+                                                                                 coll))}))
+                  coll)))
+         (mapcat identity))))
 
 (defn- apply-spacers [body]
   (if-let [idx (first (keep-indexed #(if (= (first %2) 'spacer) %1) body))]
@@ -53,7 +57,7 @@
   {'button (partial process-control 'full-control.ui/menu-h-button* parse-attrs identity [])})
 
 (def ^:private page-tags
-  {'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs (expand-tags menu-h-tags) [parse-links-h apply-spacers])
+  {'menu-h (partial process-control 'full-control.ui/menu-h* parse-attrs (expand-tags menu-h-tags) [(parse-links-h parse-attrs) apply-spacers])
    'p      (partial process-control 'full-control.ui/p* parse-attrs identity [])
    'button (partial process-control 'full-control.ui/button* parse-attrs identity [])})
 
