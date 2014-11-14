@@ -51,7 +51,8 @@
 
   Attributes available for each links map are :href, :on-click, :body."
   [attrs]
-  (apply dom/ul #js {:className (str "nav navbar-nav " (get float-class (:float attrs)))}
+  (apply dom/ul #js {:className (str "nav navbar-nav "
+                                     (get float-class (:float attrs)))}
          (for [lnk (:links attrs)]
            (dom/li nil
                    (apply dom/a #js {:href (:href lnk)
