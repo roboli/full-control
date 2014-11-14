@@ -1,5 +1,7 @@
 (ns full-control.core
-  (:require [om.core :as om :include-macros true]
+  (:require-macros [full-control.core :refer [defcolumn]])
+  (:require [clojure.string :as str]
+            [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
 
 ;;;
@@ -19,6 +21,49 @@
 
 (defn page* [attrs & body]
   (apply om.dom/div nil body))
+
+;;;
+;;; Layout (Bootstap's grid system)
+;;;
+
+(def col-sizes {:xs "xs"
+                :sm "sm"
+                :md "md"
+                :lg "lg"})
+
+(defn fixed-layout* [attrs & body]
+  (apply dom/div #js {:className "container"} body))
+
+(defn fluid-layout* [attrs & body]
+  (apply dom/div #js {:className "container-fluid"} body))
+
+(defn row* [attrs & body]
+  (apply dom/div #js {:className "row"} body))
+
+(defn column*
+  "Returns om.dom/div component with its :className set to
+  'col-size-n col-size-n ...' where size and n are values in the attrs map.
+  attrs must be in the form of
+
+  e.g. {:sizes [{:size :sm :cols 6}
+                {:size :md :cols 3}
+                ...]}"
+  [attrs & body]
+  (apply dom/div #js {:className (str/join " " (map
+                                                #(str "col-"
+                                                      (get col-sizes (:size %))
+                                                      "-"
+                                                      (:cols %))
+                                                (:sizes attrs)))} body))
+
+;; Defines 12 columns controls, column-1* column-2* ... column-12*.
+;;
+;; e.g. (defn column-7* [attrs & body] ...)
+;;
+;; Each column maps with bootstrap's grid system columns class names. Attribute
+;; available in the attrs map is :size which it can be a value from the
+;; col-sizes map. See defcolumn macro in full-control.core clj namespace.
+(defcolumn 1 12)
 
 ;;;
 ;;; menu-h

@@ -160,3 +160,28 @@
                           (fn ~params ~(process-page body)))
                         ~args)))
       (throw (RuntimeException. "No render-state form provided")))))
+
+;;;
+;;; Layout
+;;;
+
+(defn- column-defn
+  "Returns form which defines a function that calls the column* control function
+  with its :sizes and :cols attributes set to n. See cljs full-control.core/column*
+  for further explanation."
+  [n]
+  `(defn ~(symbol (str "column-" n "*")) [~'attrs & ~'body]
+     (apply full-control.core/column*
+            {:sizes [(assoc ~'attrs :cols ~n)]}
+            ~'body)))
+
+(defmacro defcolumn
+  "Defines a function or functions which returns a column control with its :cols
+  attribute set to n which is a number with a value between the start and end
+  parameters. See column-defn function."
+  [start & [end]]
+  (if end
+    (cons `do
+          (for [n (range start (inc end))]
+            (column-defn n)))
+    (column-defn start)))
