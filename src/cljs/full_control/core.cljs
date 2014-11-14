@@ -74,5 +74,7 @@
   map same as the button* control."
   [attrs & body]
   (apply button* (assoc attrs
-                   :class-names (str "navbar-btn " (get float-class (:float attrs)))
+                   :class-names (str "navbar-btn "
+                                     (get float-class (:float attrs))
+                                     " " (:class-names attrs))
                    :on-click (:on-click attrs)) body))
