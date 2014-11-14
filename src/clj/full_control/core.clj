@@ -10,18 +10,21 @@
   "Parses a control form's body for its attributes. Returns vector with 
   attributes as first value and rest as second value. Empty map is returned when
   no attributes are found."
-  [body]
+  [body & {:keys [not-found]}]
   (if (map? (first body))
     [(first body) (rest body)]
-    [{} body]))
+    [(or not-found {}) body]))
 
 (defn parse-with-attrs
   "Same as parse-attrs, but assumes the attributes map is after the 'with-attrs
   symbol."
-  [body]
+  [body & {:keys [not-found]}]
   (if (= (ffirst body) 'with-attrs)
     [(second (first body)) (rest (rest (first body)))]
-    [{} body]))
+    [(or not-found {}) body]))
+
+(defn parse-layout-attrs [body]
+  (parse-attrs body :not-found {:column-size :md}))
 
 ;;;
 ;;; Solely expander
@@ -154,12 +157,12 @@
                           [(parse-links-h parse-attrs) apply-spacers])
    'fixed-layout (partial process-control
                           'full-control.core/fixed-layout*
-                          parse-attrs
+                          parse-layout-attrs
                           (expand-tags layout-tags)
                           [])
    'fluid-layout (partial process-control
                           'full-control.core/fluid-layout*
-                          parse-attrs
+                          parse-layout-attrs
                           (expand-tags layout-tags)
                           [])
    'p            (partial process-control
