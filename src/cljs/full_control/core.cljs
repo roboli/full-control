@@ -38,9 +38,11 @@
                              (dom/a #js {:className (str "navbar-brand "
                                                          (:brand-class-names attrs))
                                          :href (:brand-href attrs)
-                                         :onClick (:brand-on-click attrs)} (:brand-body attrs)))
+                                         :onClick (:brand-on-click attrs)}
+                                    (:brand-body attrs)))
                     (apply dom/div #js {:id "menu-h-collapse-items"
-                                        :className (str "collapse navbar-collapse ")} body))))
+                                        :className (str "collapse navbar-collapse ")}
+                           body))))
 
 (defn links-group
   "Returns a series of om.dom/li components inside a om.dom/ul. Basically it
