@@ -41,10 +41,13 @@
 
 (defn links-group
   "Returns a series of om.dom/li components inside a om.dom/ul. Basically it
-  constructs a menu list from the attrs map parameter. attrs must be in the form
-  of e.g. {:links [{:href '#/link1' :body ['link1']}
-                   {:href '#/link2' :body ['link2' ...] ...}
-                   ...]}"
+  constructs a menu list from the attrs map parameter. attrs must be in the form of
+
+  e.g. {:links [{:href '#/link1' :body ['link1']}
+                {:href '#/link2' :body ['link2' ...] ...}
+                ...]}
+
+  Attributes available for each links map are :href, :on-click, :body."
   [attrs]
   (apply dom/ul #js {:className (str "nav navbar-nav " (get float-class (:float attrs)))}
          (for [lnk (:links attrs)]
