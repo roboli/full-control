@@ -35,7 +35,8 @@
                                          (dom/span #js {:className "icon-bar"})
                                          (dom/span #js {:className "icon-bar"})
                                          (dom/span #js {:className "icon-bar"}))
-                             (dom/a #js {:className (str "navbar-brand " (:brand-class-names attrs))
+                             (dom/a #js {:className (str "navbar-brand "
+                                                         (:brand-class-names attrs))
                                          :href (:brand-href attrs)
                                          :onClick (:brand-on-click attrs)} (:brand-body attrs)))
                     (apply dom/div #js {:id "menu-h-collapse-items"
