@@ -1,8 +1,10 @@
 (ns full-control.core)
 
-(declare page-tags)
-
 (def ^{:dynamic true :private true} *attrs* nil)
+
+;;;
+;;; Attributes parsers
+;;;
 
 (defn- parse-attrs
   "Parses a control form's body for its attributes. Returns vector with 
@@ -21,6 +23,10 @@
     [(second (first body)) (rest (rest (first body)))]
     [{} body]))
 
+;;;
+;;; Solely expander
+;;;
+
 (defn- expand-tags
   "Expects a map which keys are symbols that represents control tags and values
   are functions. Returns f which expects a sequence which is a control form and
@@ -28,6 +34,10 @@
   [tags]
   (fn [[tag & body :as form]]
     (apply (get tags tag (fn [& _] form)) body)))
+
+;;;
+;;; menu-h transformers
+;;;
 
 (defn- parse-links-h
   "Group and transform all continuous 'link symbols in a menu-h control into a
@@ -68,6 +78,12 @@
       (concat left right))
     body))
 
+;;;
+;;; Processors
+;;;
+
+(declare page-tags)
+
 (defn- process-control
   "Expand and transform control's body with the provided expander and
   transformers. Should return the control form as,
@@ -89,6 +105,10 @@
          (expand-tags page-tags)
          []
          body))
+
+;;;
+;;; Tags maps
+;;;
 
 (def ^:private menu-h-tags
   {'button (partial process-control
@@ -113,6 +133,10 @@
                     parse-attrs
                     identity
                     [])})
+
+;;;
+;;; Page macro and fns
+;;;
 
 (defn- parse-render-state
   "Find and transform the render-state form inside the page's body."

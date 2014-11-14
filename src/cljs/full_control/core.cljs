@@ -2,6 +2,10 @@
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
 
+;;;
+;;; Page record and fns
+;;;
+
 ;; Implements the om.core/IRenderState protocol. Expects f as its constructor
 ;; first parameter. f must be a function which expects a state map and
 ;; returns the body to be used in the render-state function.
@@ -15,6 +19,12 @@
 
 (defn page* [attrs & body]
   (apply om.dom/div nil body))
+
+;;;
+;;; menu-h
+;;;
+
+(declare button*)
 
 (def ^:private float-class
   {:left "navbar-left"
@@ -61,6 +71,20 @@
                    (apply dom/a #js {:href (:href lnk)
                                      :onClick (:on-click lnk)} (:body lnk))))))
 
+(defn menu-h-button*
+  "Button to render inside the menu-h control. Attributes available in the attrs
+  map same as the button* control."
+  [attrs & body]
+  (apply button* (assoc attrs
+                   :class-names (str "navbar-btn "
+                                     (get float-class (:float attrs))
+                                     " " (:class-names attrs))
+                   :on-click (:on-click attrs)) body))
+
+;;;
+;;; Other controls
+;;;
+
 (defn p*
   "Attribute available in the attrs map is :class-names."
   [attrs & body]
@@ -72,13 +96,3 @@
   (apply dom/button #js {:type "button"
                          :className (str "btn btn-default " (:class-names attrs))
                          :onClick (:on-click attrs)} body))
-
-(defn menu-h-button*
-  "Button to render inside the menu-h control. Attributes available in the attrs
-  map same as the button* control."
-  [attrs & body]
-  (apply button* (assoc attrs
-                   :class-names (str "navbar-btn "
-                                     (get float-class (:float attrs))
-                                     " " (:class-names attrs))
-                   :on-click (:on-click attrs)) body))
