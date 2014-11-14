@@ -21,7 +21,8 @@
    :right "navbar-right"})
 
 (defn menu-h*
-  "Retuns bootstrap's navbar."
+  "Retuns bootstrap's navbar. Attributes available in the attrs map are
+  :brand-class-names, :brand-href, :brand-on-click, :brand-body, :body-class-names."
   [attrs & body]
   (dom/nav #js {:className "navbar navbar-default navbar-static-top"
                 :role "navigation"}
@@ -34,10 +35,11 @@
                                          (dom/span #js {:className "icon-bar"})
                                          (dom/span #js {:className "icon-bar"})
                                          (dom/span #js {:className "icon-bar"}))
-                             (dom/a #js {:className "navbar-brand"
-                                         :href "#"} (:text attrs)))
+                             (dom/a #js {:className (str "navbar-brand " (:brand-class-names attrs))
+                                         :href (:brand-href attrs)
+                                         :onClick (:brand-on-click attrs)} (:brand-body attrs)))
                     (apply dom/div #js {:id "menu-h-collapse-items"
-                                        :className "collapse navbar-collapse"} body))))
+                                        :className (str "collapse navbar-collapse ")} body))))
 
 (defn links-group
   "Returns a series of om.dom/li components inside a om.dom/ul. Basically it
