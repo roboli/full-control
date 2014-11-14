@@ -10,7 +10,7 @@
 
 (defpage page [cursor owner opts]
   (render-state [st]
-                (menu-h {:text (:menu-h cursor)}
+                (menu-h {:brand-body (:menu-h cursor)}
                         (link {:href "#"
                                :on-click (fn [_] (js/alert "You're home!"))} "Home")
                         (link "About")
