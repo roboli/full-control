@@ -16,9 +16,14 @@
                         (link "About")
                         (spacer)
                         (button {:on-click (fn [_] (js/alert "You're out!"))} "Logout"))
-                (p (:texto st))
-                (p (:panel-text cursor))
-                (button "Button")))
+                (fluid-layout {:column-size :sm}
+                              (row
+                               (column-3
+                                (fc/p* nil (:texto st)))
+                               (column-3
+                                (fc/p* nil (:panel-text cursor)))
+                               (column-3
+                                (fc/button* nil "Button"))))))
 
 (fc/root page app-state {:target (. js/document (getElementById "app"))
                          :state {:texto "Hey you, hey me..."}})

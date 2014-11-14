@@ -79,6 +79,28 @@
     body))
 
 ;;;
+;;; Layout processors
+;;;
+
+(defn- column-name [x]
+  (let [s (name (first x))]
+    (if (and (not= \* (last s))
+             (= "column-" (apply str (take 7 s))))
+      s)))
+
+(defn- parse-columns [attrs-parser]
+  (fn [body]
+    (doall (map #(if (and (list? %) (symbol? (first %)))
+                   (if-let [s (column-name %)]
+                     (let [[size rest] (attrs-parser (rest %))]
+                       (conj rest
+                             {:size (or (:size size) (:column-size *attrs*))}
+                             (symbol (str "full-control.core/" s "*"))))
+                     %)
+                   %)
+                body))))
+
+;;;
 ;;; Processors
 ;;;
 
@@ -110,6 +132,13 @@
 ;;; Tags maps
 ;;;
 
+(def ^:private layout-tags
+  {'row (partial process-control
+                 'full-control.core/row*
+                 parse-attrs
+                 identity
+                 [(parse-columns parse-attrs)])})
+
 (def ^:private menu-h-tags
   {'button (partial process-control
                     'full-control.core/menu-h-button*
@@ -118,21 +147,31 @@
                     [])})
 
 (def ^:private page-tags
-  {'menu-h (partial process-control
-                    'full-control.core/menu-h*
-                    parse-attrs
-                    (expand-tags menu-h-tags)
-                    [(parse-links-h parse-attrs) apply-spacers])
-   'p      (partial process-control
-                    'full-control.core/p*
-                    parse-attrs
-                    identity
-                    [])
-   'button (partial process-control
-                    'full-control.core/button*
-                    parse-attrs
-                    identity
-                    [])})
+  {'menu-h       (partial process-control
+                          'full-control.core/menu-h*
+                          parse-attrs
+                          (expand-tags menu-h-tags)
+                          [(parse-links-h parse-attrs) apply-spacers])
+   'fixed-layout (partial process-control
+                          'full-control.core/fixed-layout*
+                          parse-attrs
+                          (expand-tags layout-tags)
+                          [])
+   'fluid-layout (partial process-control
+                          'full-control.core/fluid-layout*
+                          parse-attrs
+                          (expand-tags layout-tags)
+                          [])
+   'p            (partial process-control
+                          'full-control.core/p*
+                          parse-attrs
+                          identity
+                          [])
+   'button       (partial process-control
+                          'full-control.core/button*
+                          parse-attrs
+                          identity
+                          [])})
 
 ;;;
 ;;; Page macro and fns
