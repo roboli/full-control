@@ -30,13 +30,17 @@
 ;;; Solely expander
 ;;;
 
-(defn- expand-tags
-  "Expects a map which keys are symbols that represents control tags and values
-  are functions. Returns f which expects a sequence which is a control form and
-  executes the matched function in the tags map against the form."
-  [tags]
+(defn- expand-tags-with
+  "Expects and applies merge to a series of maps which keys are symbols that
+  represents control tags and values are functions. Returns f which expects a
+  sequence which is a control form and executes the matched function in the tags
+  map against the form."
+  [& tags]
   (fn [[tag & body :as form]]
-    (apply (get tags tag (fn [& _] form)) body)))
+    (->> tags
+         (#(apply merge %))
+         (#(get % tag (fn [& _] form)))
+         (#(apply % body)))))
 
 ;;;
 ;;; menu-h transformers
@@ -112,6 +116,7 @@
 ;;; Processors
 ;;;
 
+(declare general-tags)
 (declare page-tags)
 
 (defn- process-control
@@ -132,7 +137,7 @@
   (apply process-control
          'full-control.core/page*
          parse-with-attrs
-         (expand-tags page-tags)
+         (expand-tags-with general-tags page-tags)
          []
          body))
 
@@ -140,11 +145,23 @@
 ;;; Tags maps
 ;;;
 
+(def ^:private general-tags
+  {'p      (partial process-control
+                    'full-control.core/p*
+                    parse-attrs
+                    identity
+                    [])
+   'button (partial process-control
+                    'full-control.core/button*
+                    parse-attrs
+                    identity
+                    [])})
+
 (def ^:private layout-tags
   {'row (partial process-control
                  'full-control.core/row*
                  parse-attrs
-                 identity
+                 (expand-tags-with general-tags layout-tags)
                  [(parse-columns parse-attrs)])})
 
 (def ^:private menu-h-tags
@@ -158,27 +175,17 @@
   {'menu-h       (partial process-control
                           'full-control.core/menu-h*
                           parse-attrs
-                          (expand-tags menu-h-tags)
+                          (expand-tags-with menu-h-tags)
                           [(parse-links-h parse-attrs) apply-spacers])
    'fixed-layout (partial process-control
                           'full-control.core/fixed-layout*
                           parse-layout-attrs
-                          (expand-tags layout-tags)
+                          (expand-tags-with general-tags layout-tags)
                           [])
    'fluid-layout (partial process-control
                           'full-control.core/fluid-layout*
                           parse-layout-attrs
-                          (expand-tags layout-tags)
-                          [])
-   'p            (partial process-control
-                          'full-control.core/p*
-                          parse-attrs
-                          identity
-                          [])
-   'button       (partial process-control
-                          'full-control.core/button*
-                          parse-attrs
-                          identity
+                          (expand-tags-with general-tags layout-tags)
                           [])})
 
 ;;;
