@@ -82,16 +82,21 @@
     body))
 
 ;;;
-;;; Layout processors
+;;; row transformers
 ;;;
 
-(defn- column-name [x]
+(defn- column-name
+  "Change symbol's name from column-n to column-n*"
+  [x]
   (let [s (name (first x))]
     (if (and (not= \* (last s))
              (= "column-" (apply str (take 7 s))))
       s)))
 
-(defn- parse-columns [attrs-parser]
+(defn- parse-columns
+  "Find and expand each tag which matches the value returned from the
+  column-name function."
+  [attrs-parser]
   (fn [body]
     (doall (map #(if (and (list? %) (symbol? (first %)))
                    (if-let [s (column-name %)]
