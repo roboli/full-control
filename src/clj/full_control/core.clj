@@ -120,6 +120,7 @@
 ;;;
 
 (declare general-tags)
+(declare layout-tags)
 (declare page-tags)
 
 (defn- process-control
