@@ -27,20 +27,52 @@
   (parse-attrs body :not-found {:column-size :md}))
 
 ;;;
-;;; Solely expander
+;;; Expanders
 ;;;
+
+(defn- match-col-name
+  "Change symbol's name from column-n to column-n*"
+  [x]
+  (let [s (->> x
+               name
+               (take 7)
+               (apply str))]
+    (if (and (not= \* (last (name x)))
+             (= "column-" s))
+      (symbol s))))
+
+(defn- get-tag [tag tags]
+  (get tags tag))
+
+(defn- match-column-tag [tag tags]
+  (println "Tag: " tag " Tags: " tags)
+  (if-let [s (match-col-name tag)]
+    (get tags s)))
+
+(defn- search-tag-with [& fs]
+  (fn [tag tags]
+    (if-let [tf (some #(if (not (nil? %)) %)
+                      (for [f fs]
+                        (f tag tags)))]
+      tf)))
 
 (defn- expand-tags-with
   "Expects and applies merge to a series of maps which keys are symbols that
   represents control tags and values are functions. Returns f which expects a
   sequence which is a control form and executes the matched function in the tags
   map against the form."
-  [& tags]
+  [f & tags]
   (fn [[tag & body :as form]]
     (->> tags
-         (#(apply merge %))
-         (#(get % tag (fn [& _] form)))
+         (apply merge)
+         (#(or (f tag %) (fn [& _] form)))
          (#(apply % body)))))
+
+(def ^:private expand-tags-with-get
+  (partial expand-tags-with (search-tag-with get-tag)))
+
+(def ^:private expand-tags-with-get-col
+  (partial expand-tags-with (search-tag-with get-tag match-column-tag)))
 
 ;;;
 ;;; menu-h transformers
@@ -137,7 +169,7 @@
   (apply process-control
          'full-control.core/page*
          parse-with-attrs
-         (expand-tags-with general-tags page-tags)
+         (expand-tags-with-get general-tags page-tags)
          []
          body))
 
@@ -157,12 +189,24 @@
                     identity
                     [])})
 
-(def ^:private layout-tags
+(def ^:private column-tags
   {'row (partial process-control
                  'full-control.core/row*
                  parse-attrs
-                 (expand-tags-with general-tags layout-tags)
-                 [(parse-columns parse-attrs)])})
+                 (expand-tags-with-get general-tags layout-tags)
+                 [])})
+
+(def ^:private layout-tags
+  {'row     (partial process-control
+                     'full-control.core/row*
+                     parse-attrs
+                     (expand-tags-with-get-col general-tags layout-tags)
+                     [])
+   'column- (partial process-control
+                     'full-control.core/column-*
+                     parse-attrs
+                     (expand-tags-with-get general-tags column-tags)
+                     [])})
 
 (def ^:private menu-h-tags
   {'button (partial process-control
@@ -175,17 +219,17 @@
   {'menu-h       (partial process-control
                           'full-control.core/menu-h*
                           parse-attrs
-                          (expand-tags-with menu-h-tags)
+                          (expand-tags-with-get menu-h-tags)
                           [(parse-links-h parse-attrs) apply-spacers])
    'fixed-layout (partial process-control
                           'full-control.core/fixed-layout*
                           parse-layout-attrs
-                          (expand-tags-with general-tags layout-tags)
+                          (expand-tags-with-get general-tags layout-tags)
                           [])
    'fluid-layout (partial process-control
                           'full-control.core/fluid-layout*
                           parse-layout-attrs
-                          (expand-tags-with general-tags layout-tags)
+                          (expand-tags-with-get general-tags layout-tags)
                           [])})
 
 ;;;
