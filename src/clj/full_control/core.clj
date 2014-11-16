@@ -31,7 +31,6 @@
 ;;;
 
 (defn- match-col-name
-  "Change symbol's name from column-n to column-n*"
   [x]
   (let [s (->> x
                name
@@ -45,7 +44,6 @@
   (get tags tag))
 
 (defn- match-column-tag [tag tags]
-  (println "Tag: " tag " Tags: " tags)
   (if-let [s (match-col-name tag)]
     (get tags s)))
 
@@ -116,33 +114,6 @@
                              %)))]
       (concat left right))
     body))
-
-;;;
-;;; row transformers
-;;;
-
-(defn- column-name
-  "Change symbol's name from column-n to column-n*"
-  [x]
-  (let [s (name (first x))]
-    (if (and (not= \* (last s))
-             (= "column-" (apply str (take 7 s))))
-      s)))
-
-(defn- parse-columns
-  "Find and expand each tag which matches the value returned from the
-  column-name function."
-  [attrs-parser]
-  (fn [body]
-    (doall (map #(if (and (list? %) (symbol? (first %)))
-                   (if-let [s (column-name %)]
-                     (let [[size rest] (attrs-parser (rest %))]
-                       (conj rest
-                             {:size (or (:size size) (:column-size *attrs*))}
-                             (symbol (str "full-control.core/" s "*"))))
-                     %)
-                   %)
-                body))))
 
 ;;;
 ;;; Processors
