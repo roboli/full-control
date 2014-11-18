@@ -1,6 +1,7 @@
 (ns full-control.core)
 
 (def ^{:dynamic true :private true} *attrs* nil)
+(def ^{:dynamic true :private true} *tags* nil)
 
 ;;;
 ;;; Attributes parsers
@@ -25,6 +26,10 @@
 
 (defn parse-layout-attrs [body]
   (parse-attrs body :not-found {:column-size :md}))
+
+(defn parse-column-attrs [body]
+  (let [[attrs body] (parse-attrs body)]
+    [(assoc attrs :size (:column-size *attrs*)) body]))
 
 ;;;
 ;;; Expanders
@@ -55,16 +60,13 @@
       tf)))
 
 (defn- expand-tags-with
-  "Expects and applies merge to a series of maps which keys are symbols that
-  represents control tags and values are functions. Returns f which expects a
-  sequence which is a control form and executes the matched function in the tags
-  map against the form."
-  [f & tags]
+  [f & {:keys [tags aliases] :or [aliases {}]}]
   (fn [[tag & body :as form]]
-    (->> tags
-         (apply merge)
-         (#(or (f tag %) (fn [& _] form)))
-         (#(apply % body)))))
+    (-> *tags*
+        (select-keys tags)
+        (clojure.set/rename-keys aliases)
+        (#(or (f tag %) (fn [& _] form)))
+        (apply tag body))))
 
 (def ^:private expand-tags-with-get
   (partial expand-tags-with (search-tag-with get-tag)))
@@ -119,90 +121,83 @@
 ;;; Processors
 ;;;
 
-(declare general-tags)
-(declare layout-tags)
 (declare page-tags)
 
 (defn- process-control
   "Expand and transform control's body with the provided expander and
   transformers. Should return the control form as,
   i.e. (fully-qualified/symbol {attrs-map} expanded-transfomred-body)."
-  [-symbol attrs-parser expander transformers & body]
+  [{:keys [symbol-fn attrs-parser expander transformers]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      (list* -symbol attrs (->> body
-                                (map expander)
-                                doall
-                                ((apply comp (reverse transformers))))))))
+      (list* (symbol-fn tag) attrs (->> body
+                                        (map expander)
+                                        doall
+                                        ((apply comp (reverse transformers))))))))
 
 (defn- process-page
   "Begin the expanding and transformation process of the page control."
   [body]
-  (apply process-control
-         'full-control.core/page*
-         parse-with-attrs
-         (expand-tags-with-get general-tags page-tags)
-         []
-         body))
+  (apply process-control {:symbol-fn (fn [_] `page*)
+                          :attrs-parser parse-with-attrs
+                          :expander (expand-tags-with-get
+                                     :tags #{'p 'button 'menu-h 'fixed-layout 'fluid-layout})
+                          :transformers []}
+         'page body))
 
 ;;;
 ;;; Tags maps
 ;;;
 
-(def ^:private general-tags
-  {'p      (partial process-control
-                    'full-control.core/p*
-                    parse-attrs
-                    identity
-                    [])
-   'button (partial process-control
-                    'full-control.core/button*
-                    parse-attrs
-                    identity
-                    [])})
-
-(def ^:private column-tags
-  {'row (partial process-control
-                 'full-control.core/row*
-                 parse-attrs
-                 (expand-tags-with-get general-tags layout-tags)
-                 [])})
-
-(def ^:private layout-tags
-  {'row     (partial process-control
-                     'full-control.core/row*
-                     parse-attrs
-                     (expand-tags-with-get-col general-tags layout-tags)
-                     [])
-   'column- (partial process-control
-                     'full-control.core/column-*
-                     parse-attrs
-                     (expand-tags-with-get general-tags column-tags)
-                     [])})
-
-(def ^:private menu-h-tags
-  {'button (partial process-control
-                    'full-control.core/menu-h-button*
-                    parse-attrs
-                    identity
-                    [])})
-
 (def ^:private page-tags
-  {'menu-h       (partial process-control
-                          'full-control.core/menu-h*
-                          parse-attrs
-                          (expand-tags-with-get menu-h-tags)
-                          [(parse-links-h parse-attrs) apply-spacers])
-   'fixed-layout (partial process-control
-                          'full-control.core/fixed-layout*
-                          parse-layout-attrs
-                          (expand-tags-with-get general-tags layout-tags)
-                          [])
-   'fluid-layout (partial process-control
-                          'full-control.core/fluid-layout*
-                          parse-layout-attrs
-                          (expand-tags-with-get general-tags layout-tags)
-                          [])})
+  {'p            (partial process-control {:symbol-fn (fn [_] `p*)
+                                           :attrs-parser parse-attrs
+                                           :expander identity
+                                           :transformers []})
+   
+   'button       (partial process-control {:symbol-fn (fn [_] `button*)
+                                           :attrs-parser parse-attrs
+                                           :expander identity
+                                           :transformers []})
+   
+   'row          (partial process-control {:symbol-fn (fn [_] `row*)
+                                           :attrs-parser parse-attrs
+                                           :expander (expand-tags-with-get-col
+                                                      :tags #{'p 'button 'row 'column-})
+                                           :transformers []})
+   
+   'column-      (partial process-control {:symbol-fn (fn [tag]
+                                                        `~(symbol (str "full-control.core/" (name tag) "*")))
+                                           :attrs-parser parse-column-attrs
+                                           :expander (expand-tags-with-get
+                                                      :tags #{'p 'button 'row})
+                                           :transformers []})
+   
+   'menu-h       (partial process-control {:symbol-fn (fn [_] `menu-h*)
+                                           :attrs-parser parse-attrs
+                                           :expander (expand-tags-with-get
+                                                      :tags #{'button-h}
+                                                      :aliases {'button-h 'button})
+                                           :transformers [(parse-links-h parse-attrs)
+                                                          apply-spacers]})
+   
+   'button-h     (partial process-control {:symbol-fn (fn [_] `menu-h-button*)
+                                           :attrs-parser parse-attrs
+                                           :expander identity
+                                           :transformers []})
+   
+   'fixed-layout (partial process-control {:symbol-fn (fn [_] `fixed-layout*)
+                                           :attrs-parser parse-layout-attrs
+                                           :expander (expand-tags-with-get
+                                                      :tags #{'p 'button 'row})
+                                           :transformers []})
+   
+   'fluid-layout (partial process-control {:symbol-fn (fn [_] `fluid-layout*)
+                                           :attrs-parser parse-layout-attrs
+                                           :expander (expand-tags-with-get
+                                                      :tags #{'p 'button 'row})
+                                           :transformers []})})
+
 
 ;;;
 ;;; Page macro and fns
@@ -227,7 +222,8 @@
     (if render-state
       `(defn ~name ~args
          (->Page (apply (fn ~args
-                          (fn ~params ~(process-page body)))
+                          (fn ~params ~(binding [*tags* page-tags]
+                                         (process-page body))))
                         ~args)))
       (throw (RuntimeException. "No render-state form provided")))))
 
