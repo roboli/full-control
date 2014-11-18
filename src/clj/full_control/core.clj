@@ -17,8 +17,8 @@
     [(or not-found {}) body]))
 
 (defn- parse-with-attrs
-  "Same as parse-attrs, but assumes the attributes map is after the 'with-attrs
-  symbol."
+  "Same as parse-attrs, but assumes the attributes map is within the with-attrs
+  form."
   [body & {:keys [not-found]}]
   (if (= (ffirst body) 'with-attrs)
     [(second (first body)) (rest (rest (first body)))]
@@ -36,6 +36,7 @@
 ;;;
 
 (defn- match-col-name
+  "Returns symbol column- if x is a symbol like column-n."
   [x]
   (let [s (->> x
                name
@@ -53,6 +54,11 @@
       tf)))
 
 (defn- expand-tags
+  "Applies f to the *tags* map. f must be a searcher function that expects the
+  *tags* map and a tag (symbol) to be search. available and aliases are a set
+  and map respectively, their use is to filter and rename keys in the *tags* map
+  before making the search. A function is returned which expects a control in
+  the form of e.g. (button attrs body), where button is the tag to be searched."
   [f & {:keys [available aliases] :or [aliases {}]}]
   (fn [[tag & body :as form]]
     (-> *tags*
@@ -117,8 +123,8 @@
 (declare page-tags)
 
 (defn- process-control
-  "Expand and transform control's body with the provided expander and
-  transformers. Should return the control form as,
+  "Expand and transform control's body with the provided functions in the first
+  parameter map. Should return the control form as
   i.e. (fully-qualified/symbol {attrs-map} expanded-transfomred-body)."
   [{:keys [symbol-fn attrs-parser expander transformers]} tag & body]
   (let [[attrs body] (attrs-parser body)]
