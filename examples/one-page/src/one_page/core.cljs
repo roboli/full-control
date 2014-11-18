@@ -19,11 +19,11 @@
                 (fixed-layout
                  (row
                   (column-3
-                   (fc/p* nil (:texto st)))
+                   (p (:texto st)))
                   (column-3
-                   (fc/p* nil (:panel-text cursor)))
+                   (p (:panel-text cursor)))
                   (column-3
-                   (fc/button* nil "Button"))))))
+                   (button "Button"))))))
 
 (fc/root page app-state {:target (. js/document (getElementById "app"))
                          :state {:texto "Hey you, hey me..."}})
