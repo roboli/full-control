@@ -45,34 +45,27 @@
              (= "column-" s))
       (symbol s))))
 
-(defn- get-tag [tag tags]
-  (get tags tag))
-
-(defn- match-column-tag [tag tags]
-  (if-let [s (match-col-name tag)]
-    (get tags s)))
-
 (defn- search-tag-with [& fs]
-  (fn [tag tags]
+  (fn [tags tag]
     (if-let [tf (some #(if (not (nil? %)) %)
                       (for [f fs]
-                        (f tag tags)))]
+                        (f tags tag)))]
       tf)))
 
-(defn- expand-tags-with
+(defn- expand-tags
   [f & {:keys [available aliases] :or [aliases {}]}]
   (fn [[tag & body :as form]]
     (-> *tags*
         (select-keys available)
         (clojure.set/rename-keys aliases)
-        (#(or (f tag %) (fn [& _] form)))
+        (#(or (f % tag) (fn [& _] form)))
         (apply tag body))))
 
-(def ^:private expand-tags-with-get
-  (partial expand-tags-with (search-tag-with get-tag)))
+(def ^:private expand-tags-with
+  (partial expand-tags (search-tag-with (partial get))))
 
-(def ^:private expand-tags-with-get-col
-  (partial expand-tags-with (search-tag-with get-tag match-column-tag)))
+(def ^:private expand-column-tags-with
+  (partial expand-tags (search-tag-with (partial get) #(get %1 (match-col-name %2)))))
 
 ;;;
 ;;; menu-h transformers
@@ -140,7 +133,7 @@
   [body]
   (apply process-control {:symbol-fn (fn [_] `page*)
                           :attrs-parser parse-with-attrs
-                          :expander (expand-tags-with-get
+                          :expander (expand-tags-with
                                      :available #{'p 'button 'menu-h 'fixed-layout 'fluid-layout})
                           :transformers []}
          'page body))
@@ -162,20 +155,20 @@
    
    'row          (partial process-control {:symbol-fn (fn [_] `row*)
                                            :attrs-parser parse-attrs
-                                           :expander (expand-tags-with-get-col
+                                           :expander (expand-column-tags-with
                                                       :available #{'p 'button 'row 'column-})
                                            :transformers []})
    
    'column-      (partial process-control {:symbol-fn (fn [tag]
                                                         `~(symbol (str "full-control.core/" (name tag) "*")))
                                            :attrs-parser parse-column-attrs
-                                           :expander (expand-tags-with-get
+                                           :expander (expand-tags-with
                                                       :available #{'p 'button 'row})
                                            :transformers []})
    
    'menu-h       (partial process-control {:symbol-fn (fn [_] `menu-h*)
                                            :attrs-parser parse-attrs
-                                           :expander (expand-tags-with-get
+                                           :expander (expand-tags-with
                                                       :available #{'button-h}
                                                       :aliases {'button-h 'button})
                                            :transformers [(parse-links-h parse-attrs)
@@ -188,13 +181,13 @@
    
    'fixed-layout (partial process-control {:symbol-fn (fn [_] `fixed-layout*)
                                            :attrs-parser parse-layout-attrs
-                                           :expander (expand-tags-with-get
+                                           :expander (expand-tags-with
                                                       :available #{'p 'button 'row})
                                            :transformers []})
    
    'fluid-layout (partial process-control {:symbol-fn (fn [_] `fluid-layout*)
                                            :attrs-parser parse-layout-attrs
-                                           :expander (expand-tags-with-get
+                                           :expander (expand-tags-with
                                                       :available #{'p 'button 'row})
                                            :transformers []})})
 
