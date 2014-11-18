@@ -16,7 +16,7 @@
     [(first body) (rest body)]
     [(or not-found {}) body]))
 
-(defn parse-with-attrs
+(defn- parse-with-attrs
   "Same as parse-attrs, but assumes the attributes map is after the 'with-attrs
   symbol."
   [body & {:keys [not-found]}]
@@ -24,10 +24,10 @@
     [(second (first body)) (rest (rest (first body)))]
     [(or not-found {}) body]))
 
-(defn parse-layout-attrs [body]
+(defn- parse-layout-attrs [body]
   (parse-attrs body :not-found {:column-size :md}))
 
-(defn parse-column-attrs [body]
+(defn- parse-column-attrs [body]
   (let [[attrs body] (parse-attrs body)]
     [(assoc attrs :size (:column-size *attrs*)) body]))
 
