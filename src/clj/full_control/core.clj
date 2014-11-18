@@ -60,10 +60,10 @@
       tf)))
 
 (defn- expand-tags-with
-  [f & {:keys [tags aliases] :or [aliases {}]}]
+  [f & {:keys [available aliases] :or [aliases {}]}]
   (fn [[tag & body :as form]]
     (-> *tags*
-        (select-keys tags)
+        (select-keys available)
         (clojure.set/rename-keys aliases)
         (#(or (f tag %) (fn [& _] form)))
         (apply tag body))))
@@ -141,7 +141,7 @@
   (apply process-control {:symbol-fn (fn [_] `page*)
                           :attrs-parser parse-with-attrs
                           :expander (expand-tags-with-get
-                                     :tags #{'p 'button 'menu-h 'fixed-layout 'fluid-layout})
+                                     :available #{'p 'button 'menu-h 'fixed-layout 'fluid-layout})
                           :transformers []}
          'page body))
 
@@ -163,20 +163,20 @@
    'row          (partial process-control {:symbol-fn (fn [_] `row*)
                                            :attrs-parser parse-attrs
                                            :expander (expand-tags-with-get-col
-                                                      :tags #{'p 'button 'row 'column-})
+                                                      :available #{'p 'button 'row 'column-})
                                            :transformers []})
    
    'column-      (partial process-control {:symbol-fn (fn [tag]
                                                         `~(symbol (str "full-control.core/" (name tag) "*")))
                                            :attrs-parser parse-column-attrs
                                            :expander (expand-tags-with-get
-                                                      :tags #{'p 'button 'row})
+                                                      :available #{'p 'button 'row})
                                            :transformers []})
    
    'menu-h       (partial process-control {:symbol-fn (fn [_] `menu-h*)
                                            :attrs-parser parse-attrs
                                            :expander (expand-tags-with-get
-                                                      :tags #{'button-h}
+                                                      :available #{'button-h}
                                                       :aliases {'button-h 'button})
                                            :transformers [(parse-links-h parse-attrs)
                                                           apply-spacers]})
@@ -189,13 +189,13 @@
    'fixed-layout (partial process-control {:symbol-fn (fn [_] `fixed-layout*)
                                            :attrs-parser parse-layout-attrs
                                            :expander (expand-tags-with-get
-                                                      :tags #{'p 'button 'row})
+                                                      :available #{'p 'button 'row})
                                            :transformers []})
    
    'fluid-layout (partial process-control {:symbol-fn (fn [_] `fluid-layout*)
                                            :attrs-parser parse-layout-attrs
                                            :expander (expand-tags-with-get
-                                                      :tags #{'p 'button 'row})
+                                                      :available #{'p 'button 'row})
                                            :transformers []})})
 
 
