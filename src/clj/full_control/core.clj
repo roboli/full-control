@@ -152,6 +152,9 @@
 ;;; Tags maps
 ;;;
 
+(defn- tag->qualilified-symbol [tag]
+  `~(symbol (str "full-control.core/" (name tag) "*")))
+
 (def ^:private general-tags #{'p 'button 'h})
 
 (def ^:private general-layout-tags (conj general-tags 'row 'panel))
@@ -168,8 +171,7 @@
                                            :expander identity
                                            :transformers []})
 
-   'h            (partial process-control {:symbol-fn (fn [tag]
-                                                        `~(symbol (str "full-control.core/" (name tag) "*")))
+   'h            (partial process-control {:symbol-fn tag->qualilified-symbol
                                            :attrs-parser parse-attrs
                                            :expander identity
                                            :transformers []})
@@ -193,8 +195,7 @@
                                                       :available (conj general-tags 'row 'column-))
                                            :transformers []})
    
-   'column-      (partial process-control {:symbol-fn (fn [tag]
-                                                        `~(symbol (str "full-control.core/" (name tag) "*")))
+   'column-      (partial process-control {:symbol-fn tag->qualilified-symbol
                                            :attrs-parser parse-column-attrs
                                            :expander (expand-tags-with
                                                       :available general-layout-tags)
@@ -232,8 +233,7 @@
                                                       :available #{'title})
                                            :transformers []})
 
-   'title        (partial process-control {:symbol-fn (fn [tag]
-                                                        `~(symbol (str "full-control.core/" (name tag) "*")))
+   'title        (partial process-control {:symbol-fn tag->qualilified-symbol
                                            :attrs-parser parse-attrs
                                            :expander identity
                                            :transformers []})
