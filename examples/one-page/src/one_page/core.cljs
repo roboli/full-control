@@ -18,10 +18,11 @@
                         (button {:on-click (fn [_] (js/alert "You're out!"))} "Logout"))
                 (fixed-layout
                  (row
-                  (column-3
-                   (p (:texto st)))
-                  (column-3
-                   (p (:panel-text cursor)))
+                  (column-9
+                   (panel {:heading-title (:panel-title cursor)}
+                          (p (:panel-text cursor))
+                          (stretch
+                           (p "other..."))))
                   (column-3
                    (button "Button"))))))
 

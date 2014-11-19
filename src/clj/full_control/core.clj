@@ -164,13 +164,13 @@
    'fixed-layout (partial process-control {:symbol-fn (fn [_] `fixed-layout*)
                                            :attrs-parser parse-layout-attrs
                                            :expander (expand-tags-with
-                                                      :available #{'p 'button 'row})
+                                                      :available #{'p 'button 'row 'panel})
                                            :transformers []})
    
    'fluid-layout (partial process-control {:symbol-fn (fn [_] `fluid-layout*)
                                            :attrs-parser parse-layout-attrs
                                            :expander (expand-tags-with
-                                                      :available #{'p 'button 'row})
+                                                      :available #{'p 'button 'row 'panel})
                                            :transformers []})
    
    'row          (partial process-control {:symbol-fn (fn [_] `row*)
@@ -183,7 +183,7 @@
                                                         `~(symbol (str "full-control.core/" (name tag) "*")))
                                            :attrs-parser parse-column-attrs
                                            :expander (expand-tags-with
-                                                      :available #{'p 'button 'row})
+                                                      :available #{'p 'button 'row 'panel})
                                            :transformers []})
 
    ;; Menus
@@ -198,6 +198,19 @@
    'button-h     (partial process-control {:symbol-fn (fn [_] `menu-h-button*)
                                            :attrs-parser parse-attrs
                                            :expander identity
+                                           :transformers []})
+
+   ;; Panels
+   'panel        (partial process-control {:symbol-fn (fn [_] `panel*)
+                                           :attrs-parser parse-layout-attrs
+                                           :expander (expand-tags-with
+                                                      :available #{'p 'button 'row 'stretch})
+                                           :transformers []})
+   
+   'stretch      (partial process-control {:symbol-fn (fn [_] `stretch*)
+                                           :attrs-parser parse-attrs
+                                           :expander (expand-tags-with
+                                                      :available #{'p 'button 'row})
                                            :transformers []})})
 
 

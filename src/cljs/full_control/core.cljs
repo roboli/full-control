@@ -127,6 +127,23 @@
                    :on-click (:on-click attrs)) body))
 
 ;;;
+;;; Panels
+;;;
+
+(defn stretch* [attrs & body] {:stretch body})
+
+(defn panel* [attrs & body]
+  (dom/div #js {:className "panel panel-default"}
+           (dom/div #js {:className "panel-heading"}
+                    (dom/h3 #js {:className "panel-title"} (:heading-title attrs)))
+           (if-not (and (= (count body) 1) (:stretch (first body)))
+             (apply dom/div #js {:className "panel-body"} (remove :stretch body)))
+           (apply dom/div nil (->> body
+                                   (filter :stretch)
+                                   first
+                                   :stretch))))
+
+;;;
 ;;; Other controls
 ;;;
 
