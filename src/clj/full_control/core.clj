@@ -160,7 +160,7 @@
 
 (def ^:private general-tags #{'p 'button 'h})
 
-(def ^:private general-layout-tags (conj general-tags 'row 'panel))
+(def ^:private general-layout-tags (conj general-tags 'row 'panel 'menu-v))
 
 (def ^:private page-tags
   {;; General
@@ -236,6 +236,19 @@
                                                       :available #{'title})
                                            :transformers []})
 
+   'menu-v       (partial process-control {:symbol-fn (return `menu-v*)
+                                           :attrs-parser parse-attrs
+                                           :expander (expand-tags-with
+                                                      :available #{'menu-v-header 'link}
+                                                      :aliases {'menu-v-header 'header})
+                                           :transformers []})
+
+   'menu-v-header (partial process-control {:symbol-fn (return `menu-v-header*)
+                                            :attrs-parser parse-attrs
+                                            :expander (expand-panel-header-tags-with
+                                                       :available #{'title})
+                                            :transformers []})
+
    'title        (partial process-control {:symbol-fn tag->qualilified-symbol
                                            :attrs-parser parse-attrs
                                            :expander identity
@@ -245,6 +258,11 @@
                                            :attrs-parser parse-attrs
                                            :expander (expand-tags-with
                                                       :available (conj general-tags 'row))
+                                           :transformers []})
+
+   'link         (partial process-control {:symbol-fn (return `menu-v-link*)
+                                           :attrs-parser parse-attrs
+                                           :expander identity
                                            :transformers []})})
 
 

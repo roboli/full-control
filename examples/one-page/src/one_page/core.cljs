@@ -26,7 +26,10 @@
                           (stretch
                            (h4 "This is it!!"))))
                   (column-3
-                   (button "Button"))))))
+                   (menu-v (header (title1 "Mnu"))
+                           (link {:href "#"
+                                  :on-click (fn [_] (js/alert "Uno!"))} "Uno")
+                           (link "Dos")))))))
 
 (fc/root page app-state {:target (. js/document (getElementById "app"))
                          :state {:texto "Hey you, hey me..."}})

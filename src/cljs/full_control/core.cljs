@@ -189,6 +189,25 @@
                                    first
                                    :stretch))))
 
+(defn menu-v-header* [attrs & body]
+  (apply panel-header* attrs body))
+
+(defn menu-v* [attrs & body]
+  (dom/div #js {:className "panel panel-default"}
+           (let [header (->> body
+                             (filter :header)
+                             first
+                             :header)]
+             (apply dom/div #js {:className (str "panel-heading" (:class-names header))}
+                    (:body header)))
+           (dom/div #js {:className "panel-body"}
+                    (apply dom/div #js {:className "list-group"} (remove :header body)))))
+
+(defn menu-v-link* [attrs & body]
+  (apply dom/a #js {:className "list-group-item"
+                    :href (:href attrs)
+                    :onClick (:on-click attrs)} body))
+
 (defn title1* [attrs & body]
   (apply h1* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
          body))
