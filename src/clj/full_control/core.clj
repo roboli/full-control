@@ -148,6 +148,10 @@
 ;;; Tags maps
 ;;;
 
+(def ^:private general-tags #{'p 'button})
+
+(def ^:private general-layout-tags (conj general-tags 'row 'panel))
+
 (def ^:private page-tags
   {;; General
    'p            (partial process-control {:symbol-fn (fn [_] `p*)
@@ -164,26 +168,26 @@
    'fixed-layout (partial process-control {:symbol-fn (fn [_] `fixed-layout*)
                                            :attrs-parser parse-layout-attrs
                                            :expander (expand-tags-with
-                                                      :available #{'p 'button 'row 'panel})
+                                                      :available general-layout-tags)
                                            :transformers []})
    
    'fluid-layout (partial process-control {:symbol-fn (fn [_] `fluid-layout*)
                                            :attrs-parser parse-layout-attrs
                                            :expander (expand-tags-with
-                                                      :available #{'p 'button 'row 'panel})
+                                                      :available general-layout-tags)
                                            :transformers []})
    
    'row          (partial process-control {:symbol-fn (fn [_] `row*)
                                            :attrs-parser parse-attrs
                                            :expander (expand-column-tags-with
-                                                      :available #{'p 'button 'row 'column-})
+                                                      :available (conj general-tags 'row 'column-))
                                            :transformers []})
    
    'column-      (partial process-control {:symbol-fn (fn [tag]
                                                         `~(symbol (str "full-control.core/" (name tag) "*")))
                                            :attrs-parser parse-column-attrs
                                            :expander (expand-tags-with
-                                                      :available #{'p 'button 'row 'panel})
+                                                      :available general-layout-tags)
                                            :transformers []})
 
    ;; Menus
@@ -209,13 +213,13 @@
    'panel        (partial process-control {:symbol-fn (fn [_] `panel*)
                                            :attrs-parser parse-layout-attrs
                                            :expander (expand-tags-with
-                                                      :available #{'p 'button 'row 'stretch})
+                                                      :available (conj general-tags 'row 'stretch))
                                            :transformers []})
    
    'stretch      (partial process-control {:symbol-fn (fn [_] `stretch*)
                                            :attrs-parser parse-attrs
                                            :expander (expand-tags-with
-                                                      :available #{'p 'button 'row})
+                                                      :available (conj general-tags 'row))
                                            :transformers []})})
 
 
