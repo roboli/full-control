@@ -41,6 +41,9 @@
 (defn- match-col-name [x]
   (if (re-find #"column-(?:\d|1[1-2])$" (name x)) 'column-))
 
+(defn- match-title-name [x]
+  (if (re-find #"title[1-5]$" (name x)) 'title))
+
 (defn- search-tag-with [& fs]
   (fn [tags tag]
     (if-let [tf (some #(if (not (nil? %)) %)
@@ -69,6 +72,10 @@
 (def ^:private expand-column-tags-with
   (partial expand-tags (search-tag-with (partial get)
                                         #(get %1 (match-col-name %2)))))
+
+(def ^:private expand-panel-header-tags-with
+  (partial expand-tags (search-tag-with (partial get)
+                                        #(get %1 (match-title-name %2)))))
 
 ;;;
 ;;; menu-h transformers
@@ -216,7 +223,19 @@
    'panel        (partial process-control {:symbol-fn (fn [_] `panel*)
                                            :attrs-parser parse-layout-attrs
                                            :expander (expand-tags-with
-                                                      :available (conj general-tags 'row 'stretch))
+                                                      :available (conj general-tags 'header 'row 'stretch))
+                                           :transformers []})
+
+   'header       (partial process-control {:symbol-fn (fn [_] `panel-header*)
+                                           :attrs-parser parse-attrs
+                                           :expander (expand-panel-header-tags-with
+                                                      :available #{'title})
+                                           :transformers []})
+
+   'title        (partial process-control {:symbol-fn (fn [tag]
+                                                        `~(symbol (str "full-control.core/" (name tag) "*")))
+                                           :attrs-parser parse-attrs
+                                           :expander identity
                                            :transformers []})
    
    'stretch      (partial process-control {:symbol-fn (fn [_] `stretch*)

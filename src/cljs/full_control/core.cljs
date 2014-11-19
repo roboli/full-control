@@ -168,15 +168,43 @@
 ;;; Panels
 ;;;
 
+(defn panel-header* [attrs & body]
+  {:header {:class-names (:class-names attrs)
+            :body body}})
+
 (defn stretch* [attrs & body] {:stretch body})
 
 (defn panel* [attrs & body]
   (dom/div #js {:className "panel panel-default"}
-           (dom/div #js {:className "panel-heading"}
-                    (dom/h3 #js {:className "panel-title"} (:heading-title attrs)))
+           (let [header (->> body
+                             (filter :header)
+                             first
+                             :header)]
+             (apply dom/div #js {:className (str "panel-heading " (:class-names header))}
+                    (:body header)))
            (if-not (and (= (count body) 1) (:stretch (first body)))
-             (apply dom/div #js {:className "panel-body"} (remove :stretch body)))
+             (apply dom/div #js {:className "panel-body"} (remove (some-fn :header :stretch) body)))
            (apply dom/div nil (->> body
                                    (filter :stretch)
                                    first
                                    :stretch))))
+
+(defn title1* [attrs & body]
+  (apply h1* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
+         body))
+
+(defn title2* [attrs & body]
+  (apply h2* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
+         body))
+
+(defn title3* [attrs & body]
+  (apply h3* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
+         body))
+
+(defn title4* [attrs & body]
+  (apply h4* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
+         body))
+
+(defn title5* [attrs & body]
+  (apply h5* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
+         body))
