@@ -10,12 +10,15 @@
 
 (defpage page [cursor owner opts]
   (render-state [st]
-                (menu-h {:brand-body (:menu-h cursor)}
-                        (link {:href "#"
-                               :on-click (fn [_] (js/alert "You're home!"))} "Home")
-                        (link "About")
-                        (spacer)
-                        (button {:on-click (fn [_] (js/alert "You're out!"))} "Logout"))
+                (menu-h
+                 (brand {:href "#"
+                         :on-click (fn [_] (js/alert "This is my brand!"))}
+                        (:menu-h cursor))
+                 (link {:href "#"
+                        :on-click (fn [_] (js/alert "You're home!"))} "Home")
+                 (link "About")
+                 (spacer)
+                 (button {:on-click (fn [_] (js/alert "You're out!"))} "Logout"))
                 (fixed-layout
                  (row
                   (column-9

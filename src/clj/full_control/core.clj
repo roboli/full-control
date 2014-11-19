@@ -190,10 +190,15 @@
    'menu-h       (partial process-control {:symbol-fn (fn [_] `menu-h*)
                                            :attrs-parser parse-attrs
                                            :expander (expand-tags-with
-                                                      :available #{'button-h}
+                                                      :available #{'brand 'button-h}
                                                       :aliases {'button-h 'button})
                                            :transformers [(parse-links-h parse-attrs)
                                                           apply-spacers]})
+
+   'brand        (partial process-control {:symbol-fn (fn [_] `brand*)
+                                           :attrs-parser parse-attrs
+                                           :expander identity
+                                           :transformers []})
    
    'button-h     (partial process-control {:symbol-fn (fn [_] `menu-h-button*)
                                            :attrs-parser parse-attrs
