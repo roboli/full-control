@@ -81,6 +81,21 @@
                          :className (str "btn btn-default " (:class-names attrs))
                          :onClick (:on-click attrs)} body))
 
+(defn h1* [attrs & body]
+  (apply dom/h1 #js {:className (:class-names attrs)} body))
+
+(defn h2* [attrs & body]
+  (apply dom/h2 #js {:className (:class-names attrs)} body))
+
+(defn h3* [attrs & body]
+  (apply dom/h3 #js {:className (:class-names attrs)} body))
+
+(defn h4* [attrs & body]
+  (apply dom/h4 #js {:className (:class-names attrs)} body))
+
+(defn h5* [attrs & body]
+  (apply dom/h5 #js {:className (:class-names attrs)} body))
+
 ;;;
 ;;; menu-h
 ;;;

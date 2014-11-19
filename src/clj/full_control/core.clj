@@ -35,6 +35,9 @@
 ;;; Expanders
 ;;;
 
+(defn- match-h-name [x]
+  (if (re-find #"h[1-5]$" (name x)) 'h))
+
 (defn- match-col-name
   "Returns symbol column- if x is a symbol like column-n."
   [x]
@@ -68,10 +71,12 @@
         (apply tag body))))
 
 (def ^:private expand-tags-with
-  (partial expand-tags (search-tag-with (partial get))))
+  (partial expand-tags (search-tag-with (partial get)
+                                        #(get %1 (match-h-name %2)))))
 
 (def ^:private expand-column-tags-with
-  (partial expand-tags (search-tag-with (partial get) #(get %1 (match-col-name %2)))))
+  (partial expand-tags (search-tag-with (partial get)
+                                        #(get %1 (match-col-name %2)))))
 
 ;;;
 ;;; menu-h transformers
@@ -148,7 +153,7 @@
 ;;; Tags maps
 ;;;
 
-(def ^:private general-tags #{'p 'button})
+(def ^:private general-tags #{'p 'button 'h})
 
 (def ^:private general-layout-tags (conj general-tags 'row 'panel))
 
@@ -160,6 +165,12 @@
                                            :transformers []})
    
    'button       (partial process-control {:symbol-fn (fn [_] `button*)
+                                           :attrs-parser parse-attrs
+                                           :expander identity
+                                           :transformers []})
+
+   'h            (partial process-control {:symbol-fn (fn [tag]
+                                                        `~(symbol (str "full-control.core/" (name tag) "*")))
                                            :attrs-parser parse-attrs
                                            :expander identity
                                            :transformers []})

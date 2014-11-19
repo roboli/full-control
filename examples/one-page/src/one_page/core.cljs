@@ -25,7 +25,7 @@
                    (panel {:heading-title (:panel-title cursor)}
                           (p (:panel-text cursor))
                           (stretch
-                           (p "other..."))))
+                           (h4 "This is it!!"))))
                   (column-3
                    (button "Button"))))))
 
