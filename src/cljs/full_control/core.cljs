@@ -97,7 +97,7 @@
   (apply dom/h5 #js {:className (:class-names attrs)} body))
 
 ;;;
-;;; menu-h
+;;; navbar
 ;;;
 
 (def ^:private float-class
@@ -110,7 +110,7 @@
            :on-click (:on-click attrs)
            :body body}})
 
-(defn menu-h*
+(defn navbar*
   "Retuns bootstrap's navbar. Attributes available in the attrs map are :class-names."
   [attrs & body]
   (dom/nav #js {:className "navbar navbar-default navbar-static-top"
@@ -120,7 +120,7 @@
                              (dom/button #js {:type "button"
                                               :className "navbar-toggle collapsed"
                                               :data-toggle "collapse"
-                                              :data-target "#menu-h-collapse-items"}
+                                              :data-target "#navbar-collapse-items"}
                                          (dom/span #js {:className "icon-bar"})
                                          (dom/span #js {:className "icon-bar"})
                                          (dom/span #js {:className "icon-bar"}))
@@ -133,7 +133,7 @@
                                                  :href (:href brand)
                                                  :onClick (:on-click brand)}
                                       (:body brand))))
-                    (apply dom/div #js {:id "menu-h-collapse-items"
+                    (apply dom/div #js {:id "navbar-collapse-items"
                                         :className (str "collapse navbar-collapse " (:class-names attrs))}
                            (remove :brand body)))))
 
@@ -154,8 +154,8 @@
                    (apply dom/a #js {:href (:href lnk)
                                      :onClick (:on-click lnk)} (:body lnk))))))
 
-(defn menu-h-button*
-  "Button to render inside the menu-h control. Attributes available in the attrs
+(defn navbar-button*
+  "Button to render inside the navbar control. Attributes available in the attrs
   map same as the button* control."
   [attrs & body]
   (apply button* (assoc attrs
@@ -189,10 +189,10 @@
                                    first
                                    :stretch))))
 
-(defn menu-v-header* [attrs & body]
+(defn navpanel-header* [attrs & body]
   (apply panel-header* attrs body))
 
-(defn menu-v* [attrs & body]
+(defn navpanel* [attrs & body]
   (dom/div #js {:className "panel panel-default"}
            (let [header (->> body
                              (filter :header)
@@ -203,7 +203,7 @@
            (dom/div #js {:className "panel-body"}
                     (apply dom/div #js {:className "list-group"} (remove :header body)))))
 
-(defn menu-v-link* [attrs & body]
+(defn navpanel-link* [attrs & body]
   (apply dom/a #js {:className "list-group-item"
                     :href (:href attrs)
                     :onClick (:on-click attrs)} body))

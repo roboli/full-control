@@ -10,7 +10,7 @@
 
 (defpage page [cursor owner opts]
   (render-state [st]
-                (menu-h (brand {:href "#"
+                (navbar (brand {:href "#"
                                 :on-click (fn [_] (js/alert "This is my brand!"))}
                                (:menu-h cursor))
                         (link {:href "#"
@@ -26,10 +26,10 @@
                           (stretch
                            (h4 "This is it!!"))))
                   (column-3
-                   (menu-v (header (title1 "Mnu"))
-                           (link {:href "#"
-                                  :on-click (fn [_] (js/alert "Uno!"))} "Uno")
-                           (link "Dos")))))))
+                   (navpanel (header (title1 "Mnu"))
+                             (link {:href "#"
+                                    :on-click (fn [_] (js/alert "Uno!"))} "Uno")
+                             (link "Dos")))))))
 
 (fc/root page app-state {:target (. js/document (getElementById "app"))
                          :state {:texto "Hey you, hey me..."}})

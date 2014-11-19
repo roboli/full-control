@@ -78,11 +78,11 @@
                                         #(get %1 (match-title-name %2)))))
 
 ;;;
-;;; menu-h transformers
+;;; navbar transformers
 ;;;
 
 (defn- parse-links-h
-  "Group and transform all continuous 'link symbols in a menu-h control into a
+  "Group and transform all continuous 'link symbols in a navbar control into a
   links-group control. Expects a attributes parser function and returns f that
   expects the body to transform."
   [attrs-parser]
@@ -144,7 +144,7 @@
   (apply process-control {:symbol-fn (fn [_] `page*)
                           :attrs-parser parse-with-attrs
                           :expander (expand-tags-with
-                                     :available #{'p 'button 'menu-h 'fixed-layout 'fluid-layout})
+                                     :available #{'p 'button 'navbar 'fixed-layout 'fluid-layout})
                           :transformers []}
          'page body))
 
@@ -160,7 +160,7 @@
 
 (def ^:private general-tags #{'p 'button 'h})
 
-(def ^:private general-layout-tags (conj general-tags 'row 'panel 'menu-v))
+(def ^:private general-layout-tags (conj general-tags 'row 'panel 'navpanel))
 
 (def ^:private page-tags
   {;; General
@@ -204,8 +204,8 @@
                                                       :available general-layout-tags)
                                            :transformers []})
 
-   ;; Menus
-   'menu-h       (partial process-control {:symbol-fn (return `menu-h*)
+   ;; Navbar
+   'navbar       (partial process-control {:symbol-fn (return `navbar*)
                                            :attrs-parser parse-attrs
                                            :expander (expand-tags-with
                                                       :available #{'brand 'button-h}
@@ -218,7 +218,7 @@
                                            :expander identity
                                            :transformers []})
    
-   'button-h     (partial process-control {:symbol-fn (return `menu-h-button*)
+   'button-h     (partial process-control {:symbol-fn (return `navbar-button*)
                                            :attrs-parser parse-attrs
                                            :expander identity
                                            :transformers []})
@@ -236,14 +236,14 @@
                                                       :available #{'title})
                                            :transformers []})
 
-   'menu-v       (partial process-control {:symbol-fn (return `menu-v*)
+   'navpanel       (partial process-control {:symbol-fn (return `navpanel*)
                                            :attrs-parser parse-attrs
                                            :expander (expand-tags-with
-                                                      :available #{'menu-v-header 'link}
-                                                      :aliases {'menu-v-header 'header})
+                                                      :available #{'navpanel-header 'link}
+                                                      :aliases {'navpanel-header 'header})
                                            :transformers []})
 
-   'menu-v-header (partial process-control {:symbol-fn (return `menu-v-header*)
+   'navpanel-header (partial process-control {:symbol-fn (return `navpanel-header*)
                                             :attrs-parser parse-attrs
                                             :expander (expand-panel-header-tags-with
                                                        :available #{'title})
@@ -260,7 +260,7 @@
                                                       :available (conj general-tags 'row))
                                            :transformers []})
 
-   'link         (partial process-control {:symbol-fn (return `menu-v-link*)
+   'link         (partial process-control {:symbol-fn (return `navpanel-link*)
                                            :attrs-parser parse-attrs
                                            :expander identity
                                            :transformers []})})
