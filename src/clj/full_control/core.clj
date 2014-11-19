@@ -149,8 +149,11 @@
          'page body))
 
 ;;;
-;;; Tags maps
+;;; Tags
 ;;;
+
+(defn return [x]
+  (fn [_] x))
 
 (defn- tag->qualilified-symbol [tag]
   `~(symbol (str "full-control.core/" (name tag) "*")))
@@ -161,12 +164,12 @@
 
 (def ^:private page-tags
   {;; General
-   'p            (partial process-control {:symbol-fn (fn [_] `p*)
+   'p            (partial process-control {:symbol-fn (return `p*)
                                            :attrs-parser parse-attrs
                                            :expander identity
                                            :transformers []})
    
-   'button       (partial process-control {:symbol-fn (fn [_] `button*)
+   'button       (partial process-control {:symbol-fn (return `button*)
                                            :attrs-parser parse-attrs
                                            :expander identity
                                            :transformers []})
@@ -177,19 +180,19 @@
                                            :transformers []})
 
    ;; Layout
-   'fixed-layout (partial process-control {:symbol-fn (fn [_] `fixed-layout*)
+   'fixed-layout (partial process-control {:symbol-fn (return `fixed-layout*)
                                            :attrs-parser parse-layout-attrs
                                            :expander (expand-tags-with
                                                       :available general-layout-tags)
                                            :transformers []})
    
-   'fluid-layout (partial process-control {:symbol-fn (fn [_] `fluid-layout*)
+   'fluid-layout (partial process-control {:symbol-fn (return `fluid-layout*)
                                            :attrs-parser parse-layout-attrs
                                            :expander (expand-tags-with
                                                       :available general-layout-tags)
                                            :transformers []})
    
-   'row          (partial process-control {:symbol-fn (fn [_] `row*)
+   'row          (partial process-control {:symbol-fn (return `row*)
                                            :attrs-parser parse-attrs
                                            :expander (expand-column-tags-with
                                                       :available (conj general-tags 'row 'column-))
@@ -202,7 +205,7 @@
                                            :transformers []})
 
    ;; Menus
-   'menu-h       (partial process-control {:symbol-fn (fn [_] `menu-h*)
+   'menu-h       (partial process-control {:symbol-fn (return `menu-h*)
                                            :attrs-parser parse-attrs
                                            :expander (expand-tags-with
                                                       :available #{'brand 'button-h}
@@ -210,24 +213,24 @@
                                            :transformers [(parse-links-h parse-attrs)
                                                           apply-spacers]})
 
-   'brand        (partial process-control {:symbol-fn (fn [_] `brand*)
+   'brand        (partial process-control {:symbol-fn (return `brand*)
                                            :attrs-parser parse-attrs
                                            :expander identity
                                            :transformers []})
    
-   'button-h     (partial process-control {:symbol-fn (fn [_] `menu-h-button*)
+   'button-h     (partial process-control {:symbol-fn (return `menu-h-button*)
                                            :attrs-parser parse-attrs
                                            :expander identity
                                            :transformers []})
 
    ;; Panels
-   'panel        (partial process-control {:symbol-fn (fn [_] `panel*)
+   'panel        (partial process-control {:symbol-fn (return `panel*)
                                            :attrs-parser parse-layout-attrs
                                            :expander (expand-tags-with
                                                       :available (conj general-tags 'header 'row 'stretch))
                                            :transformers []})
 
-   'header       (partial process-control {:symbol-fn (fn [_] `panel-header*)
+   'header       (partial process-control {:symbol-fn (return `panel-header*)
                                            :attrs-parser parse-attrs
                                            :expander (expand-panel-header-tags-with
                                                       :available #{'title})
@@ -238,7 +241,7 @@
                                            :expander identity
                                            :transformers []})
    
-   'stretch      (partial process-control {:symbol-fn (fn [_] `stretch*)
+   'stretch      (partial process-control {:symbol-fn (return `stretch*)
                                            :attrs-parser parse-attrs
                                            :expander (expand-tags-with
                                                       :available (conj general-tags 'row))
