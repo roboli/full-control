@@ -189,9 +189,6 @@
                                    first
                                    :stretch))))
 
-(defn navpanel-header* [attrs & body]
-  (apply panel-header* attrs body))
-
 (defn navpanel* [attrs & body]
   (dom/div #js {:className "panel panel-default"}
            (let [header (->> body

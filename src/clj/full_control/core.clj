@@ -236,18 +236,11 @@
                                                       :available #{'title})
                                            :transformers []})
 
-   'navpanel       (partial process-control {:symbol-fn (return `navpanel*)
+   'navpanel     (partial process-control {:symbol-fn (return `navpanel*)
                                            :attrs-parser parse-attrs
                                            :expander (expand-tags-with
-                                                      :available #{'navpanel-header 'link}
-                                                      :aliases {'navpanel-header 'header})
+                                                      :available #{'header 'link})
                                            :transformers []})
-
-   'navpanel-header (partial process-control {:symbol-fn (return `navpanel-header*)
-                                            :attrs-parser parse-attrs
-                                            :expander (expand-panel-header-tags-with
-                                                       :available #{'title})
-                                            :transformers []})
 
    'title        (partial process-control {:symbol-fn tag->qualilified-symbol
                                            :attrs-parser parse-attrs
