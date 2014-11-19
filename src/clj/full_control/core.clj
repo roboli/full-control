@@ -217,6 +217,8 @@
   The Page record implements the om.core/IRenderState protocol. See the Page
   record definition in the cljs full-control.core namespace for further explanation."
   [name args & body]
+  {:pre [(and (symbol? name)
+              (vector? args))]}
   (let [[params body :as render-state] (parse-render-state body)]
     (if render-state
       `(defn ~name ~args
