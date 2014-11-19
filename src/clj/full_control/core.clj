@@ -38,16 +38,8 @@
 (defn- match-h-name [x]
   (if (re-find #"h[1-5]$" (name x)) 'h))
 
-(defn- match-col-name
-  "Returns symbol column- if x is a symbol like column-n."
-  [x]
-  (let [s (->> x
-               name
-               (take 7)
-               (apply str))]
-    (if (and (not= \* (last (name x)))
-             (= "column-" s))
-      (symbol s))))
+(defn- match-col-name [x]
+  (if (re-find #"column-(?:\d|1[1-2])$" (name x)) 'column-))
 
 (defn- search-tag-with [& fs]
   (fn [tags tag]
