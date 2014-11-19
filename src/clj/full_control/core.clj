@@ -149,7 +149,8 @@
 ;;;
 
 (def ^:private page-tags
-  {'p            (partial process-control {:symbol-fn (fn [_] `p*)
+  {;; General
+   'p            (partial process-control {:symbol-fn (fn [_] `p*)
                                            :attrs-parser parse-attrs
                                            :expander identity
                                            :transformers []})
@@ -157,6 +158,19 @@
    'button       (partial process-control {:symbol-fn (fn [_] `button*)
                                            :attrs-parser parse-attrs
                                            :expander identity
+                                           :transformers []})
+
+   ;; Layout
+   'fixed-layout (partial process-control {:symbol-fn (fn [_] `fixed-layout*)
+                                           :attrs-parser parse-layout-attrs
+                                           :expander (expand-tags-with
+                                                      :available #{'p 'button 'row})
+                                           :transformers []})
+   
+   'fluid-layout (partial process-control {:symbol-fn (fn [_] `fluid-layout*)
+                                           :attrs-parser parse-layout-attrs
+                                           :expander (expand-tags-with
+                                                      :available #{'p 'button 'row})
                                            :transformers []})
    
    'row          (partial process-control {:symbol-fn (fn [_] `row*)
@@ -171,7 +185,8 @@
                                            :expander (expand-tags-with
                                                       :available #{'p 'button 'row})
                                            :transformers []})
-   
+
+   ;; Menus
    'menu-h       (partial process-control {:symbol-fn (fn [_] `menu-h*)
                                            :attrs-parser parse-attrs
                                            :expander (expand-tags-with
@@ -183,18 +198,6 @@
    'button-h     (partial process-control {:symbol-fn (fn [_] `menu-h-button*)
                                            :attrs-parser parse-attrs
                                            :expander identity
-                                           :transformers []})
-   
-   'fixed-layout (partial process-control {:symbol-fn (fn [_] `fixed-layout*)
-                                           :attrs-parser parse-layout-attrs
-                                           :expander (expand-tags-with
-                                                      :available #{'p 'button 'row})
-                                           :transformers []})
-   
-   'fluid-layout (partial process-control {:symbol-fn (fn [_] `fluid-layout*)
-                                           :attrs-parser parse-layout-attrs
-                                           :expander (expand-tags-with
-                                                      :available #{'p 'button 'row})
                                            :transformers []})})
 
 
