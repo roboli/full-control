@@ -66,10 +66,24 @@
 (defcolumn 1 12)
 
 ;;;
-;;; menu-h
+;;; General controls
 ;;;
 
-(declare button*)
+(defn p*
+  "Attribute available in the attrs map is :class-names."
+  [attrs & body]
+  (apply dom/p #js {:className (:class-names attrs)} body))
+
+(defn button*
+  "Attributes available in the attrs map are :class-names, :on-click."
+  [attrs & body]
+  (apply dom/button #js {:type "button"
+                         :className (str "btn btn-default " (:class-names attrs))
+                         :onClick (:on-click attrs)} body))
+
+;;;
+;;; menu-h
+;;;
 
 (def ^:private float-class
   {:left "navbar-left"
@@ -151,19 +165,3 @@
                                    (filter :stretch)
                                    first
                                    :stretch))))
-
-;;;
-;;; Other controls
-;;;
-
-(defn p*
-  "Attribute available in the attrs map is :class-names."
-  [attrs & body]
-  (apply dom/p #js {:className (:class-names attrs)} body))
-
-(defn button*
-  "Attributes available in the attrs map are :class-names, :on-click."
-  [attrs & body]
-  (apply dom/button #js {:type "button"
-                         :className (str "btn btn-default " (:class-names attrs))
-                         :onClick (:on-click attrs)} body))
