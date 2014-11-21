@@ -25,7 +25,7 @@
                           (p (:panel-text cursor))
                           (stretch
                            (h4 "This is it!!"))))
-                  (column-3
+                  (fc/column-3* {:size :md}
                    (navpanel (header (title1 "Mnu"))
                              (link {:href "#"
                                     :on-click (fn [_] (js/alert "Uno!"))} "Uno")

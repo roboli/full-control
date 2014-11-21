@@ -7,25 +7,21 @@
 ;;; Attributes parsers
 ;;;
 
-(defn- parse-attrs
-  "Parses a control form's body for its attributes. Returns vector with 
-  attributes as first value and rest as second value. Empty map is returned when
-  no attributes are found."
-  [body & {:keys [not-found]}]
+(defn- parse-m [body & {:keys [not-found]}]
   (if (map? (first body))
     [(first body) (rest body)]
-    [(or not-found {}) body]))
+    [not-found body]))
 
-(defn- parse-with-attrs
-  "Same as parse-attrs, but assumes the attributes map is within the with-attrs
-  form."
-  [body & {:keys [not-found]}]
+(defn- parse-attrs [body]
+  (parse-m body :not-found {}))
+
+(defn- parse-with-attrs [body & {:keys [not-found]}]
   (if (= (ffirst body) 'with-attrs)
     [(second (first body)) (rest (rest (first body)))]
     [(or not-found {}) body]))
 
 (defn- parse-layout-attrs [body]
-  (parse-attrs body :not-found {:column-size :md}))
+  (parse-m body :not-found {:column-size :md}))
 
 (defn- parse-column-attrs [body]
   (let [[attrs body] (parse-attrs body)]
@@ -59,11 +55,13 @@
   the form of e.g. (button attrs body), where button is the tag to be searched."
   [f & {:keys [available aliases] :or [aliases {}]}]
   (fn [[tag & body :as form]]
-    (-> *tags*
-        (select-keys available)
-        (clojure.set/rename-keys aliases)
-        (#(or (f % tag) (fn [& _] form)))
-        (apply tag body))))
+    (if (symbol? tag)
+      (-> *tags*
+          (select-keys (or available (set (keys *tags*))))
+          (clojure.set/rename-keys aliases)
+          (#(or (f % tag) (f *tags* 'unknown)))
+          (apply tag body))
+      form)))
 
 (def ^:private expand-tags-with
   (partial expand-tags (search-tag-with (partial get)
@@ -75,6 +73,12 @@
 
 (def ^:private expand-panel-header-tags-with
   (partial expand-tags (search-tag-with (partial get)
+                                        #(get %1 (match-title-name %2)))))
+
+(def ^:private expand-tags-with-all
+  (partial expand-tags (search-tag-with (partial get)
+                                        #(get %1 (match-h-name %2))
+                                        #(get %1 (match-col-name %2))
                                         #(get %1 (match-title-name %2)))))
 
 ;;;
@@ -138,6 +142,14 @@
                                         doall
                                         ((apply comp (reverse transformers))))))))
 
+(defn- process-children [{:keys [attrs-parser expander]} tag & body]
+  (let [[attrs body] (attrs-parser body)]
+    (binding [*attrs* (merge *attrs* attrs)]
+      (let [body (doall (map expander body))]
+        (if attrs
+          (list* tag attrs body)
+          (list* tag body))))))
+
 (defn- process-page
   "Begin the expanding and transformation process of the page control."
   [body]
@@ -159,11 +171,13 @@
   `~(symbol (str "full-control.core/" (name tag) "*")))
 
 (def ^:private general-tags #{'p 'button 'h})
-
 (def ^:private general-layout-tags (conj general-tags 'row 'panel 'navpanel))
 
 (def ^:private page-tags
-  {;; General
+  {'unknown      (partial process-children {:attrs-parser parse-m
+                                            :expander (expand-tags-with-all)})
+
+   ;; General
    'p            (partial process-control {:symbol-fn (return `p*)
                                            :attrs-parser parse-attrs
                                            :expander identity
@@ -257,7 +271,6 @@
                                            :attrs-parser parse-attrs
                                            :expander identity
                                            :transformers []})})
-
 
 ;;;
 ;;; Page macro and fns
