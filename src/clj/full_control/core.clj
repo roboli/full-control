@@ -312,6 +312,7 @@
   for further explanation."
   [n]
   `(defn ~(symbol (str "column-" n "*")) [~'attrs & ~'body]
+     {:pre [(map? ~'attrs)]}
      (apply full-control.core/column*
             {:sizes [(assoc ~'attrs :cols ~n)]}
             ~'body)))

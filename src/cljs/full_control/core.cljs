@@ -20,6 +20,7 @@
   (om/root f value options))
 
 (defn page* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply om.dom/div nil body))
 
 ;;;
@@ -32,12 +33,15 @@
                 :lg "lg"})
 
 (defn fixed-layout* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply dom/div #js {:className "container"} body))
 
 (defn fluid-layout* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply dom/div #js {:className "container-fluid"} body))
 
 (defn row* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply dom/div #js {:className "row"} body))
 
 (defn column*
@@ -49,6 +53,7 @@
                 {:size :md :cols 3}
                 ...]}"
   [attrs & body]
+  {:pre [(map? attrs)]}
   (apply dom/div #js {:className (str/join " " (map
                                                 #(str "col-"
                                                       (get col-sizes (:size %))
@@ -72,28 +77,35 @@
 (defn p*
   "Attribute available in the attrs map is :class-names."
   [attrs & body]
+  {:pre [(map? attrs)]}
   (apply dom/p #js {:className (:class-names attrs)} body))
 
 (defn button*
   "Attributes available in the attrs map are :class-names, :on-click."
   [attrs & body]
+  {:pre [(map? attrs)]}
   (apply dom/button #js {:type "button"
                          :className (str "btn btn-default " (:class-names attrs))
                          :onClick (:on-click attrs)} body))
 
 (defn h1* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply dom/h1 #js {:className (:class-names attrs)} body))
 
 (defn h2* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply dom/h2 #js {:className (:class-names attrs)} body))
 
 (defn h3* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply dom/h3 #js {:className (:class-names attrs)} body))
 
 (defn h4* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply dom/h4 #js {:className (:class-names attrs)} body))
 
 (defn h5* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply dom/h5 #js {:className (:class-names attrs)} body))
 
 ;;;
@@ -105,6 +117,7 @@
    :right "navbar-right"})
 
 (defn brand* [attrs & body]
+  {:pre [(map? attrs)]}
   {:brand {:class-names (:class-names attrs)
            :href (:href attrs)
            :on-click (:on-click attrs)
@@ -113,6 +126,7 @@
 (defn navbar*
   "Retuns bootstrap's navbar. Attributes available in the attrs map are :class-names."
   [attrs & body]
+  {:pre [(map? attrs)]}
   (dom/nav #js {:className "navbar navbar-default navbar-static-top"
                 :role "navigation"}
            (dom/div #js {:className "container-fluid"}
@@ -147,6 +161,7 @@
 
   Attributes available for each links map are :href, :on-click, :body."
   [attrs]
+  {:pre [(map? attrs)]}
   (apply dom/ul #js {:className (str "nav navbar-nav "
                                      (get float-class (:float attrs)))}
          (for [lnk (:links attrs)]
@@ -158,6 +173,7 @@
   "Button to render inside the navbar control. Attributes available in the attrs
   map same as the button* control."
   [attrs & body]
+  {:pre [(map? attrs)]}
   (apply button* (assoc attrs
                    :class-names (str "navbar-btn "
                                      (get float-class (:float attrs))
@@ -169,12 +185,16 @@
 ;;;
 
 (defn panel-header* [attrs & body]
+  {:pre [(map? attrs)]}
   {:header {:class-names (:class-names attrs)
             :body body}})
 
-(defn stretch* [attrs & body] {:stretch body})
+(defn stretch* [attrs & body]
+  {:pre [(map? attrs)]}
+  {:stretch body})
 
 (defn panel* [attrs & body]
+  {:pre [(map? attrs)]}
   (dom/div #js {:className "panel panel-default"}
            (let [header (->> body
                              (filter :header)
@@ -190,6 +210,7 @@
                                    :stretch))))
 
 (defn navpanel* [attrs & body]
+  {:pre [(map? attrs)]}
   (dom/div #js {:className "panel panel-default"}
            (let [header (->> body
                              (filter :header)
@@ -201,26 +222,32 @@
                     (apply dom/div #js {:className "list-group"} (remove :header body)))))
 
 (defn navpanel-link* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply dom/a #js {:className "list-group-item"
                     :href (:href attrs)
                     :onClick (:on-click attrs)} body))
 
 (defn title1* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply h1* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
          body))
 
 (defn title2* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply h2* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
          body))
 
 (defn title3* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply h3* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
          body))
 
 (defn title4* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply h4* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
          body))
 
 (defn title5* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply h5* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
          body))
