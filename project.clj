@@ -26,4 +26,12 @@
                                     :output-to "examples/one-page/app.js"
                                     :output-dir "examples/one-page/out"
                                     :source-map "examples/one-page/app.js.map"
+                                    :optimizations :none}}
+
+                        {:id "multi-page"
+                         :source-paths ["src/cljs" "examples/multi-page/src"]
+                         :compiler {
+                                    :output-to "examples/multi-page/app.js"
+                                    :output-dir "examples/multi-page/out"
+                                    :source-map "examples/multi-page/app.js.map"
                                     :optimizations :none}}]})
