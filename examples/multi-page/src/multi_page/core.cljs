@@ -45,10 +45,10 @@
                  (row
                   (column-9
                    (panel (header (title3 (:panel-title cursor)))
-                          (h4 "This is about...")))))))
+                          (h4 (:texto st))))))))
 
 (defpage-route "/" [] home)
-(defpage-route "/about" [] about)
+(defpage-route "/about" [] about {:state {:texto "This my about!!"}})
 
 (defrouter my-router app-state (. js/document (getElementById "app")))
 
