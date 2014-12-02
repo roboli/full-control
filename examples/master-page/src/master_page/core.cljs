@@ -1,6 +1,6 @@
 (ns master-page.core
-  (:require [full-control.core :as fc :include-macros true :refer [defpage]]
-            [full-control.router :as rt :include-macros true :refer [defpage-route defrouter]]))
+  (:require [clerk.core :as c :include-macros true :refer [defcom-route defrouter]]
+            [full-control.core :as fc :include-macros true :refer [defpage]]))
 
 (enable-console-print!)
 
@@ -30,9 +30,9 @@
                                     :on-click (fn [_] (js/alert "Uno!"))} "Uno")
                              (link "Dos")))))))
 
-(defpage-route "/" [] page {:state {:texto "This is home..."}})
-(defpage-route "/about" [] page {:state {:texto "This about..."}})
+(defcom-route "/" [] page {:state {:texto "This is home..."}})
+(defcom-route "/about" [] page {:state {:texto "This about..."}})
 
 (defrouter my-router app-state (. js/document (getElementById "app")))
 
-(rt/start my-router "/about")
+(c/start my-router "/about")

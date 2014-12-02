@@ -1,6 +1,6 @@
 (ns multi-page.core
-  (:require [full-control.core :as fc :include-macros true :refer [defpage]]
-            [full-control.router :as rt :include-macros true :refer [defpage-route defrouter]]))
+  (:require [clerk.core :as c :include-macros true :refer [defcom-route defrouter]]
+            [full-control.core :as fc :include-macros true :refer [defpage]]))
 
 (enable-console-print!)
 
@@ -47,9 +47,9 @@
                    (panel (header (title3 (:panel-title cursor)))
                           (h4 (:texto st))))))))
 
-(defpage-route "/" [] home)
-(defpage-route "/about" [] about {:state {:texto "This my about!!"}})
+(defcom-route "/" [] home)
+(defcom-route "/about" [] about {:state {:texto "This my about!!"}})
 
 (defrouter my-router app-state (. js/document (getElementById "app")))
 
-(rt/start my-router "/about")
+(c/start my-router "/about")
