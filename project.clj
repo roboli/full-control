@@ -2,8 +2,8 @@
   :description "A clojurescript Web UI DSL based on Om, Bootstrap and Secretary"
 
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2311"]
-                 [om "0.7.1"]]
+                 [org.clojure/clojurescript "0.0-2371"]
+                 [om "0.7.3"]]
 
   :plugins [[lein-cljsbuild "1.0.4-SNAPSHOT"]]
 

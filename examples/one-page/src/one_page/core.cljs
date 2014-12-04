@@ -1,5 +1,5 @@
 (ns one-page.core
-  (:require [full-control.core :as fc :include-macros true :refer [defpage]]))
+  (:require [full-control.core :as fc :refer-macros [defpage]]))
 
 (enable-console-print!)
 
