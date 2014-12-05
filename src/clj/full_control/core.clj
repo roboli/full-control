@@ -150,16 +150,6 @@
           (list* tag attrs body)
           (list* tag body))))))
 
-(defn- process-page
-  "Begin the expanding and transformation process of the page control."
-  [body]
-  (apply process-control {:symbol-fn (fn [_] `page*)
-                          :attrs-parser parse-with-attrs
-                          :expander (expand-tags-with
-                                     :available #{'p 'button 'navbar 'fixed-layout 'fluid-layout})
-                          :transformers []}
-         'page body))
-
 ;;;
 ;;; Tags
 ;;;
@@ -178,6 +168,15 @@
                                             :expander (expand-tags-with-all)})
 
    ;; General
+   'page         (partial process-control {:symbol-fn (return `page*)
+                                           :attrs-parser parse-with-attrs
+                                           :expander (expand-tags-with
+                                                      :available (conj general-layout-tags
+                                                                       'navbar
+                                                                       'fixed-layout
+                                                                       'fluid-layout))
+                                           :transformers []})
+
    'p            (partial process-control {:symbol-fn (return `p*)
                                            :attrs-parser parse-attrs
                                            :expander identity
@@ -298,7 +297,7 @@
       `(defn ~name ~args
          (->Page (apply (fn ~args
                           (fn ~params ~(binding [*tags* page-tags]
-                                         (process-page body))))
+                                         (apply ('page *tags*) 'page body))))
                         ~args)))
       (throw (RuntimeException. "No render-state form provided")))))
 
