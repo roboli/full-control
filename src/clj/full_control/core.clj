@@ -10,15 +10,12 @@
 (defn- parse-m [body & {:keys [not-found]}]
   (if (map? (first body))
     [(first body) (rest body)]
-    [not-found body]))
+    (if (= (ffirst body) 'with-attrs)
+      [(second (first body)) (rest (rest (first body)))]
+      [not-found body])))
 
 (defn- parse-attrs [body]
   (parse-m body :not-found {}))
-
-(defn- parse-with-attrs [body & {:keys [not-found]}]
-  (if (= (ffirst body) 'with-attrs)
-    [(second (first body)) (rest (rest (first body)))]
-    [(or not-found {}) body]))
 
 (defn- parse-layout-attrs [body]
   (parse-m body :not-found {:column-size :md}))
@@ -169,7 +166,7 @@
 
    ;; General
    'page         (partial process-control {:symbol-fn (return `page*)
-                                           :attrs-parser parse-with-attrs
+                                           :attrs-parser parse-attrs
                                            :expander (expand-tags-with
                                                       :available (conj general-layout-tags
                                                                        'navbar
