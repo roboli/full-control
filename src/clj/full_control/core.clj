@@ -128,7 +128,7 @@
 ;;; Processors
 ;;;
 
-(declare page-tags)
+(declare tags)
 
 (defn- process-control
   "Expand and transform control's body with the provided functions in the first
@@ -163,7 +163,7 @@
 (def ^:private general-tags #{'p 'button 'h})
 (def ^:private general-layout-tags (conj general-tags 'row 'panel 'navpanel))
 
-(def ^:private page-tags
+(def ^:private tags
   {'unknown      (partial process-children {:attrs-parser parse-m
                                             :expander (expand-tags-with-all)})
 
@@ -296,7 +296,7 @@
     (if render-state
       `(defn ~name ~args
          (->Component (apply (fn ~args
-                               (fn ~params ~(binding [*tags* page-tags]
+                               (fn ~params ~(binding [*tags* tags]
                                               (apply ('page *tags*) 'page body))))
                              ~args)))
       (throw (RuntimeException. "No render-state form provided")))))
