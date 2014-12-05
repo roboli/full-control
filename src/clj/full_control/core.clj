@@ -286,8 +286,8 @@
       [(first xs) (rest xs)])))
 
 (defmacro defpage
-  "Defines a function which returns an instance of full-control.core/Page record.
-  The Page record implements the om.core/IRenderState protocol. See the Page
+  "Defines a function which returns an instance of full-control.core/Component record.
+  The Component record implements the om.core/IRenderState protocol. See the Component
   record definition in the cljs full-control.core namespace for further explanation."
   [name args & body]
   {:pre [(and (symbol? name)
@@ -295,10 +295,10 @@
   (let [[params body :as render-state] (parse-render-state body)]
     (if render-state
       `(defn ~name ~args
-         (->Page (apply (fn ~args
-                          (fn ~params ~(binding [*tags* page-tags]
-                                         (apply ('page *tags*) 'page body))))
-                        ~args)))
+         (->Component (apply (fn ~args
+                               (fn ~params ~(binding [*tags* page-tags]
+                                              (apply ('page *tags*) 'page body))))
+                             ~args)))
       (throw (RuntimeException. "No render-state form provided")))))
 
 ;;;

@@ -11,7 +11,7 @@
 ;; Implements the om.core/IRenderState protocol. Expects f as its constructor
 ;; first parameter. f must be a function which expects a state map and
 ;; returns the body to be used in the render-state function.
-(defrecord Page [f]
+(defrecord Component [f]
   om/IRenderState
   (render-state [_ state]
     (f state)))
