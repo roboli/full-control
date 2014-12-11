@@ -17,11 +17,3 @@
                                         (map expander)
                                         doall
                                         ((apply comp (reverse transformers))))))))
-
-(defn- process-children [{:keys [attrs-parser expander]} tag & body]
-  (let [[attrs body] (attrs-parser body)]
-    (binding [*attrs* (merge *attrs* attrs)]
-      (let [body (doall (map expander body))]
-        (if attrs
-          (list* tag attrs body)
-          (list* tag body))))))

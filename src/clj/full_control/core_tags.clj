@@ -14,10 +14,7 @@
 (def ^:private general-layout-tags (conj general-tags 'row 'panel 'navpanel))
 
 (def ^:private tags
-  {'unknown      (partial process-children {:attrs-parser parse-m
-                                            :expander (expand-tags-with-all)})
-
-   ;; General
+  {;; General
    'page         (partial process-control {:symbol-fn (return `page*)
                                            :attrs-parser parse-attrs
                                            :expander (expand-tags-with

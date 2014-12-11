@@ -32,7 +32,7 @@
       (-> *tags*
           (select-keys (or available (set (keys *tags*))))
           (clojure.set/rename-keys aliases)
-          (#(or (f % tag) (f *tags* 'unknown)))
+          (#(or (f % tag) (fn [& _] form)))
           (apply tag body))
       form)))
 
