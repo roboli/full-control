@@ -10,7 +10,7 @@
 (load "core_tags")
 
 ;;;
-;;; Page macro and fns
+;;; Components
 ;;;
 
 (defn- parse-render-state
@@ -23,11 +23,11 @@
     (if (seq xs)
       [(first xs) (rest xs)])))
 
-(defmacro defpage
+(defn- component
   "Defines a function which returns an instance of full-control.core/Component record.
   The Component record implements the om.core/IRenderState protocol. See the Component
   record definition in the cljs full-control.core namespace for further explanation."
-  [name args & body]
+  [tag name args body]
   {:pre [(and (symbol? name)
               (vector? args))]}
   (let [[params body :as render-state] (parse-render-state body)]
@@ -35,9 +35,17 @@
       `(defn ~name ~args
          (->Component (apply (fn ~args
                                (fn ~params ~(binding [*tags* tags]
-                                              (apply ('page *tags*) 'page body))))
+                                              (apply (tag *tags*) tag body))))
                              ~args)))
       (throw (RuntimeException. "No render-state form provided")))))
+
+(defmacro defpage
+  [name args & body]
+  (component 'page name args body))
+
+(defmacro defpanel
+  [name args & body]
+  (component 'panel name args body))
 
 ;;;
 ;;; Layout
