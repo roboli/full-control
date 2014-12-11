@@ -17,3 +17,10 @@
                                         (map expander)
                                         doall
                                         ((apply comp (reverse transformers))))))))
+
+(defn- process-with-controls [{:keys [expander]} _ body]
+  (let [symbol (first body)
+        attrs (first (rest body))
+        body (rest (rest body))]
+    (binding [*attrs* (merge *attrs* attrs)]
+      (list* symbol attrs (doall (map expander body))))))

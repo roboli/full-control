@@ -25,11 +25,12 @@
                           (p (:panel-text cursor))
                           (stretch
                            (h4 "This is it!!"))))
-                  (fc/column-3* {:size :md}
-                   (navpanel (header (title1 "Mnu"))
-                             (link {:href "#"
-                                    :on-click (fn [_] (js/alert "Uno!"))} "Uno")
-                             (link "Dos")))))))
+                  (with-controls
+                    (fc/column-3* {:size :md}
+                                  (navpanel (header (title1 "Mnu"))
+                                            (link {:href "#"
+                                                   :on-click (fn [_] (js/alert "Uno!"))} "Uno")
+                                            (link "Dos"))))))))
 
 (fc/root page app-state {:target (. js/document (getElementById "app"))
                          :state {:texto "Hey you, hey me..."}})
