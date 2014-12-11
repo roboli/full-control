@@ -19,6 +19,10 @@
 (defn root [f value options]
   (om/root f value options))
 
+(defn build
+  ([f x] (om/build f x))
+  ([f x m] (om/build f x m)))
+
 (defn page* [attrs & body]
   {:pre [(map? attrs)]}
   (apply om.dom/div nil body))
