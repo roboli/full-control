@@ -24,4 +24,12 @@
                                     :output-to "examples/one-page/app.js"
                                     :output-dir "examples/one-page/out"
                                     :source-map "examples/one-page/app.js.map"
+                                    :optimizations :none}}
+
+                        {:id "master-page"
+                         :source-paths ["src/cljs" "examples/master-page/src"]
+                         :compiler {
+                                    :output-to "examples/master-page/app.js"
+                                    :output-dir "examples/master-page/out"
+                                    :source-map "examples/master-page/app.js.map"
                                     :optimizations :none}}]})
