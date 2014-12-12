@@ -24,3 +24,10 @@
         body (rest (rest body))]
     (binding [*attrs* (merge *attrs* attrs)]
       (list* symbol attrs (doall (map expander body))))))
+
+(defn- process-grid [{:keys [attrs-parser expander]} _ & body]
+  (let [[attrs [[_ [name coll] & body]]] (attrs-parser body)]
+    (binding [*attrs* (merge *attrs* attrs)]
+      `(apply grid* ~attrs (for [~name ~coll]
+                             (tr* {}
+                                  (td* {} ~@(doall (map expander body)))))))))

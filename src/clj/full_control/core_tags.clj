@@ -10,7 +10,7 @@
 (defn- tag->qualilified-symbol [tag]
   `~(symbol (str "full-control.core/" (name tag) "*")))
 
-(def ^:private general-tags #{'with-controls 'p 'button 'h})
+(def ^:private general-tags #{'with-controls 'p 'button 'h 'grid})
 (def ^:private general-layout-tags (conj general-tags 'row 'panel 'navpanel))
 
 (def ^:private tags
@@ -128,4 +128,11 @@
    'link               (partial process-control {:symbol-fn (return `navpanel-link*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity
-                                                 :transformers []})})
+                                                 :transformers []})
+
+   ;; Grid
+   'grid               (partial process-grid {:attrs-parser parse-attrs
+                                              :expander (expand-tags-with
+                                                         :available (conj
+                                                                     general-tags
+                                                                     'row))})})

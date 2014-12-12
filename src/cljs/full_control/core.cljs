@@ -255,3 +255,21 @@
   {:pre [(map? attrs)]}
   (apply h5* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
          body))
+
+;;;
+;;; Tables
+;;;
+
+(defn tr* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply dom/tr nil body))
+
+(defn td* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply dom/td nil body))
+
+(defn grid* [attrs & body]
+  (dom/table #js {:className (str/join " " ["table"
+                                            (if (:borders attrs) "table-bordered")
+                                            (if (:striped attrs) "table-striped")])}
+             (apply dom/tbody nil body)))
