@@ -1,5 +1,5 @@
 (ns master-page.core
-  (:require [full-control.core :as fc :refer-macros [defpage defpanel]]))
+  (:require [full-control.core :as fc :refer-macros [defpage defpanel defnavpanel]]))
 
 (enable-console-print!)
 
@@ -20,6 +20,13 @@
                 (header (title3 (:panel-2-title cursor)))
                 (p (:panel-2-text cursor))))
 
+(defnavpanel navpanel [cursor owner opts]
+  (render-state [st]
+                (header (title1 (:navpanel-title cursor)))
+                (link {:href "#"
+                       :on-click (fn [_] (js/alert "Clicked!"))} (get-in opts [:menu :one]))
+                (link (get-in opts [:menu :two]))))
+
 (defpage page [cursor owner opts]
   (render-state [st]
                 (navbar (brand {:href "#"
@@ -38,12 +45,10 @@
                      (fc/build panel-1 cursor)))
                    (row
                     (column-12
-                     (fc/build panel-2 cursor ))))
+                     (fc/build panel-2 cursor))))
                   (column-3
-                   (navpanel (header (title1 (:navpanel-title cursor)))
-                             (link {:href "#"
-                                    :on-click (fn [_] (js/alert "Uno!"))} "Uno")
-                             (link "Dos")))))))
+                   (fc/build navpanel cursor {:opts {:menu {:one "One"
+                                                            :two "Two"}}}))))))
 
 (fc/root page app-state {:target (. js/document (getElementById "app"))
                          :state {:texto "Hey you, hey me..."}})

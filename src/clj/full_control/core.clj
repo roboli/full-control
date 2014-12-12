@@ -39,13 +39,15 @@
                              ~args)))
       (throw (RuntimeException. "No render-state form provided")))))
 
-(defmacro defpage
-  [name args & body]
-  (component 'page name args body))
+(defn- gen-com-mcr [tag]
+  `(defmacro ~(symbol (str "def" (name tag))) [name# args# & body#]
+     (component '~tag name# args# body#)))
 
-(defmacro defpanel
-  [name args & body]
-  (component 'panel name args body))
+(defmacro gen-coms-mcrs [& {:keys [tags] :or {tags tags}}]
+  (cons `do
+        (map gen-com-mcr (keys tags))))
+
+(gen-coms-mcrs)
 
 ;;;
 ;;; Layout
