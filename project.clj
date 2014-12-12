@@ -10,15 +10,7 @@
 
   :source-paths ["src/clj" "src/cljs"]
 
-  :cljsbuild  {:builds [{:id "full-control"
-                         :source-paths ["src/cljs"]
-                         :compiler {
-                                    :output-to "full_control.js"
-                                    :output-dir "out"
-                                    :optimizations :none
-                                    :source-map true}}
-                        
-                        ; examples
+  :cljsbuild  {:builds [; examples
                         {:id "one-page"
                          :source-paths ["src/cljs" "examples/one-page/src"]
                          :compiler {
