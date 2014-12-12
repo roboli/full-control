@@ -1,5 +1,6 @@
 (defproject full-control "0.1.0-SNAPSHOT"
-  :description "A clojurescript Web UI DSL based on Om and Bootstrap."
+  :description "Description temporarily unavailable."
+  :url "unavailable"
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2371"]
