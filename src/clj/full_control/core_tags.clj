@@ -10,7 +10,7 @@
 (defn- tag->qualilified-symbol [tag]
   `~(symbol (str "full-control.core/" (name tag) "*")))
 
-(def ^:private general-tags #{'with-controls 'p 'button 'h 'grid})
+(def ^:private general-tags #{'with-controls 'p 'button 'h 'grid 'table})
 (def ^:private general-layout-tags (conj general-tags 'row 'panel 'navpanel))
 
 (def ^:private tags
@@ -130,9 +130,33 @@
                                                  :expander identity
                                                  :transformers []})
 
-   ;; Grid
+   ;; Tables
    'grid               (partial process-grid {:attrs-parser parse-attrs
                                               :expander (expand-tags-with
                                                          :available (conj
                                                                      general-tags
-                                                                     'row))})})
+                                                                     'row))})
+
+   'table              (partial process-control {:symbol-fn (return `table*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-tags-with
+                                                            :available #{'thead 'tbody})})
+
+   'thead              (partial process-control {:symbol-fn (return `thead*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-tags-with
+                                                            :available #{'th})})
+
+   'th                 (partial process-control {:symbol-fn (return `th*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-tags-with
+                                                            :available general-tags)})
+
+   'tbody              (partial process-tbody {:attrs-parser parse-attrs
+                                               :expander (expand-tags-with
+                                                          :attrs-parser #{'td})})
+
+   'td                 (partial process-control {:symbol-fn (return `td*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-tags-with
+                                                            :available general-tags)})})

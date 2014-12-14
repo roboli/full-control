@@ -31,3 +31,9 @@
       `(apply grid* ~attrs (for [~name ~coll]
                              (tr* {}
                                   (td* {} ~@(doall (map expander body)))))))))
+
+(defn- process-tbody [{:keys [attrs-parser expander]} _ & body]
+  (let [[attrs [[_ [name coll] & body]]] (attrs-parser body)]
+    (binding [*attrs* (merge *attrs* attrs)]
+      `(apply tbody* ~attrs (for [~name ~coll]
+                              (tr* {} ~@(doall (map expander body))))))))
