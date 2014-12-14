@@ -25,4 +25,12 @@
                                     :output-to "examples/master-page/app.js"
                                     :output-dir "examples/master-page/out"
                                     :source-map "examples/master-page/app.js.map"
+                                    :optimizations :none}}
+
+                        {:id "grids-tables"
+                         :source-paths ["src/cljs" "examples/grids-tables/src"]
+                         :compiler {
+                                    :output-to "examples/grids-tables/app.js"
+                                    :output-dir "examples/grids-tables/out"
+                                    :source-map "examples/grids-tables/app.js.map"
                                     :optimizations :none}}]})
