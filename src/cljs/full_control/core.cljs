@@ -277,6 +277,7 @@
   (apply dom/tbody nil body))
 
 (defn grid* [attrs & body]
+  {:pre [(map? attrs)]}
   (dom/table #js {:className (str/join " " ["table"
                                             (if (:borders attrs) "table-bordered")
                                             (if (:striped attrs) "table-striped")])}
