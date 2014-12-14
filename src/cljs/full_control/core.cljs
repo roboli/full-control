@@ -272,11 +272,15 @@
   {:pre [(map? attrs)]}
   (apply dom/td nil body))
 
+(defn tbody* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply dom/tbody nil body))
+
 (defn grid* [attrs & body]
   (dom/table #js {:className (str/join " " ["table"
                                             (if (:borders attrs) "table-bordered")
                                             (if (:striped attrs) "table-striped")])}
-             (apply dom/tbody nil body)))
+             (apply tbody* attrs body)))
 
 (defn table* [attrs & body]
   {:pre [(map? attrs)]}
@@ -285,7 +289,3 @@
 (defn thead* [attrs & body]
   {:pre [(map? attrs)]}
   (apply dom/thead nil body))
-
-(defn tbody* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/tbody nil body))
