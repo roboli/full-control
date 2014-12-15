@@ -24,36 +24,30 @@
                                                                         general-layout-tags
                                                                         'navbar
                                                                         'fixed-layout
-                                                                        'fluid-layout))
-                                                 :transformers []})
+                                                                        'fluid-layout))})
 
    'p                  (partial process-control {:symbol-fn (return `p*)
                                                  :attrs-parser parse-attrs
-                                                 :expander identity
-                                                 :transformers []})
+                                                 :expander identity})
    
    'button             (partial process-control {:symbol-fn (return `button*)
                                                  :attrs-parser parse-attrs
-                                                 :expander identity
-                                                 :transformers []})
+                                                 :expander identity})
 
    'h                  (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
-                                                 :expander identity
-                                                 :transformers []})
+                                                 :expander identity})
 
    ;; Layout
    'fixed-layout       (partial process-control {:symbol-fn (return `fixed-layout*)
                                                  :attrs-parser parse-layout-attrs
                                                  :expander (expand-tags-with
-                                                            :available general-layout-tags)
-                                                 :transformers []})
+                                                            :available general-layout-tags)})
    
    'fluid-layout       (partial process-control {:symbol-fn (return `fluid-layout*)
                                                  :attrs-parser parse-layout-attrs
                                                  :expander (expand-tags-with
-                                                            :available general-layout-tags)
-                                                 :transformers []})
+                                                            :available general-layout-tags)})
    
    'row                (partial process-control {:symbol-fn (return `row*)
                                                  :attrs-parser parse-attrs
@@ -61,14 +55,12 @@
                                                             :available (conj
                                                                         general-tags
                                                                         'row
-                                                                        'column-))
-                                                 :transformers []})
+                                                                        'column-))})
    
    'column-            (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-column-attrs
                                                  :expander (expand-tags-with
-                                                            :available general-layout-tags)
-                                                 :transformers []})
+                                                            :available general-layout-tags)})
 
    ;; Navbar
    'navbar             (partial process-control {:symbol-fn (return `navbar*)
@@ -81,13 +73,11 @@
 
    'brand              (partial process-control {:symbol-fn (return `brand*)
                                                  :attrs-parser parse-attrs
-                                                 :expander identity
-                                                 :transformers []})
+                                                 :expander identity})
    
    'button-h           (partial process-control {:symbol-fn (return `navbar-button*)
                                                  :attrs-parser parse-attrs
-                                                 :expander identity
-                                                 :transformers []})
+                                                 :expander identity})
 
    ;; Panels
    'panel              (partial process-control {:symbol-fn (return `panel*)
@@ -97,38 +87,32 @@
                                                                         general-tags
                                                                         'header
                                                                         'row
-                                                                        'stretch))
-                                                 :transformers []})
+                                                                        'stretch))})
 
    'header             (partial process-control {:symbol-fn (return `panel-header*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-panel-header-tags-with
-                                                            :available #{'title})
-                                                 :transformers []})
+                                                            :available #{'title})})
 
    'navpanel           (partial process-control {:symbol-fn (return `navpanel*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
-                                                            :available #{'header 'link})
-                                                 :transformers []})
+                                                            :available #{'header 'link})})
 
    'title              (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
-                                                 :expander identity
-                                                 :transformers []})
+                                                 :expander identity})
    
    'stretch            (partial process-control {:symbol-fn (return `stretch*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
                                                             :available (conj
                                                                         general-tags
-                                                                        'row))
-                                                 :transformers []})
+                                                                        'row))})
 
    'link               (partial process-control {:symbol-fn (return `navpanel-link*)
                                                  :attrs-parser parse-attrs
-                                                 :expander identity
-                                                 :transformers []})
+                                                 :expander identity})
 
    ;; Tables
    'grid               (partial process-grid {:attrs-parser parse-attrs
