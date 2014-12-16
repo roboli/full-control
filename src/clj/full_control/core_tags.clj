@@ -10,10 +10,18 @@
 (defn- tag->qualilified-symbol [tag]
   `~(symbol (str "full-control.core/" (name tag) "*")))
 
-(def ^:private general-tags #{'with-controls 'p 'button 'h 'grid 'table})
+(def ^:private general-tags (into #{'with-controls 'grid 'table} dom/tags))
 (def ^:private general-layout-tags (conj general-tags 'row 'panel 'navpanel))
 
-(def ^:private tags
+(def ^:private dom-tags
+  (reduce #(assoc %1
+             %2 (partial process-control {:symbol-fn tag->qualilified-symbol
+                                          :attrs-parser parse-attrs
+                                          :expander identity}))
+          {}
+          dom/tags))
+
+(def ^:private com-tags
   {'with-controls      (partial process-with-controls {:expander (expand-tags-with-all)})
 
    ;; General
@@ -25,18 +33,6 @@
                                                                         'navbar
                                                                         'fixed-layout
                                                                         'fluid-layout))})
-
-   'p                  (partial process-control {:symbol-fn (return `p*)
-                                                 :attrs-parser parse-attrs
-                                                 :expander identity})
-   
-   'button             (partial process-control {:symbol-fn (return `button*)
-                                                 :attrs-parser parse-attrs
-                                                 :expander identity})
-
-   'h                  (partial process-control {:symbol-fn tag->qualilified-symbol
-                                                 :attrs-parser parse-attrs
-                                                 :expander identity})
 
    ;; Layout
    'fixed-layout       (partial process-control {:symbol-fn (return `fixed-layout*)
@@ -144,3 +140,5 @@
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
                                                             :available general-tags)})})
+
+(def tags (merge dom-tags com-tags))

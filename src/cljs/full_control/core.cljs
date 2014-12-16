@@ -1,5 +1,5 @@
 (ns full-control.core
-  (:require-macros [full-control.core :refer [defcolumn]])
+  (:require-macros [full-control.core :refer [defcolumn gen-dom-fns]])
   (:require [clojure.string :as str]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
@@ -78,11 +78,8 @@
 ;;; General controls
 ;;;
 
-(defn p*
-  "Attribute available in the attrs map is :class-names."
-  [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/p #js {:className (:class-names attrs)} body))
+;; All om.dom/tags
+(gen-dom-fns)
 
 (defn button*
   "Attributes available in the attrs map are :class-names, :on-click."
@@ -91,26 +88,6 @@
   (apply dom/button #js {:type "button"
                          :className (str "btn btn-default " (:class-names attrs))
                          :onClick (:on-click attrs)} body))
-
-(defn h1* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/h1 #js {:className (:class-names attrs)} body))
-
-(defn h2* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/h2 #js {:className (:class-names attrs)} body))
-
-(defn h3* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/h3 #js {:className (:class-names attrs)} body))
-
-(defn h4* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/h4 #js {:className (:class-names attrs)} body))
-
-(defn h5* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/h5 #js {:className (:class-names attrs)} body))
 
 ;;;
 ;;; navbar

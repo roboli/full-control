@@ -1,4 +1,5 @@
-(ns full-control.core)
+(ns full-control.core
+  (:require [om.dom :as dom]))
 
 (def ^{:dynamic true :private true} *attrs* nil)
 (def ^{:dynamic true :private true} *tags* nil)
@@ -43,11 +44,21 @@
   `(defmacro ~(symbol (str "def" (name tag))) [name# args# & body#]
      (component '~tag name# args# body#)))
 
-(defmacro gen-coms-mcrs [& {:keys [tags] :or {tags tags}}]
+(defmacro gen-coms-mcrs [& {:keys [tags] :or {tags com-tags}}]
   (cons `do
         (map gen-com-mcr (keys tags))))
 
 (gen-coms-mcrs)
+
+(defn gen-dom-fn [tag]
+  (let [t (symbol (str (name tag) "*"))]
+    `(defn ~t [attrs# & body#]
+       {:pre [(map? attrs#)]}
+       (apply ~(symbol (str "om.dom/" tag)) (cljs.core/clj->js attrs#) body#))))
+
+(defmacro gen-dom-fns []
+  (cons `do
+        (map gen-dom-fn dom/tags)))
 
 ;;;
 ;;; Layout
