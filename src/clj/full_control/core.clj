@@ -54,7 +54,9 @@
   (let [t (symbol (str (name tag) "*"))]
     `(defn ~t [attrs# & body#]
        {:pre [(map? attrs#)]}
-       (apply ~(symbol (str "om.dom/" tag)) (cljs.core/clj->js attrs#) body#))))
+       (apply ~(symbol (str "om.dom/" tag))
+              (cljs.core/clj->js (full-control.utils/normalize-attrs attrs#))
+              body#))))
 
 (defmacro gen-dom-fns []
   (cons `do

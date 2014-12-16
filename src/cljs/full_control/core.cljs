@@ -2,7 +2,8 @@
   (:require-macros [full-control.core :refer [defcolumn gen-dom-fns]])
   (:require [clojure.string :as str]
             [om.core :as om :include-macros true]
-            [om.dom :as dom :include-macros true]))
+            [om.dom :as dom :include-macros true]
+            [full-control.utils]))
 
 ;;;
 ;;; Page record and fns
@@ -82,11 +83,11 @@
 (gen-dom-fns)
 
 (defn button*
-  "Attributes available in the attrs map are :class-names, :on-click."
+  "Attributes available in the attrs map are :class-name, :on-click."
   [attrs & body]
   {:pre [(map? attrs)]}
   (apply dom/button #js {:type "button"
-                         :className (str "btn btn-default " (:class-names attrs))
+                         :className (str "btn btn-default " (:class-name attrs))
                          :onClick (:on-click attrs)} body))
 
 ;;;
@@ -99,13 +100,13 @@
 
 (defn brand* [attrs & body]
   {:pre [(map? attrs)]}
-  {:brand {:class-names (:class-names attrs)
+  {:brand {:class-name (:class-name attrs)
            :href (:href attrs)
            :on-click (:on-click attrs)
            :body body}})
 
 (defn navbar*
-  "Retuns bootstrap's navbar. Attributes available in the attrs map are :class-names."
+  "Retuns bootstrap's navbar. Attributes available in the attrs map are :class-name."
   [attrs & body]
   {:pre [(map? attrs)]}
   (dom/nav #js {:className "navbar navbar-default navbar-static-top"
@@ -124,12 +125,12 @@
                                               first
                                               :brand)]
                                (apply dom/a #js {:className (str "navbar-brand "
-                                                                 (:class-names brand))
+                                                                 (:class-name brand))
                                                  :href (:href brand)
                                                  :onClick (:on-click brand)}
                                       (:body brand))))
                     (apply dom/div #js {:id "navbar-collapse-items"
-                                        :className (str "collapse navbar-collapse " (:class-names attrs))}
+                                        :className (str "collapse navbar-collapse " (:class-name attrs))}
                            (remove :brand body)))))
 
 (defn links-group
@@ -156,9 +157,9 @@
   [attrs & body]
   {:pre [(map? attrs)]}
   (apply button* (assoc attrs
-                   :class-names (str "navbar-btn "
-                                     (get float-class (:float attrs))
-                                     " " (:class-names attrs))
+                   :class-name (str "navbar-btn "
+                                    (get float-class (:float attrs))
+                                    " " (:class-name attrs))
                    :on-click (:on-click attrs)) body))
 
 ;;;
@@ -167,7 +168,7 @@
 
 (defn panel-header* [attrs & body]
   {:pre [(map? attrs)]}
-  {:header {:class-names (:class-names attrs)
+  {:header {:class-name (:class-name attrs)
             :body body}})
 
 (defn stretch* [attrs & body]
@@ -181,7 +182,7 @@
                              (filter :header)
                              first
                              :header)]
-             (apply dom/div #js {:className (str "panel-heading " (:class-names header))}
+             (apply dom/div #js {:className (str "panel-heading " (:class-name header))}
                     (:body header)))
            (if-not (and (= (count body) 1) (:stretch (first body)))
              (apply dom/div #js {:className "panel-body"} (remove (some-fn :header :stretch) body)))
@@ -197,7 +198,7 @@
                              (filter :header)
                              first
                              :header)]
-             (apply dom/div #js {:className (str "panel-heading" (:class-names header))}
+             (apply dom/div #js {:className (str "panel-heading" (:class-name header))}
                     (:body header)))
            (dom/div #js {:className "panel-body"}
                     (apply dom/div #js {:className "list-group"} (remove :header body)))))
@@ -210,27 +211,27 @@
 
 (defn title1* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply h1* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
+  (apply h1* (assoc attrs :class-name (str "panel-title " (:class-name attrs)))
          body))
 
 (defn title2* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply h2* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
+  (apply h2* (assoc attrs :class-name (str "panel-title " (:class-name attrs)))
          body))
 
 (defn title3* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply h3* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
+  (apply h3* (assoc attrs :class-name (str "panel-title " (:class-name attrs)))
          body))
 
 (defn title4* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply h4* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
+  (apply h4* (assoc attrs :class-name (str "panel-title " (:class-name attrs)))
          body))
 
 (defn title5* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply h5* (assoc attrs :class-names (str "panel-title " (:class-names attrs)))
+  (apply h5* (assoc attrs :class-name (str "panel-title " (:class-name attrs)))
          body))
 
 ;;;
