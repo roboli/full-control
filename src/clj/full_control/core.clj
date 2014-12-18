@@ -14,11 +14,9 @@
 ;;; Components
 ;;;
 
-(defn- parse-render-state
-  "Find and transform the render-state form inside the page's body."
-  [body]
+(defn- parse-protocol-fns [fn-symbol body]
   (let [xs (->> body
-                (filter #(= (first %) 'render-state))
+                (filter #(= (first %) fn-symbol))
                 first
                 rest)]
     (if (seq xs)
@@ -31,13 +29,18 @@
   [tag name args body]
   {:pre [(and (symbol? name)
               (vector? args))]}
-  (let [[params body :as render-state] (parse-render-state body)]
+  (let [[_ wbody :as will-mount] (parse-protocol-fns 'will-mount body)
+        [rparams rbody :as render-state] (parse-protocol-fns 'render-state body)]
     (if render-state
       `(defn ~name ~args
-         (->Component (apply (fn ~args
-                               (fn ~params ~(binding [*tags* tags]
-                                              (apply (tag *tags*) tag body))))
-                             ~args)))
+         (->Component
+          {:will-mount-fn (apply (fn ~args
+                                   (fn [] ~@(or wbody [])))
+                                 ~args)
+           :render-state-fn (apply (fn ~args
+                                     (fn ~rparams ~(binding [*tags* tags]
+                                                     (apply (tag *tags*) tag rbody))))
+                                   ~args)}))
       (throw (RuntimeException. "No render-state form provided")))))
 
 (defn- gen-com-mcr [tag]

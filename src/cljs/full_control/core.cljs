@@ -9,13 +9,17 @@
 ;;; Page record and fns
 ;;;
 
-;; Implements the om.core/IRenderState protocol. Expects f as its constructor
-;; first parameter. f must be a function which expects a state map and
-;; returns the body to be used in the render-state function.
-(defrecord Component [f]
+;; Implements the om.core/IRenderState protocol. Expects m as its constructor
+;; parameter. m must be a map with functions as values which returns the body
+;; to be used in the protocol's functions.
+(defrecord Component [m]
+  om/IWillMount
+  (will-mount [_]
+    ((:will-mount-fn m)))
+
   om/IRenderState
   (render-state [_ state]
-    (f state)))
+    ((:render-state-fn m) state)))
 
 (defn root [f value options]
   (om/root f value options))
