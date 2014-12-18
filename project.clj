@@ -4,8 +4,10 @@
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2371"]
+                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [om "0.7.3"]
-                 [camel-snake-kebab "0.2.5"]]
+                 [camel-snake-kebab "0.2.5"]
+                 [jayq "2.5.2"]]
 
   :plugins [[lein-cljsbuild "1.0.4-SNAPSHOT"]]
 
@@ -31,8 +33,16 @@
                          :compiler {:output-dir "examples/grids-tables/out"
                                     :output-to "examples/grids-tables/out/app.js"
                                     :source-map "examples/grids-tables/out/app.js.map"
+                                    :optimizations :none}}
+
+                        {:id "modals"
+                         :source-paths ["src/cljs" "examples/modals/src"]
+                         :compiler {:output-dir "examples/modals/out"
+                                    :output-to "examples/modals/out/app.js"
+                                    :source-map "examples/modals/out/app.js.map"
                                     :optimizations :none}}]}
 
   :clean-targets ["examples/one-page/out"
                   "examples/master-page/out"
-                  "examples/grids-tables/out"])
+                  "examples/grids-tables/out"
+                  "examples/modals/out"])

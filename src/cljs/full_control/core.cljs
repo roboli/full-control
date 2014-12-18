@@ -280,3 +280,38 @@
 (defn thead* [attrs & body]
   {:pre [(map? attrs)]}
   (apply dom/thead nil body))
+
+;;;
+;;; Modals
+;;;
+
+(defn modal-header* [attrs & body]
+  {:pre [(map? attrs)]}
+  {:header {:class-name (:class-name attrs)
+            :body body}})
+
+(defn modal-footer* [attrs & body]
+  {:pre [(map? attrs)]}
+  {:footer {:class-name (:class-name attrs)
+            :body body}})
+
+(defn modal* [attrs & body]
+  {:pre [(map? attrs)]}
+  (dom/div #js {:id (:id attrs)
+                :className "modal fade"
+                :role "modal"}
+           (dom/div #js {:className "modal-dialog"}
+                    (dom/div #js {:className "modal-content"}
+                             (let [header (->> body
+                                               (filter :header)
+                                               first
+                                               :header)]
+                               (apply dom/div #js {:className (str "modal-header " (:class-name header))}
+                                      (:body header)))
+                             (apply dom/div #js {:className "modal-body"} (remove (some-fn :header :footer) body))
+                             (let [footer (->> body
+                                               (filter :footer)
+                                               first
+                                               :footer)]
+                               (apply dom/div #js {:className (str "modal-footer " (:class-name footer))}
+                                      (:body footer)))))))
