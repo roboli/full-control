@@ -29,12 +29,16 @@
   [tag name args body]
   {:pre [(and (symbol? name)
               (vector? args))]}
-  (let [[_ wbody :as will-mount] (parse-protocol-fns 'will-mount body)
+  (let [[_ ibody :as init-state] (parse-protocol-fns 'init-state body) 
+        [_ wbody :as will-mount] (parse-protocol-fns 'will-mount body)
         [rparams rbody :as render-state] (parse-protocol-fns 'render-state body)]
     (if render-state
       `(defn ~name ~args
          (->Component
-          {:will-mount-fn (apply (fn ~args
+          {:init-state-fn (apply (fn ~args
+                                   (fn [] ~@(or ibody {})))
+                                 ~args)
+           :will-mount-fn (apply (fn ~args
                                    (fn [] ~@(or wbody [])))
                                  ~args)
            :render-state-fn (apply (fn ~args

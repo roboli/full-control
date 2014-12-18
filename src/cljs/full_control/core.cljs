@@ -13,6 +13,10 @@
 ;; parameter. m must be a map with functions as values which returns the body
 ;; to be used in the protocol's functions.
 (defrecord Component [m]
+  om/IInitState
+  (init-state [_]
+    ((:init-state-fn m)))
+
   om/IWillMount
   (will-mount [_]
     ((:will-mount-fn m)))
@@ -27,6 +31,10 @@
 (defn build
   ([f x] (om/build f x))
   ([f x m] (om/build f x m)))
+
+(defn get-state
+  ([owner] (om/get-state owner))
+  ([owner korks] (om/get-state owner korks)))
 
 (defn page* [attrs & body]
   {:pre [(map? attrs)]}
