@@ -81,11 +81,12 @@
                                                  :expander (expand-tags-with
                                                             :available (conj
                                                                         general-tags
-                                                                        'header
+                                                                        'panel-header
                                                                         'row
-                                                                        'stretch))})
+                                                                        'stretch)
+                                                            :aliases {'panel-header 'header})})
 
-   'header             (partial process-control {:symbol-fn (return `panel-header*)
+   'panel-header       (partial process-control {:symbol-fn (return `panel-header*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-panel-header-tags-with
                                                             :available #{'title})})
@@ -93,7 +94,8 @@
    'navpanel           (partial process-control {:symbol-fn (return `navpanel*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
-                                                            :available #{'header 'link})})
+                                                            :available #{'panel-header 'link}
+                                                            :aliases {'panel-header 'header})})
 
    'title              (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
