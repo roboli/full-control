@@ -10,7 +10,7 @@
 (defn- tag->qualilified-symbol [tag]
   `~(symbol (str "full-control.core/" (name tag) "*")))
 
-(def ^:private general-tags (into #{'with-controls 'grid 'table} dom/tags))
+(def ^:private general-tags (into #{'with-controls 'grid 'table 'modal} dom/tags))
 (def ^:private general-layout-tags (conj general-tags 'row 'panel 'navpanel))
 
 (def ^:private dom-tags
@@ -139,6 +139,27 @@
                                                           :attrs-parser #{'td})})
 
    'td                 (partial process-control {:symbol-fn (return `td*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-tags-with
+                                                            :available general-tags)})
+
+   ;; Modals
+   'modal              (partial process-control {:symbol-fn (return `modal*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-tags-with
+                                                            :available (conj
+                                                                        general-tags
+                                                                        'modal-header
+                                                                        'modal-footer)
+                                                            :aliases {'modal-header 'header
+                                                                      'modal-footer 'footer})})
+
+   'modal-header       (partial process-control {:symbol-fn (return `modal-header*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-panel-header-tags-with
+                                                            :available #{'title})})
+
+   'modal-footer       (partial process-control {:symbol-fn (return `modal-footer*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
                                                             :available general-tags)})})
