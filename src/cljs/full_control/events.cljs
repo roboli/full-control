@@ -25,10 +25,10 @@
 (defn modal-show [tag]
   {topic-key tag :show true})
 
-(defn modal-display [k]
+(defn modal-display [id]
   (fn [data]
     (if (:show data)
-      (-> ($ (str "#" (name k)))
+      (-> ($ (str "#" id))
           (.modal #js {:backdrop "static"}))
-      (-> ($ (str "#" (name k)))
+      (-> ($ (str "#" id))
           (.modal "hide")))))
