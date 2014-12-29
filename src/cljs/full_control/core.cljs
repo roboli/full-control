@@ -36,6 +36,13 @@
   ([owner] (om/get-state owner))
   ([owner korks] (om/get-state owner korks)))
 
+(defn set-state! [owner korks v]
+  (om/set-state! owner korks v))
+
+(defn update-state!
+  ([owner f] (om/update-state! owner f))
+  ([owner korks f] (om/update-state! owner korks f)))
+
 (defn page* [attrs & body]
   {:pre [(map? attrs)]}
   (apply om.dom/div nil body))
