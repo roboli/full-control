@@ -43,6 +43,16 @@
   ([owner f] (om/update-state! owner f))
   ([owner korks f] (om/update-state! owner korks f)))
 
+(defn transact!
+  ([cursor f] (om/transact! cursor f))
+  ([cursor korks f] (om/transact! cursor korks f))
+  ([cursor korks f tag] (om/transact! cursor korks f tag)))
+
+(defn update!
+  ([cursor v] (om/update! cursor v))
+  ([cursor korks v] (om/update! cursor korks v))
+  ([cursor korks v tag] (om/update! cursor korks v tag)))
+
 (defn page* [attrs & body]
   {:pre [(map? attrs)]}
   (apply om.dom/div nil body))
