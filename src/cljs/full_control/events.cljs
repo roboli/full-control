@@ -16,8 +16,7 @@
           (f (<! c))))))
 
 (defn emit [ch m]
-  (fn [& _]
-    (put! ch m)))
+  (put! ch m))
 
 (defn modal-hide [tag]
   {topic-key tag :show false})
