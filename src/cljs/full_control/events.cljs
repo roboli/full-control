@@ -15,8 +15,9 @@
     (go (while true
           (f (<! c))))))
 
-(defn emit [ch m]
-  (put! ch m))
+(defn emit [ch m & [f]]
+  (put! ch m)
+  (if f (f)))
 
 (defn modal-hide [tag]
   {topic-key tag :show false})
