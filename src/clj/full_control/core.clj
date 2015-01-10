@@ -67,7 +67,7 @@
 
 (defmacro gen-dom-fns []
   (cons `do
-        (map gen-dom-fn dom/tags)))
+        (map gen-dom-fn om-dom-tags)))
 
 ;;;
 ;;; Layout

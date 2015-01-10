@@ -4,13 +4,15 @@
 ;;; Tags
 ;;;
 
+(def ^:private om-dom-tags (into dom/tags '[input textarea option]))
+
 (defn return [x]
   (fn [_] x))
 
 (defn- tag->qualilified-symbol [tag]
   `~(symbol (str "full-control.core/" (name tag) "*")))
 
-(def ^:private general-tags (into #{'with-controls 'grid 'table 'modal} dom/tags))
+(def ^:private general-tags (into #{'with-controls 'grid 'table 'modal} om-dom-tags))
 (def ^:private general-layout-tags (conj general-tags 'row 'panel 'navpanel))
 
 (def ^:private dom-tags
@@ -19,7 +21,7 @@
                                           :attrs-parser parse-attrs
                                           :expander identity}))
           {}
-          dom/tags))
+          om-dom-tags))
 
 (def ^:private com-tags
   {'with-controls      (partial process-with-controls {:expander (expand-tags-with-all)})
