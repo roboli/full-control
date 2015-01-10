@@ -332,3 +332,21 @@
                                                :footer)]
                                (apply dom/div #js {:className (str "modal-footer " (:class-name footer))}
                                       (:body footer)))))))
+
+;;;
+;;; Forms
+;;;
+
+(defn text* [attrs & body]
+  {:pre [(map? attrs)]}
+  (dom/input #js {:type "text"
+                  :className "form-control"
+                  :value (first body)}))
+
+(defn form-group* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply dom/div #js {:className "form-group"} body))
+
+(defn form* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply dom/form #js {:className (:class-name attrs)} body))
