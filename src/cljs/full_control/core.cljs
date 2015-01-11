@@ -339,7 +339,8 @@
 
 (defn text* [attrs & body]
   {:pre [(map? attrs)]}
-  (dom/input #js {:type "text"
+  (dom/input #js {:id (:id attrs)
+                  :type "text"
                   :className "form-control"
                   :value (first body)}))
 
