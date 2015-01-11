@@ -124,7 +124,8 @@
   (dom/input #js {:id (:id attrs)
                   :type "text"
                   :className (:class-name attrs)
-                  :value (first body)}))
+                  :value (:value attrs)
+                  :onChange (:on-change attrs)} body))
 
 ;;;
 ;;; navbar
