@@ -348,6 +348,12 @@
 (defn form-text* [attrs & body]
   (apply text* (assoc attrs :class-name "form-control") body))
 
+(defn form-textarea* [attrs & body]
+  (apply dom/textarea #js {:id (:id attrs)
+                           :className "form-control"
+                           :value (:value attrs)
+                           :onChange (:on-change attrs)} body))
+
 (defn help* [attrs & body]
   {:pre [(map? attrs)]}
   (apply dom/span #js {:className "help-block"} body))
