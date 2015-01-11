@@ -343,6 +343,10 @@
                   :className "form-control"
                   :value (first body)}))
 
+(defn help* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply dom/span #js {:className "help-block"} body))
+
 (defn form-group* [attrs & body]
   {:pre [(map? attrs)]}
   (apply dom/div #js {:className "form-group"} body))
