@@ -119,6 +119,13 @@
                          :className (str "btn btn-default " (:class-name attrs))
                          :onClick (:on-click attrs)} body))
 
+(defn text* [attrs & body]
+  {:pre [(map? attrs)]}
+  (dom/input #js {:id (:id attrs)
+                  :type "text"
+                  :className (:class-name attrs)
+                  :value (first body)}))
+
 ;;;
 ;;; navbar
 ;;;
@@ -337,12 +344,8 @@
 ;;; Forms
 ;;;
 
-(defn text* [attrs & body]
-  {:pre [(map? attrs)]}
-  (dom/input #js {:id (:id attrs)
-                  :type "text"
-                  :className "form-control"
-                  :value (first body)}))
+(defn form-text* [attrs & body]
+  (apply text* (assoc attrs :class-name "form-control") body))
 
 (defn help* [attrs & body]
   {:pre [(map? attrs)]}
