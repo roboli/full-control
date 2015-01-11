@@ -40,9 +40,17 @@
                          :compiler {:output-dir "examples/modals/out"
                                     :output-to "examples/modals/out/app.js"
                                     :source-map "examples/modals/out/app.js.map"
+                                    :optimizations :none}}
+
+                        {:id "forms"
+                         :source-paths ["src/cljs" "examples/forms/src"]
+                         :compiler {:output-dir "examples/forms/out"
+                                    :output-to "examples/forms/out/app.js"
+                                    :source-map "examples/forms/out/app.js.map"
                                     :optimizations :none}}]}
 
   :clean-targets ["examples/one-page/out"
                   "examples/master-page/out"
                   "examples/grids-tables/out"
-                  "examples/modals/out"])
+                  "examples/modals/out"
+                  "examples/forms/out"])
