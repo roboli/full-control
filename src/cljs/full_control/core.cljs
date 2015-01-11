@@ -124,6 +124,7 @@
   (dom/input #js {:id (:id attrs)
                   :type "text"
                   :className (:class-name attrs)
+                  :maxLength (:max-length attrs)
                   :value (:value attrs)
                   :onChange (:on-change attrs)} body))
 
