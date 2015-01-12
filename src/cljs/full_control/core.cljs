@@ -125,6 +125,7 @@
                   :type "text"
                   :className (:class-name attrs)
                   :maxLength (:max-length attrs)
+                  :placeholder (:placeholder attrs)
                   :value (:value attrs)
                   :onChange (:on-change attrs)} body))
 
@@ -370,3 +371,7 @@
 (defn form-horizontal* [attrs & body]
   {:pre [(map? attrs)]}
   (apply form* (assoc attrs :class-name "form-horizontal") body))
+
+(defn form-inline* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply form* (assoc attrs :class-name "form-inline") body))
