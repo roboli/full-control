@@ -35,3 +35,15 @@
     (binding [*attrs* (merge *attrs* attrs)]
       `(apply tbody* ~attrs (for [~name ~coll]
                               (tr* {} ~@(doall (map expander body))))))))
+
+(defn- process-form [{:keys [attrs-parser expander]} _ & body]
+  (let [[attrs [[_ cursor & body]]] (attrs-parser body)]
+    (binding [*attrs* (merge *attrs* (assoc attrs :cursor cursor))]
+      (list* `form* attrs (doall (map expander body))))))
+
+(defn- process-form-label [{:keys [attrs-parser]} _ & body]
+  (let [[attrs body] (attrs-parser body)]
+    (binding [*attrs* (merge *attrs* attrs)]
+      (let [field-key (name (:field-key *attrs*))]
+        (list `label* (assoc attrs :html-for field-key)
+              (if-not (empty? body) body (clojure.string/capitalize field-key)))))))

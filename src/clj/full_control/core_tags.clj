@@ -12,7 +12,7 @@
 (defn- tag->qualilified-symbol [tag]
   `~(symbol (str "full-control.core/" (name tag) "*")))
 
-(def ^:private general-tags (into #{'with-controls 'grid 'table 'modal} om-dom-tags))
+(def ^:private general-tags (into #{'with-controls 'grid 'table 'modal 'form} om-dom-tags))
 (def ^:private general-layout-tags (conj general-tags 'row 'panel 'navpanel))
 
 (def ^:private dom-tags
@@ -58,7 +58,9 @@
    'column-            (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-column-attrs
                                                  :expander (expand-tags-with
-                                                            :available general-layout-tags)})
+                                                            :available (conj
+                                                                        general-layout-tags
+                                                                        'group-for))})
 
    ;; Navbar
    'navbar             (partial process-control {:symbol-fn (return `navbar*)
@@ -164,6 +166,21 @@
    'modal-footer       (partial process-control {:symbol-fn (return `modal-footer*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
-                                                            :available general-tags)})})
+                                                            :available general-tags)})
+
+   ;; Forms
+   'form               (partial process-form {:attrs-parser parse-attrs
+                                              :expander (expand-tags-with
+                                                         :available #{'row 'group-for})})
+
+   'group-for          (partial process-control {:symbol-fn (return `form-group*)
+                                                 :attrs-parser parse-group-for-attrs
+                                                 :expander (expand-tags-with
+                                                            :available (conj
+                                                                        general-tags
+                                                                        'form-label)
+                                                            :aliases {'form-label 'label})})
+
+   'form-label         (partial process-form-label {:attrs-parser parse-attrs})})
 
 (def tags (merge dom-tags com-tags))

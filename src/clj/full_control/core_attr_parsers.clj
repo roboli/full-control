@@ -20,3 +20,8 @@
 (defn- parse-column-attrs [body]
   (let [[attrs body] (parse-attrs body)]
     [(assoc attrs :size (:column-size *attrs*)) body]))
+
+(defn- parse-group-for-attrs [[m & b]]
+  (if (map? m)
+    [m b]
+    [{:field-key m} b]))
