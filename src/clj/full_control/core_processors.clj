@@ -46,7 +46,7 @@
     (binding [*attrs* (merge *attrs* attrs)]
       (let [field-key (name (:field-key *attrs*))]
         (list `label* (assoc attrs :html-for field-key)
-              (if-not (empty? body) body (clojure.string/capitalize field-key)))))))
+              (if-not (empty? body) (first body) (clojure.string/capitalize field-key)))))))
 
 (defn- process-form-text [{:keys [attrs-parser]} _ & body]
   (let [[attrs body] (attrs-parser body)]
