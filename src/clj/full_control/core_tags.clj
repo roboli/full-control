@@ -179,12 +179,17 @@
                                                             :available (conj
                                                                         general-tags
                                                                         'form-label
-                                                                        'form-text)
+                                                                        'form-text
+                                                                        'help)
                                                             :aliases {'form-label 'label
                                                                       'form-text 'text})})
 
    'form-label         (partial process-form-label {:attrs-parser parse-attrs})
 
-   'form-text          (partial process-form-text {:attrs-parser parse-attrs})})
+   'form-text          (partial process-form-text {:attrs-parser parse-attrs})
+
+   'help               (partial process-control {:symbol-fn tag->qualilified-symbol
+                                                 :attrs-parser parse-attrs
+                                                 :expander identity})})
 
 (def tags (merge dom-tags com-tags))
