@@ -180,13 +180,19 @@
                                                                         general-tags
                                                                         'form-label
                                                                         'form-text
+                                                                        'form-textarea
                                                                         'help)
                                                             :aliases {'form-label 'label
-                                                                      'form-text 'text})})
+                                                                      'form-text 'text
+                                                                      'form-textarea 'textarea})})
 
    'form-label         (partial process-form-label {:attrs-parser parse-attrs})
 
-   'form-text          (partial process-form-text {:attrs-parser parse-attrs})
+   'form-text          (partial process-form-text {:symbol-fn (return `form-text*)
+                                                   :attrs-parser parse-attrs})
+
+   'form-textarea      (partial process-form-text {:symbol-fn (return `form-textarea*)
+                                                   :attrs-parser parse-attrs})
 
    'help               (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
