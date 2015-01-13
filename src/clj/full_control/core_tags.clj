@@ -169,7 +169,13 @@
                                                             :available general-tags)})
 
    ;; Forms
-   'form               (partial process-form {:attrs-parser parse-attrs
+   'form               (partial process-form {:symbol-fn tag->qualilified-symbol
+                                              :attrs-parser parse-attrs
+                                              :expander (expand-tags-with
+                                                         :available #{'row 'group-for})})
+
+   'form-horizontal    (partial process-form {:symbol-fn tag->qualilified-symbol
+                                              :attrs-parser parse-attrs
                                               :expander (expand-tags-with
                                                          :available #{'row 'group-for})})
 

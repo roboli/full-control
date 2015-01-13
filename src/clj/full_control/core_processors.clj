@@ -36,10 +36,10 @@
       `(apply tbody* ~attrs (for [~name ~coll]
                               (tr* {} ~@(doall (map expander body))))))))
 
-(defn- process-form [{:keys [attrs-parser expander]} _ & body]
+(defn- process-form [{:keys [symbol-fn attrs-parser expander]} tag & body]
   (let [[attrs [[_ cursor & body]]] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* (assoc attrs :cursor cursor))]
-      (list* `form* attrs (doall (map expander body))))))
+      (list* (symbol-fn tag) attrs (doall (map expander body))))))
 
 (defn- process-form-label [{:keys [attrs-parser]} _ & body]
   (let [[attrs body] (attrs-parser body)]
