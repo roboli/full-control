@@ -178,9 +178,13 @@
                                                  :expander (expand-tags-with
                                                             :available (conj
                                                                         general-tags
-                                                                        'form-label)
-                                                            :aliases {'form-label 'label})})
+                                                                        'form-label
+                                                                        'form-text)
+                                                            :aliases {'form-label 'label
+                                                                      'form-text 'text})})
 
-   'form-label         (partial process-form-label {:attrs-parser parse-attrs})})
+   'form-label         (partial process-form-label {:attrs-parser parse-attrs})
+
+   'form-text          (partial process-form-text {:attrs-parser parse-attrs})})
 
 (def tags (merge dom-tags com-tags))

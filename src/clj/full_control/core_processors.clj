@@ -47,3 +47,16 @@
       (let [field-key (name (:field-key *attrs*))]
         (list `label* (assoc attrs :html-for field-key)
               (if-not (empty? body) body (clojure.string/capitalize field-key)))))))
+
+(defn- process-form-text [{:keys [attrs-parser]} _ & body]
+  (let [[attrs body] (attrs-parser body)]
+    (binding [*attrs* (merge *attrs* attrs)]
+      (let [field-key (:field-key *attrs*)
+            r (gensym "r")]
+        `(let ~[r (:cursor *attrs*)]
+           (form-text* ~(assoc attrs
+                          :id (name field-key)
+                          :value (list `get r field-key)
+                          :on-change `(fn [v#]
+                                        (update! ~r ~field-key
+                                                 (.. v# ~'-target ~'-value))))))))))
