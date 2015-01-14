@@ -190,6 +190,7 @@
                                                                         'help
                                                                         'label-
                                                                         'text-
+                                                                        'textarea-
                                                                         'help-)
                                                             :aliases {'form-label 'label
                                                                       'form-text 'text
@@ -209,6 +210,9 @@
 
    'form-textarea      (partial process-form-text {:symbol-fn (return `form-textarea*)
                                                    :attrs-parser parse-attrs})
+
+   'textarea-          (partial process-form-text {:symbol-fn tag->qualilified-symbol
+                                                   :attrs-parser parse-column-attrs})
 
    'help               (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs

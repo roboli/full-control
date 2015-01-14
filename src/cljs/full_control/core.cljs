@@ -3,6 +3,7 @@
                                               gen-dom-fns
                                               deflabel-col
                                               deftext-col
+                                              deftextarea-col
                                               defhelp-col]])
   (:require [clojure.string :as str]
             [om.core :as om :include-macros true]
@@ -325,6 +326,8 @@
 
 (defn form-textarea* [attrs & body]
   (apply textarea* (assoc attrs :className "form-control") body))
+
+(deftextarea-col 1 12)
 
 (defn help* [attrs & body]
   {:pre [(map? attrs)]}
