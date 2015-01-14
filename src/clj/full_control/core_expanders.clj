@@ -8,7 +8,7 @@
   (if (re-find #"h[1-5]$" (name x)) 'h))
 
 (defn- match-col-name [x]
-  (if (re-find #"column-(?:\d|1[1-2])$" (name x)) 'column-))
+  (if (re-find #"column-(?:\d|1[0-2])$" (name x)) 'column-))
 
 (defn- match-title-name [x]
   (if (re-find #"title[1-5]$" (name x)) 'title))
