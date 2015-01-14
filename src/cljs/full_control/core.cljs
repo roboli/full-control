@@ -53,57 +53,6 @@
   ([cursor korks v] (om/update! cursor korks v))
   ([cursor korks v tag] (om/update! cursor korks v tag)))
 
-(defn page* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply om.dom/div nil body))
-
-;;;
-;;; Layout (Bootstap's grid system)
-;;;
-
-(def col-sizes {:xs "xs"
-                :sm "sm"
-                :md "md"
-                :lg "lg"})
-
-(defn fixed-layout* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/div #js {:className "container"} body))
-
-(defn fluid-layout* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/div #js {:className "container-fluid"} body))
-
-(defn row* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/div #js {:className "row"} body))
-
-(defn column*
-  "Returns om.dom/div component with its :className set to
-  'col-size-n col-size-n ...' where size and n are values in the attrs map.
-  attrs must be in the form of
-
-  e.g. {:sizes [{:size :sm :cols 6}
-                {:size :md :cols 3}
-                ...]}"
-  [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/div #js {:className (str/join " " (map
-                                                #(str "col-"
-                                                      (get col-sizes (:size %))
-                                                      "-"
-                                                      (:cols %))
-                                                (:sizes attrs)))} body))
-
-;; Defines 12 columns controls, column-1* column-2* ... column-12*.
-;;
-;; e.g. (defn column-7* [attrs & body] ...)
-;;
-;; Each column maps with bootstrap's grid system columns class names. Attribute
-;; available in the attrs map is :size which it can be a value from the
-;; col-sizes map. See defcolumn macro in full-control.core clj namespace.
-(defcolumn 1 12)
-
 ;;;
 ;;; General controls
 ;;;
@@ -122,6 +71,57 @@
 (defn text* [attrs & body]
   {:pre [(map? attrs)]}
   (apply input* (assoc attrs :type "text") body))
+
+(defn page* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply div* attrs body))
+
+;;;
+;;; Layout (Bootstap's grid system)
+;;;
+
+(def col-sizes {:xs "xs"
+                :sm "sm"
+                :md "md"
+                :lg "lg"})
+
+(defn fixed-layout* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply div* {:class-name "container"} body))
+
+(defn fluid-layout* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply div* {:class-name "container-fluid"} body))
+
+(defn row* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply div* {:class-name "row"} body))
+
+(defn column*
+  "Returns om.dom/div component with its :className set to
+  'col-size-n col-size-n ...' where size and n are values in the attrs map.
+  attrs must be in the form of
+
+  e.g. {:sizes [{:size :sm :cols 6}
+                {:size :md :cols 3}
+                ...]}"
+  [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply div* {:class-name (str/join " " (map
+                                          #(str "col-"
+                                                (get col-sizes (:size %))
+                                                "-"
+                                                (:cols %))
+                                          (:sizes attrs)))} body))
+
+;; Defines 12 columns controls, column-1* column-2* ... column-12*.
+;;
+;; e.g. (defn column-7* [attrs & body] ...)
+;;
+;; Each column maps with bootstrap's grid system columns class names. Attribute
+;; available in the attrs map is :size which it can be a value from the
+;; col-sizes map. See defcolumn macro in full-control.core clj namespace.
+(defcolumn 1 12)
 
 ;;;
 ;;; navbar
