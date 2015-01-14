@@ -121,13 +121,7 @@
 
 (defn text* [attrs & body]
   {:pre [(map? attrs)]}
-  (dom/input #js {:id (:id attrs)
-                  :type "text"
-                  :className (:class-name attrs)
-                  :maxLength (:max-length attrs)
-                  :placeholder (:placeholder attrs)
-                  :value (:value attrs)
-                  :onChange (:on-change attrs)} body))
+  (apply input* (assoc attrs :type "text") body))
 
 ;;;
 ;;; navbar
@@ -139,38 +133,35 @@
 
 (defn brand* [attrs & body]
   {:pre [(map? attrs)]}
-  {:brand {:class-name (:class-name attrs)
-           :href (:href attrs)
-           :on-click (:on-click attrs)
-           :body body}})
+  {:brand (assoc attrs :body body)})
 
 (defn navbar*
   "Retuns bootstrap's navbar. Attributes available in the attrs map are :class-name."
   [attrs & body]
   {:pre [(map? attrs)]}
-  (dom/nav #js {:className "navbar navbar-default navbar-static-top"
-                :role "navigation"}
-           (dom/div #js {:className "container-fluid"}
-                    (dom/div #js {:className "navbar-header"}
-                             (dom/button #js {:type "button"
-                                              :className "navbar-toggle collapsed"
-                                              :data-toggle "collapse"
-                                              :data-target "#navbar-collapse-items"}
-                                         (dom/span #js {:className "icon-bar"})
-                                         (dom/span #js {:className "icon-bar"})
-                                         (dom/span #js {:className "icon-bar"}))
-                             (let [brand (->> body
-                                              (filter :brand)
-                                              first
-                                              :brand)]
-                               (apply dom/a #js {:className (str "navbar-brand "
-                                                                 (:class-name brand))
-                                                 :href (:href brand)
-                                                 :onClick (:on-click brand)}
-                                      (:body brand))))
-                    (apply dom/div #js {:id "navbar-collapse-items"
-                                        :className (str "collapse navbar-collapse " (:class-name attrs))}
-                           (remove :brand body)))))
+  (nav* {:class-name "navbar navbar-default navbar-static-top"
+         :role "navigation"}
+        (div* {:class-name "container-fluid"}
+              (div* {:class-name "navbar-header"}
+                    (dom/button #js {:type "button"
+                                     :className "navbar-toggle collapsed"
+                                     :data-toggle "collapse"
+                                     :data-target "#navbar-collapse-items"}
+                                (span* {:class-name "icon-bar"})
+                                (span* {:class-name "icon-bar"})
+                                (span* {:class-name "icon-bar"}))
+                    (let [brand (->> body
+                                     (filter :brand)
+                                     first
+                                     :brand)]
+                      (apply a* (assoc brand
+                                  :class-name (str "navbar-brand "
+                                                   (:class-name brand)))
+                             (:body brand))))
+              (apply div* {:id "navbar-collapse-items"
+                           :class-name (str "collapse navbar-collapse "
+                                            (:class-name attrs))}
+                     (remove :brand body)))))
 
 (defn links-group
   "Returns a series of om.dom/li components inside a om.dom/ul. Basically it
@@ -183,12 +174,11 @@
   Attributes available for each links map are :href, :on-click, :body."
   [attrs]
   {:pre [(map? attrs)]}
-  (apply dom/ul #js {:className (str "nav navbar-nav "
-                                     (get float-class (:float attrs)))}
+  (apply ul* {:class-name (str "nav navbar-nav "
+                               (get float-class (:float attrs)))}
          (for [lnk (:links attrs)]
-           (dom/li nil
-                   (apply dom/a #js {:href (:href lnk)
-                                     :onClick (:on-click lnk)} (:body lnk))))))
+           (li* {}
+                (apply a* (dissoc lnk :body) (:body lnk))))))
 
 (defn navbar-button*
   "Button to render inside the navbar control. Attributes available in the attrs
@@ -198,8 +188,7 @@
   (apply button* (assoc attrs
                    :class-name (str "navbar-btn "
                                     (get float-class (:float attrs))
-                                    " " (:class-name attrs))
-                   :on-click (:on-click attrs)) body))
+                                    " " (:class-name attrs))) body))
 
 ;;;
 ;;; Panels
@@ -207,8 +196,7 @@
 
 (defn panel-header* [attrs & body]
   {:pre [(map? attrs)]}
-  {:header {:class-name (:class-name attrs)
-            :body body}})
+  {:header (assoc attrs :body body)})
 
 (defn stretch* [attrs & body]
   {:pre [(map? attrs)]}
@@ -216,37 +204,35 @@
 
 (defn panel* [attrs & body]
   {:pre [(map? attrs)]}
-  (dom/div #js {:className "panel panel-default"}
-           (let [header (->> body
-                             (filter :header)
-                             first
-                             :header)]
-             (apply dom/div #js {:className (str "panel-heading " (:class-name header))}
-                    (:body header)))
-           (if-not (and (= (count body) 1) (:stretch (first body)))
-             (apply dom/div #js {:className "panel-body"} (remove (some-fn :header :stretch) body)))
-           (apply dom/div nil (->> body
-                                   (filter :stretch)
-                                   first
-                                   :stretch))))
+  (div* {:class-name "panel panel-default"}
+        (let [header (->> body
+                          (filter :header)
+                          first
+                          :header)]
+          (apply div* {:class-name (str "panel-heading " (:class-name header))}
+                 (:body header)))
+        (if-not (and (= (count body) 1) (:stretch (first body)))
+          (apply div* {:class-name "panel-body"} (remove (some-fn :header :stretch) body)))
+        (apply div* {} (->> body
+                            (filter :stretch)
+                            first
+                            :stretch))))
 
 (defn navpanel* [attrs & body]
   {:pre [(map? attrs)]}
-  (dom/div #js {:className "panel panel-default"}
-           (let [header (->> body
-                             (filter :header)
-                             first
-                             :header)]
-             (apply dom/div #js {:className (str "panel-heading" (:class-name header))}
-                    (:body header)))
-           (dom/div #js {:className "panel-body"}
-                    (apply dom/div #js {:className "list-group"} (remove :header body)))))
+  (div* {:class-name "panel panel-default"}
+        (let [header (->> body
+                          (filter :header)
+                          first
+                          :header)]
+          (apply div* {:class-name (str "panel-heading" (:class-name header))}
+                 (:body header)))
+        (div* {:class-name "panel-body"}
+              (apply div* {:class-name "list-group"} (remove :header body)))))
 
 (defn navpanel-link* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply dom/a #js {:className "list-group-item"
-                    :href (:href attrs)
-                    :onClick (:on-click attrs)} body))
+  (apply a* (assoc attrs :class-name "list-group-item") body))
 
 (defn title1* [attrs & body]
   {:pre [(map? attrs)]}
@@ -277,36 +263,17 @@
 ;;; Tables
 ;;;
 
-(defn tr* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/tr nil body))
-
-(defn th* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/th nil body))
-
-(defn td* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/td nil body))
-
-(defn tbody* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/tbody nil body))
-
 (defn grid* [attrs & body]
   {:pre [(map? attrs)]}
-  (dom/table #js {:className (str/join " " ["table"
-                                            (if (:borders attrs) "table-bordered")
-                                            (if (:striped attrs) "table-striped")])}
-             (apply tbody* attrs body)))
+  (table* (assoc attrs
+            :class-name (str/join " " ["table"
+                                       (if (:borders attrs) "table-bordered")
+                                       (if (:striped attrs) "table-striped")]))
+          (apply tbody* attrs body)))
 
 (defn table* [attrs & body]
   {:pre [(map? attrs)]}
   (apply dom/table #js {:className "table"} body))
-
-(defn thead* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/thead nil body))
 
 ;;;
 ;;; Modals
@@ -314,34 +281,32 @@
 
 (defn modal-header* [attrs & body]
   {:pre [(map? attrs)]}
-  {:header {:class-name (:class-name attrs)
-            :body body}})
+  {:header (assoc attrs :body body)})
 
 (defn modal-footer* [attrs & body]
   {:pre [(map? attrs)]}
-  {:footer {:class-name (:class-name attrs)
-            :body body}})
+  {:footer (assoc attrs :body body)})
 
 (defn modal* [attrs & body]
   {:pre [(map? attrs)]}
-  (dom/div #js {:id (:id attrs)
-                :className "modal fade"
-                :role "modal"}
-           (dom/div #js {:className "modal-dialog"}
-                    (dom/div #js {:className "modal-content"}
-                             (let [header (->> body
-                                               (filter :header)
-                                               first
-                                               :header)]
-                               (apply dom/div #js {:className (str "modal-header " (:class-name header))}
-                                      (:body header)))
-                             (apply dom/div #js {:className "modal-body"} (remove (some-fn :header :footer) body))
-                             (let [footer (->> body
-                                               (filter :footer)
-                                               first
-                                               :footer)]
-                               (apply dom/div #js {:className (str "modal-footer " (:class-name footer))}
-                                      (:body footer)))))))
+  (div* {:id (:id attrs)
+         :class-name "modal fade"
+         :role "modal"}
+        (div* {:class-name "modal-dialog"}
+              (div* {:class-name "modal-content"}
+                    (let [header (->> body
+                                      (filter :header)
+                                      first
+                                      :header)]
+                      (apply div* {:class-name (str "modal-header " (:class-name header))}
+                             (:body header)))
+                    (apply div* {:class-name "modal-body"} (remove (some-fn :header :footer) body))
+                    (let [footer (->> body
+                                      (filter :footer)
+                                      first
+                                      :footer)]
+                      (apply div* {:class-name (str "modal-footer " (:class-name footer))}
+                             (:body footer)))))))
 
 ;;;
 ;;; Forms
@@ -353,18 +318,15 @@
   (apply text* (assoc attrs :class-name "form-control") body))
 
 (defn form-textarea* [attrs & body]
-  (apply dom/textarea #js {:id (:id attrs)
-                           :className "form-control"
-                           :value (:value attrs)
-                           :onChange (:on-change attrs)} body))
+  (apply textarea* (assoc attrs :className "form-control") body))
 
 (defn help* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply dom/span #js {:className "help-block"} body))
+  (apply span* {:class-name "help-block"} body))
 
 (defn form-group* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply dom/div #js {:className "form-group"} body))
+  (apply div* {:class-name "form-group"} body))
 
 (defn form* [attrs & body]
   {:pre [(map? attrs)]}
