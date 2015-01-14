@@ -94,3 +94,16 @@
           (for [n (range start (inc end))]
             (column-defn n)))
     (column-defn start)))
+
+(defn- column-label-defn [n]
+  `(defn ~(symbol (str "label-" n "*")) [~'attrs & ~'body]
+     {:pre [(map? ~'attrs)]}
+     (column* {:sizes [(assoc ~'attrs :cols ~n)]}
+              (apply label* ~'attrs ~'body))))
+
+(defmacro deflabel-col [start & [end]]
+  (if end
+    (cons `do
+          (for [n (range start (inc end))]
+            (column-label-defn n)))
+    (column-label-defn start)))
