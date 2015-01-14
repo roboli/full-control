@@ -104,3 +104,12 @@
 
 (defmacro deflabel-col [start & [end]]
   (dofun column-label-defn start end))
+
+(defn- column-text-defn [n]
+  `(defn ~(symbol (str "text-" n "*")) [~'attrs & ~'body]
+     {:pre [(map? ~'attrs)]}
+     (column* {:sizes [(assoc ~'attrs :cols ~n)]}
+              (apply form-text* ~'attrs ~'body))))
+
+(defmacro deftext-col [start & [end]]
+  (dofun column-text-defn start end))

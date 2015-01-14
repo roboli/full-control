@@ -1,5 +1,5 @@
 (ns full-control.core
-  (:require-macros [full-control.core :refer [defcolumn gen-dom-fns deflabel-col]])
+  (:require-macros [full-control.core :refer [defcolumn gen-dom-fns deflabel-col deftext-col]])
   (:require [clojure.string :as str]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
@@ -316,6 +316,8 @@
 
 (defn form-text* [attrs & body]
   (apply text* (assoc attrs :class-name "form-control") body))
+
+(deftext-col 1 12)
 
 (defn form-textarea* [attrs & body]
   (apply textarea* (assoc attrs :className "form-control") body))

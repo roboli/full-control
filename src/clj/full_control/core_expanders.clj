@@ -16,6 +16,9 @@
 (defn- match-label-name [s]
   (match-name #"label-(?:\d|1[0-2])$" 'label- s))
 
+(defn- match-text-name [s]
+  (match-name #"text-(?:\d|1[0-2])$" 'text- s))
+
 (defn- search-tag-with [& fs]
   (fn [tags tag]
     (if-let [tf (some #(if (not (nil? %)) %)
@@ -52,7 +55,8 @@
 
 (def ^:private expand-group-for-tags-with
   (partial expand-tags (search-tag-with (partial get)
-                                        #(get %1 (match-label-name %2)))))
+                                        #(get %1 (match-label-name %2))
+                                        #(get %1 (match-text-name %2)))))
 
 (def ^:private expand-tags-with-all
   (partial expand-tags (search-tag-with (partial get)

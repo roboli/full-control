@@ -188,7 +188,8 @@
                                                                         'form-text
                                                                         'form-textarea
                                                                         'help
-                                                                        'label-)
+                                                                        'label-
+                                                                        'text-)
                                                             :aliases {'form-label 'label
                                                                       'form-text 'text
                                                                       'form-textarea 'textarea})})
@@ -201,6 +202,9 @@
 
    'form-text          (partial process-form-text {:symbol-fn (return `form-text*)
                                                    :attrs-parser parse-attrs})
+
+   'text-              (partial process-form-text {:symbol-fn tag->qualilified-symbol
+                                                   :attrs-parser parse-column-attrs})
 
    'form-textarea      (partial process-form-text {:symbol-fn (return `form-textarea*)
                                                    :attrs-parser parse-attrs})
