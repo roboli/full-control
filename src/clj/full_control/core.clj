@@ -96,20 +96,20 @@
   [start & [end]]
   (dofun column-defn start end))
 
-(defn- column-label-defn [n]
-  `(defn ~(symbol (str "label-" n "*")) [~'attrs & ~'body]
+(defn- column-control-defn [stag tag n]
+  `(defn ~(symbol (str stag n "*")) [~'attrs & ~'body]
      {:pre [(map? ~'attrs)]}
      (column* {:sizes [(assoc ~'attrs :cols ~n)]}
-              (apply label* ~'attrs ~'body))))
+              (apply ~tag ~'attrs ~'body))))
+
+(defn- column-label-defn [n]
+  (column-control-defn "label-" 'label* n))
 
 (defmacro deflabel-col [start & [end]]
   (dofun column-label-defn start end))
 
 (defn- column-text-defn [n]
-  `(defn ~(symbol (str "text-" n "*")) [~'attrs & ~'body]
-     {:pre [(map? ~'attrs)]}
-     (column* {:sizes [(assoc ~'attrs :cols ~n)]}
-              (apply form-text* ~'attrs ~'body))))
+  (column-control-defn "text-" 'form-text* n))
 
 (defmacro deftext-col [start & [end]]
   (dofun column-text-defn start end))
