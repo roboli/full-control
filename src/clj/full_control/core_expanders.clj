@@ -4,9 +4,6 @@
 ;;; Expanders
 ;;;
 
-(defn- match-h-name [x]
-  (if (re-find #"h[1-5]$" (name x)) 'h))
-
 (defn- match-col-name [x]
   (if (re-find #"column-(?:\d|1[0-2])$" (name x)) 'column-))
 
@@ -40,8 +37,7 @@
       form)))
 
 (def ^:private expand-tags-with
-  (partial expand-tags (search-tag-with (partial get)
-                                        #(get %1 (match-h-name %2)))))
+  (partial expand-tags (search-tag-with (partial get))))
 
 (def ^:private expand-column-tags-with
   (partial expand-tags (search-tag-with (partial get)
@@ -57,6 +53,5 @@
 
 (def ^:private expand-tags-with-all
   (partial expand-tags (search-tag-with (partial get)
-                                        #(get %1 (match-h-name %2))
                                         #(get %1 (match-col-name %2))
                                         #(get %1 (match-title-name %2)))))
