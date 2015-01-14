@@ -4,11 +4,11 @@
 ;;; Attributes parsers
 ;;;
 
-(defn- parse-m [body & {:keys [not-found]}]
-  (if (map? (first body))
-    [(first body) (rest body)]
-    (if (= (ffirst body) 'with-attrs)
-      [(second (first body)) (rest (rest (first body)))]
+(defn- parse-m [[m & b :as body] & {:keys [not-found]}]
+  (if (map? m)
+    [m b]
+    (if (= (first m) 'with-attrs)
+      [(second m) (rest (rest m))]
       [not-found body])))
 
 (defn- parse-attrs [body]
