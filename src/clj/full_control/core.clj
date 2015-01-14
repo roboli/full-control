@@ -73,6 +73,13 @@
 ;;; Layout
 ;;;
 
+(defn- dofun [f start end]
+  (if end
+    (cons `do
+          (for [n (range start (inc end))]
+            (f n)))
+    (f start)))
+
 (defn- column-defn
   "Returns form which defines a function that calls the column* control function
   with its :sizes and :cols attributes set to n. See cljs full-control.core/column*
@@ -89,11 +96,7 @@
   attribute set to n which is a number with a value between the start and end
   parameters. See column-defn function."
   [start & [end]]
-  (if end
-    (cons `do
-          (for [n (range start (inc end))]
-            (column-defn n)))
-    (column-defn start)))
+  (dofun column-defn start end))
 
 (defn- column-label-defn [n]
   `(defn ~(symbol (str "label-" n "*")) [~'attrs & ~'body]
@@ -102,8 +105,4 @@
               (apply label* ~'attrs ~'body))))
 
 (defmacro deflabel-col [start & [end]]
-  (if end
-    (cons `do
-          (for [n (range start (inc end))]
-            (column-label-defn n)))
-    (column-label-defn start)))
+  (dofun column-label-defn start end))
