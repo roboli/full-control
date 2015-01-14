@@ -13,6 +13,9 @@
 (defn- match-title-name [x]
   (if (re-find #"title[1-5]$" (name x)) 'title))
 
+(defn- match-label-name [x]
+  (if (re-find #"label-(?:\d|1[0-2])$" (name x)) 'label-))
+
 (defn- search-tag-with [& fs]
   (fn [tags tag]
     (if-let [tf (some #(if (not (nil? %)) %)
@@ -47,6 +50,10 @@
 (def ^:private expand-panel-header-tags-with
   (partial expand-tags (search-tag-with (partial get)
                                         #(get %1 (match-title-name %2)))))
+
+(def ^:private expand-group-for-tags-with
+  (partial expand-tags (search-tag-with (partial get)
+                                        #(get %1 (match-label-name %2)))))
 
 (def ^:private expand-tags-with-all
   (partial expand-tags (search-tag-with (partial get)

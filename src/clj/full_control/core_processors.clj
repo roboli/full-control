@@ -41,11 +41,11 @@
     (binding [*attrs* (merge *attrs* (assoc attrs :cursor cursor))]
       (list* (symbol-fn tag) attrs (doall (map expander body))))))
 
-(defn- process-form-label [{:keys [attrs-parser]} _ & body]
+(defn- process-form-label [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
       (let [field-key (name (:field-key *attrs*))]
-        (list `label* (assoc attrs :html-for field-key)
+        (list (symbol-fn tag) (assoc attrs :html-for field-key)
               (if-not (empty? body) (first body) (clojure.string/capitalize field-key)))))))
 
 (defn- process-form-text [{:keys [symbol-fn attrs-parser]} tag & body]

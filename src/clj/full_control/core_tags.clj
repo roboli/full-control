@@ -12,7 +12,7 @@
 (defn- tag->qualilified-symbol [tag]
   `~(symbol (str "full-control.core/" (name tag) "*")))
 
-(def ^:private general-tags (into #{'with-controls 'grid 'table 'modal 'form} om-dom-tags))
+(def ^:private general-tags (into #{'with-controls 'grid 'table 'modal 'form 'form-horizontal} om-dom-tags))
 (def ^:private general-layout-tags (conj general-tags 'row 'panel 'navpanel))
 
 (def ^:private dom-tags
@@ -181,18 +181,23 @@
 
    'group-for          (partial process-control {:symbol-fn (return `form-group*)
                                                  :attrs-parser parse-group-for-attrs
-                                                 :expander (expand-tags-with
+                                                 :expander (expand-group-for-tags-with
                                                             :available (conj
                                                                         general-tags
                                                                         'form-label
                                                                         'form-text
                                                                         'form-textarea
-                                                                        'help)
+                                                                        'help
+                                                                        'label-)
                                                             :aliases {'form-label 'label
                                                                       'form-text 'text
                                                                       'form-textarea 'textarea})})
 
-   'form-label         (partial process-form-label {:attrs-parser parse-attrs})
+   'form-label         (partial process-form-label {:symbol-fn (return `label*)
+                                                    :attrs-parser parse-attrs})
+
+   'label-             (partial process-form-label {:symbol-fn tag->qualilified-symbol
+                                                    :attrs-parser parse-column-attrs})
 
    'form-text          (partial process-form-text {:symbol-fn (return `form-text*)
                                                    :attrs-parser parse-attrs})
