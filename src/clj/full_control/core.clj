@@ -113,3 +113,9 @@
 
 (defmacro deftext-col [start & [end]]
   (dofun column-text-defn start end))
+
+(defn- column-help-defn [n]
+  (column-control-defn "help-" 'help* n))
+
+(defmacro defhelp-col [start & [end]]
+  (dofun column-help-defn start end))

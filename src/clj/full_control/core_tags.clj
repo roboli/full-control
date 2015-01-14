@@ -189,7 +189,8 @@
                                                                         'form-textarea
                                                                         'help
                                                                         'label-
-                                                                        'text-)
+                                                                        'text-
+                                                                        'help-)
                                                             :aliases {'form-label 'label
                                                                       'form-text 'text
                                                                       'form-textarea 'textarea})})
@@ -211,6 +212,10 @@
 
    'help               (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
+                                                 :expander identity})
+
+   'help-              (partial process-control {:symbol-fn tag->qualilified-symbol
+                                                 :attrs-parser parse-column-attrs
                                                  :expander identity})})
 
 (def tags (merge dom-tags com-tags))

@@ -1,5 +1,9 @@
 (ns full-control.core
-  (:require-macros [full-control.core :refer [defcolumn gen-dom-fns deflabel-col deftext-col]])
+  (:require-macros [full-control.core :refer [defcolumn
+                                              gen-dom-fns
+                                              deflabel-col
+                                              deftext-col
+                                              defhelp-col]])
   (:require [clojure.string :as str]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
@@ -325,6 +329,8 @@
 (defn help* [attrs & body]
   {:pre [(map? attrs)]}
   (apply span* {:class-name "help-block"} body))
+
+(defhelp-col 1 12)
 
 (defn form-group* [attrs & body]
   {:pre [(map? attrs)]}
