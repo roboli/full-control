@@ -4,14 +4,17 @@
 ;;; Expanders
 ;;;
 
-(defn- match-col-name [x]
-  (if (re-find #"column-(?:\d|1[0-2])$" (name x)) 'column-))
+(defn- match-name [pattern tag s]
+  (if (re-find pattern (name s)) tag))
 
-(defn- match-title-name [x]
-  (if (re-find #"title[1-5]$" (name x)) 'title))
+(defn- match-col-name [s]
+  (match-name #"column-(?:\d|1[0-2])$" 'column- s))
 
-(defn- match-label-name [x]
-  (if (re-find #"label-(?:\d|1[0-2])$" (name x)) 'label-))
+(defn- match-title-name [s]
+  (match-name #"title[1-5]$" 'title s))
+
+(defn- match-label-name [s]
+  (match-name #"label-(?:\d|1[0-2])$" 'label- s))
 
 (defn- search-tag-with [& fs]
   (fn [tags tag]
