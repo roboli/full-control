@@ -102,20 +102,17 @@
      (column* {:sizes [(assoc ~'attrs :cols ~n)]}
               (apply ~tag ~'attrs ~'body))))
 
-(defn- column-label-defn [n]
-  (column-control-defn "label-" 'label* n))
-
 (defmacro deflabel-col [start & [end]]
-  (dofun column-label-defn start end))
-
-(defn- column-text-defn [n]
-  (column-control-defn "text-" 'form-text* n))
+  (dofun
+   (partial column-control-defn "label-" 'label*)
+   start end))
 
 (defmacro deftext-col [start & [end]]
-  (dofun column-text-defn start end))
-
-(defn- column-help-defn [n]
-  (column-control-defn "help-" 'help* n))
+  (dofun
+   (partial column-control-defn "text-" 'form-text*)
+   start end))
 
 (defmacro defhelp-col [start & [end]]
-  (dofun column-help-defn start end))
+  (dofun
+   (partial column-control-defn "help-" 'help*)
+   start end))
