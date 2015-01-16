@@ -14,7 +14,7 @@
 
 (def ^:private general-tags (into #{'with-controls
                                     'btn
-                                    'grid
+                                    'grid-view
                                     'table
                                     'modal
                                     'form
@@ -129,11 +129,11 @@
                                                  :expander identity})
 
    ;; Tables
-   'grid               (partial process-grid {:attrs-parser parse-attrs
-                                              :expander (expand-tags-with
-                                                         :available (conj
-                                                                     general-tags
-                                                                     'row))})
+   'grid-view               (partial process-grid-view {:attrs-parser parse-attrs
+                                                        :expander (expand-tags-with
+                                                                   :available (conj
+                                                                               general-tags
+                                                                               'row))})
 
    'table              (partial process-control {:symbol-fn (return `table*)
                                                  :attrs-parser parse-attrs

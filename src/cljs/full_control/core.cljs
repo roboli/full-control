@@ -271,7 +271,7 @@
 ;;; Tables
 ;;;
 
-(defn grid* [attrs & body]
+(defn grid-view* [attrs & body]
   {:pre [(map? attrs)]}
   (table* (assoc attrs
             :class-name (str/join " " ["table"

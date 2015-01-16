@@ -23,12 +23,12 @@
     (binding [*attrs* (merge *attrs* attrs)]
       (list* symbol attrs (doall (map expander body))))))
 
-(defn- process-grid [{:keys [attrs-parser expander]} _ & body]
+(defn- process-grid-view [{:keys [attrs-parser expander]} _ & body]
   (let [[attrs [[_ [name coll] & body]]] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      `(apply grid* ~attrs (for [~name ~coll]
-                             (tr* {}
-                                  (td* {} ~@(doall (map expander body)))))))))
+      `(apply grid-view* ~attrs (for [~name ~coll]
+                                  (tr* {}
+                                       (td* {} ~@(doall (map expander body)))))))))
 
 (defn- process-tbody [{:keys [attrs-parser expander]} _ & body]
   (let [[attrs [[_ [name coll] & body]]] (attrs-parser body)]

@@ -22,10 +22,10 @@
                  (row
                   (column-12
                    (panel
-                    (header (title1 "Grid"))
+                    (header (title1 "Grid-View"))
                     (p "Some data here...")
                     (stretch
-                     (grid
+                     (grid-view
                       (source [data (:data cursor)]
                               (row
                                (column-12
