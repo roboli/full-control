@@ -78,8 +78,8 @@
    'navbar             (partial process-control {:symbol-fn (return `navbar*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
-                                                            :available #{'brand 'button-h}
-                                                            :aliases {'button-h 'button})
+                                                            :available #{'brand 'navbar-btn}
+                                                            :aliases {'navbar-btn 'btn})
                                                  :transformers [(parse-links-h parse-attrs)
                                                                 apply-spacers]})
 
@@ -87,9 +87,9 @@
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
    
-   'button-h           (partial process-control {:symbol-fn (return `navbar-btn*)
-                                                 :attrs-parser parse-attrs
-                                                 :expander identity})
+   'navbar-btn           (partial process-control {:symbol-fn (return `navbar-btn*)
+                                                   :attrs-parser parse-attrs
+                                                   :expander identity})
 
    ;; Panels
    'panel              (partial process-control {:symbol-fn (return `panel*)

@@ -17,7 +17,7 @@
                                :on-click (fn [_] (js/alert "You're home!"))} "Home")
                         (link "About")
                         (spacer)
-                        (button {:on-click (fn [_] (js/alert "You're out!"))} "Logout"))
+                        (btn {:on-click (fn [_] (js/alert "You're out!"))} "Logout"))
                 (fixed-layout
                  (row
                   (column-9
