@@ -36,17 +36,20 @@
       `(apply tbody* ~attrs (for [~name ~coll]
                               (tr* {} ~@(doall (map expander body))))))))
 
-(defn- process-form [{:keys [symbol-fn attrs-parser expander]} tag & body]
+(defn- process-form [{:keys [symbol-fn attrs-parser expander transformers]} tag & body]
   (let [[attrs [[_ cursor & body]]] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* (assoc attrs :cursor cursor))]
-      (list* (symbol-fn tag) attrs (doall (map expander body))))))
+      (list* (symbol-fn tag) attrs (->> body
+                                        (map expander)
+                                        doall
+                                        ((apply comp (reverse transformers))))))))
 
 (defn- process-form-label [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
       (let [field-key (name (:field-key *attrs*))]
         (list (symbol-fn tag) (assoc attrs :html-for field-key)
-              (if-not (empty? body) (first body) (clojure.string/capitalize field-key)))))))
+              (if-not (empty? body) (first body) (str/capitalize field-key)))))))
 
 (defn- process-form-text [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
@@ -56,6 +59,9 @@
         `(let ~[r (:cursor *attrs*)]
            (~(symbol-fn tag) ~(assoc attrs
                                 :id (name field-key)
+                                :placeholder (if (:inline *attrs*)
+                                               (or (:placeholder *attrs*)
+                                                   (str/capitalize (name field-key))))
                                 :value (list `get r field-key)
                                 :on-change `(fn [v#]
                                               (update! ~r ~field-key

@@ -1,5 +1,6 @@
 (ns full-control.core
-  (:require [om.dom :as dom]))
+  (:require [clojure.string :as str]
+            [om.dom :as dom]))
 
 (def ^{:dynamic true :private true} *attrs* nil)
 (def ^{:dynamic true :private true} *tags* nil)

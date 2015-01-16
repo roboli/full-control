@@ -26,3 +26,7 @@
   (parse-m body :not-found (if (keyword? m)
                              [{:field-key m} b]
                              [{} body])))
+
+(defn- parse-inline-attrs [body]
+  (let [[attrs body] (parse-attrs body)]
+    [(assoc attrs :inline true) body]))

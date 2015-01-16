@@ -12,7 +12,14 @@
 (defn- tag->qualilified-symbol [tag]
   `~(symbol (str "full-control.core/" (name tag) "*")))
 
-(def ^:private general-tags (into #{'with-controls 'grid 'table 'modal 'form 'form-horizontal} om-dom-tags))
+(def ^:private general-tags (into #{'with-controls
+                                    'grid
+                                    'table
+                                    'modal
+                                    'form
+                                    'form-horizontal
+                                    'form-inline} om-dom-tags))
+
 (def ^:private general-layout-tags (conj general-tags 'row 'panel 'navpanel))
 
 (def ^:private dom-tags
@@ -178,6 +185,14 @@
                                               :attrs-parser parse-attrs
                                               :expander (expand-tags-with
                                                          :available #{'row 'group-for})})
+
+   'form-inline        (partial process-form {:symbol-fn tag->qualilified-symbol
+                                              :attrs-parser parse-inline-attrs
+                                              :expander (expand-tags-with
+                                                         :available #{'row 'group-for})
+                                              ;; HACK: must render &nbsp after each
+                                              ;; form-group to display correctly
+                                              :transformers [#(interpose `nbsp* %)]})
 
    'group-for          (partial process-control {:symbol-fn (return `form-group*)
                                                  :attrs-parser parse-group-for-attrs
