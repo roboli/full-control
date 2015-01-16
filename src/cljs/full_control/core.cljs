@@ -342,10 +342,6 @@
   {:pre [(map? attrs)]}
   (apply div* {:class-name "form-group"} body))
 
-(defn form* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/form #js {:className (:class-name attrs)} body))
-
 (defn form-horizontal* [attrs & body]
   {:pre [(map? attrs)]}
   (apply form* (assoc attrs :class-name "form-horizontal") body))
