@@ -6,6 +6,7 @@
                                               deftextarea-col
                                               defhelp-col]])
   (:require [clojure.string :as str]
+            [goog.string :as gstr]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [full-control.utils]))
@@ -61,6 +62,8 @@
 ;;;
 ;;; General controls
 ;;;
+
+(def nbsp* (gstr/unescapeEntities "&nbsp;"))
 
 ;; All om.dom/tags
 (gen-dom-fns)
