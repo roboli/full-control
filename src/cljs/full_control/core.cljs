@@ -2,7 +2,7 @@
   (:require-macros [full-control.core :refer [defcolumn
                                               gen-dom-fns
                                               deflabel-col
-                                              deftext-col
+                                              deftxt-col
                                               deftextarea-col
                                               defhelp-col]])
   (:require [clojure.string :as str]
@@ -76,9 +76,11 @@
                          :className (str "btn btn-default " (:class-name attrs))
                          :onClick (:on-click attrs)} body))
 
-(defn text* [attrs & body]
+(defn txt* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply input* (assoc attrs :type "text") body))
+  (apply input* (assoc attrs
+                  :type "text"
+                  :class-name "form-control") body))
 
 (defn page* [attrs & body]
   {:pre [(map? attrs)]}
@@ -322,10 +324,7 @@
 
 (deflabel-col 1 12)
 
-(defn form-text* [attrs & body]
-  (apply text* (assoc attrs :class-name "form-control") body))
-
-(deftext-col 1 12)
+(deftxt-col 1 12)
 
 (defn form-textarea* [attrs & body]
   (apply textarea* (assoc attrs :className "form-control") body))

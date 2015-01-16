@@ -108,9 +108,9 @@
    (partial column-control-defn "label-" 'label*)
    start end))
 
-(defmacro deftext-col [start & [end]]
+(defmacro deftxt-col [start & [end]]
   (dofun
-   (partial column-control-defn "text-" 'form-text*)
+   (partial column-control-defn "txt-" 'txt*)
    start end))
 
 (defmacro deftextarea-col [start & [end]]

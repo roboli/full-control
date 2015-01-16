@@ -21,12 +21,12 @@
                         (column-6
                          (group-for :description
                                     (label)
-                                    (text {:max-length 15})
+                                    (txt {:max-length 15})
                                     (help "*")))
                         (column-6
                          (group-for :price
                                     (label)
-                                    (text {:max-length 10})
+                                    (txt {:max-length 10})
                                     (help "*"))))
                        (row
                         (column-6
@@ -44,12 +44,12 @@
                         (column-6
                          (group-for :description
                                     (label-4)
-                                    (text-6)
+                                    (txt-6)
                                     (help-2 "*")))
                         (column-6
                          (group-for :price
                                     (label-4)
-                                    (text-6 {:max-length 10})
+                                    (txt-6 {:max-length 10})
                                     (help-2 "*"))))
                        (row
                         (column-6
@@ -64,11 +64,11 @@
                     (form-inline
                      (with-record (:item cursor)
                        (group-for :description
-                                  (text {:max-length 15
-                                         :placeholder "Name"}))
+                                  (txt {:max-length 15
+                                             :placeholder "Name"}))
                        (group-for :price
-                                  (text {:max-length 10}))
+                                  (txt {:max-length 10}))
                        (group-for :comments
-                                  (text))))))))))
+                                  (txt))))))))))
 
 (fc/root page app-state {:target (. js/document (getElementById "app"))})

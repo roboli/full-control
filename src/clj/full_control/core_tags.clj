@@ -14,6 +14,7 @@
 
 (def ^:private general-tags (into #{'with-controls
                                     'btn
+                                    'txt
                                     'grid-view
                                     'grid
                                     'modal
@@ -45,6 +46,10 @@
                                                                         'fluid-layout))})
 
    'btn                (partial process-control {:symbol-fn tag->qualilified-symbol
+                                                 :attrs-parser parse-attrs
+                                                 :expander identity})
+
+   'txt                (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
@@ -205,15 +210,15 @@
                                                             :available (conj
                                                                         general-tags
                                                                         'form-label
-                                                                        'form-text
+                                                                        'form-txt
                                                                         'form-textarea
                                                                         'help
                                                                         'label-
-                                                                        'text-
+                                                                        'txt-
                                                                         'textarea-
                                                                         'help-)
                                                             :aliases {'form-label 'label
-                                                                      'form-text 'text
+                                                                      'form-txt 'txt
                                                                       'form-textarea 'textarea})})
 
    'form-label         (partial process-form-label {:symbol-fn (return `label*)
@@ -222,10 +227,10 @@
    'label-             (partial process-form-label {:symbol-fn tag->qualilified-symbol
                                                     :attrs-parser parse-column-attrs})
 
-   'form-text          (partial process-form-text {:symbol-fn (return `form-text*)
+   'form-txt           (partial process-form-text {:symbol-fn tag->qualilified-symbol
                                                    :attrs-parser parse-attrs})
 
-   'text-              (partial process-form-text {:symbol-fn tag->qualilified-symbol
+   'txt-               (partial process-form-text {:symbol-fn tag->qualilified-symbol
                                                    :attrs-parser parse-column-attrs})
 
    'form-textarea      (partial process-form-text {:symbol-fn (return `form-textarea*)
