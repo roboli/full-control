@@ -14,25 +14,61 @@
                  (row
                   (column-9
                    (panel
-                    (header (title3 "Fill"))
-                    (form {:type :horizontal}
-                          (row
-                           (column-6
-                            (group
-                             (label-4 "Descripcion")
-                             (text-10 {:value (get-in cursor [:item :description])})
-                             (help-2 "*")))
-                           (column-6
-                            (group
-                             (label-4 "Price")
-                             (text-10 {:value (get-in cursor [:item :price])})
-                             (help-2 "*"))))
-                          (row
-                           (column-6
-                            (group
-                             (label-4 "Comments")
-                             (textarea-10 {:value (get-in cursor [:item :comments])})
-                             (help-2 "(optional)")))))))))))
+                    (header (title3 "Normal"))
+                    (form
+                     (with-record (:item cursor)
+                       (row
+                        (column-6
+                         (group-for :description
+                                    (label)
+                                    (text {:max-length 15})
+                                    (help "*")))
+                        (column-6
+                         (group-for :price
+                                    (label)
+                                    (text {:max-length 10})
+                                    (help "*"))))
+                       (row
+                        (column-6
+                         (group-for :comments
+                                    (label)
+                                    (textarea)
+                                    (help "(optional)")))))))))
+                 (row
+                  (column-9
+                   (panel
+                    (header (title3 "Horizontal"))
+                    (form-horizontal
+                     (with-record (:item cursor)
+                       (row
+                        (column-6
+                         (group-for :description
+                                    (label-4)
+                                    (text-6)
+                                    (help-2 "*")))
+                        (column-6
+                         (group-for :price
+                                    (label-4)
+                                    (text-6 {:max-length 10})
+                                    (help-2 "*"))))
+                       (row
+                        (column-6
+                         (group-for :comments
+                                    (label-4)
+                                    (textarea-6)
+                                    (help-2 "(optional)")))))))))
+                 (row
+                  (column-9
+                   (panel
+                    (header (title3 "Inline"))
+                    (form-inline
+                     (with-record (:item cursor)
+                       (group-for :description
+                                  (text {:max-length 15
+                                         :placeholder "Name"}))
+                       (group-for :price
+                                  (text {:max-length 10}))
+                       (group-for :comments
+                                  (text))))))))))
 
-(fc/root page app-state {:target (. js/document (getElementById "app"))
-                         :state {:texto "Hey you, hey me..."}})
+(fc/root page app-state {:target (. js/document (getElementById "app"))})
