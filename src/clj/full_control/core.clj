@@ -113,9 +113,9 @@
    (partial column-control-defn "txt-" 'txt*)
    start end))
 
-(defmacro deftextarea-col [start & [end]]
+(defmacro deftxtarea-col [start & [end]]
   (dofun
-   (partial column-control-defn "textarea-" 'form-textarea*)
+   (partial column-control-defn "txtarea-" 'txtarea*)
    start end))
 
 (defmacro defhelp-col [start & [end]]

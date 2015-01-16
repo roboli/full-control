@@ -19,8 +19,8 @@
 (defn- match-txt-name [s]
   (match-name #"txt-(?:\d|1[0-2])$" 'txt- s))
 
-(defn- match-textarea-name [s]
-  (match-name #"textarea-(?:\d|1[0-2])$" 'textarea- s))
+(defn- match-txtarea-name [s]
+  (match-name #"txtarea-(?:\d|1[0-2])$" 'txtarea- s))
 
 (defn- match-help-name [s]
   (match-name #"help-(?:\d|1[0-2])$" 'help- s))
@@ -63,7 +63,7 @@
   (partial expand-tags (search-tag-with (partial get)
                                         #(get %1 (match-label-name %2))
                                         #(get %1 (match-txt-name %2))
-                                        #(get %1 (match-textarea-name %2))
+                                        #(get %1 (match-txtarea-name %2))
                                         #(get %1 (match-help-name %2)))))
 
 (def ^:private expand-tags-with-all

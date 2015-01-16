@@ -3,7 +3,7 @@
                                               gen-dom-fns
                                               deflabel-col
                                               deftxt-col
-                                              deftextarea-col
+                                              deftxtarea-col
                                               defhelp-col]])
   (:require [clojure.string :as str]
             [goog.string :as gstr]
@@ -81,6 +81,9 @@
   (apply input* (assoc attrs
                   :type "text"
                   :class-name "form-control") body))
+
+(defn txtarea* [attrs & body]
+  (apply textarea* (assoc attrs :class-name "form-control") body))
 
 (defn page* [attrs & body]
   {:pre [(map? attrs)]}
@@ -326,10 +329,7 @@
 
 (deftxt-col 1 12)
 
-(defn form-textarea* [attrs & body]
-  (apply textarea* (assoc attrs :className "form-control") body))
-
-(deftextarea-col 1 12)
+(deftxtarea-col 1 12)
 
 (defn help* [attrs & body]
   {:pre [(map? attrs)]}

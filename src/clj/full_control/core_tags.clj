@@ -15,6 +15,7 @@
 (def ^:private general-tags (into #{'with-controls
                                     'btn
                                     'txt
+                                    'txtarea
                                     'grid-view
                                     'grid
                                     'modal
@@ -50,6 +51,10 @@
                                                  :expander identity})
 
    'txt                (partial process-control {:symbol-fn tag->qualilified-symbol
+                                                 :attrs-parser parse-attrs
+                                                 :expander identity})
+
+   'txtarea            (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
@@ -211,15 +216,15 @@
                                                                         general-tags
                                                                         'form-label
                                                                         'form-txt
-                                                                        'form-textarea
+                                                                        'form-txtarea
                                                                         'help
                                                                         'label-
                                                                         'txt-
-                                                                        'textarea-
+                                                                        'txtarea-
                                                                         'help-)
                                                             :aliases {'form-label 'label
                                                                       'form-txt 'txt
-                                                                      'form-textarea 'textarea})})
+                                                                      'form-txtarea 'txtarea})})
 
    'form-label         (partial process-form-label {:symbol-fn (return `label*)
                                                     :attrs-parser parse-attrs})
@@ -233,10 +238,10 @@
    'txt-               (partial process-form-text {:symbol-fn tag->qualilified-symbol
                                                    :attrs-parser parse-column-attrs})
 
-   'form-textarea      (partial process-form-text {:symbol-fn (return `form-textarea*)
+   'form-txtarea       (partial process-form-text {:symbol-fn tag->qualilified-symbol
                                                    :attrs-parser parse-attrs})
 
-   'textarea-          (partial process-form-text {:symbol-fn tag->qualilified-symbol
+   'txtarea-           (partial process-form-text {:symbol-fn tag->qualilified-symbol
                                                    :attrs-parser parse-column-attrs})
 
    'help               (partial process-control {:symbol-fn tag->qualilified-symbol

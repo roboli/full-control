@@ -32,7 +32,7 @@
                         (column-6
                          (group-for :comments
                                     (label)
-                                    (textarea)
+                                    (txtarea)
                                     (help "(optional)")))))))))
                  (row
                   (column-9
@@ -55,7 +55,7 @@
                         (column-6
                          (group-for :comments
                                     (label-4)
-                                    (textarea-6)
+                                    (txtarea-6)
                                     (help-2 "(optional)")))))))))
                  (row
                   (column-9
