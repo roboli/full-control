@@ -13,16 +13,16 @@
                 (with-attrs {:id "msg-modal"}
                   (header (title3 "Msg Modal"))
                   (p "Please click a button: ")
-                  (footer (button {:on-click (fn [_]
-                                               (e/emit (:ch opts)
-                                                       (e/modal-hide :modal-msg)
-                                                       #(fc/update! cursor :msg "It's okay!")))}
-                                  "Ok")
-                          (button {:on-click (fn [_]
-                                               (e/emit (:ch opts)
-                                                       (e/modal-hide :modal-msg)
-                                                       #(fc/update! cursor :msg "Not okay...")))}
-                                  "Cancel")))))
+                  (footer (btn {:on-click (fn [_]
+                                            (e/emit (:ch opts)
+                                                    (e/modal-hide :modal-msg)
+                                                    #(fc/update! cursor :msg "It's okay!")))}
+                               "Ok")
+                          (btn {:on-click (fn [_]
+                                            (e/emit (:ch opts)
+                                                    (e/modal-hide :modal-msg)
+                                                    #(fc/update! cursor :msg "Not okay...")))}
+                               "Cancel")))))
 
 (defpage page [cursor owner opts]
   (init-state []
@@ -43,9 +43,9 @@
                 (modal {:id "my-modal"}
                        (header (title3 "My Modal"))
                        (p "Hello Modal!")
-                       (footer (button {:on-click #(e/emit (get-in st [:modal-chs :ch])
-                                                           (e/modal-hide :modal))}
-                                       "Close")))
+                       (footer (btn {:on-click #(e/emit (get-in st [:modal-chs :ch])
+                                                        (e/modal-hide :modal))}
+                                    "Close")))
                 ;; component modal
                 (fc/build msg-modal cursor {:opts {:ch (get-in st [:modal-msg-chs :ch])}})
                 (navbar (brand (:menu-h cursor)))
@@ -56,15 +56,15 @@
                     (header (title3 (:panel-title cursor)))
                     (row
                      (column-6
-                      (button {:on-click #(e/emit (get-in st [:modal-chs :ch])
-                                                  (e/modal-show :modal))}
-                              "Open-1"))
+                      (btn {:on-click #(e/emit (get-in st [:modal-chs :ch])
+                                               (e/modal-show :modal))}
+                           "Open-1"))
                      (column-6
                       (row
                        (column-6
-                        (button {:on-click #(e/emit (get-in st [:modal-msg-chs :ch])
-                                                    (e/modal-show :modal-msg))}
-                                "Open-2"))
+                        (btn {:on-click #(e/emit (get-in st [:modal-msg-chs :ch])
+                                                 (e/modal-show :modal-msg))}
+                             "Open-2"))
                        (column-6
                         (p (str "Response: " (:msg cursor)))))))))))))
 

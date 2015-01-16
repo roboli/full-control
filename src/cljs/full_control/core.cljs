@@ -68,7 +68,7 @@
 ;; All om.dom/tags
 (gen-dom-fns)
 
-(defn button*
+(defn btn*
   "Attributes available in the attrs map are :class-name, :on-click."
   [attrs & body]
   {:pre [(map? attrs)]}
@@ -151,13 +151,13 @@
          :role "navigation"}
         (div* {:class-name "container-fluid"}
               (div* {:class-name "navbar-header"}
-                    (dom/button #js {:type "button"
-                                     :className "navbar-toggle collapsed"
-                                     :data-toggle "collapse"
-                                     :data-target "#navbar-collapse-items"}
-                                (span* {:class-name "icon-bar"})
-                                (span* {:class-name "icon-bar"})
-                                (span* {:class-name "icon-bar"}))
+                    (button* {:type "button"
+                              :class-name "navbar-toggle collapsed"
+                              :data-toggle "collapse"
+                              :data-target "#navbar-collapse-items"}
+                             (span* {:class-name "icon-bar"})
+                             (span* {:class-name "icon-bar"})
+                             (span* {:class-name "icon-bar"}))
                     (let [brand (->> body
                                      (filter :brand)
                                      first
@@ -188,15 +188,15 @@
            (li* {}
                 (apply a* (dissoc lnk :body) (:body lnk))))))
 
-(defn navbar-button*
+(defn navbar-btn*
   "Button to render inside the navbar control. Attributes available in the attrs
-  map same as the button* control."
+  map same as the btn* control."
   [attrs & body]
   {:pre [(map? attrs)]}
-  (apply button* (assoc attrs
-                   :class-name (str "navbar-btn "
-                                    (get float-class (:float attrs))
-                                    " " (:class-name attrs))) body))
+  (apply btn* (assoc attrs
+                :class-name (str "navbar-btn "
+                                 (get float-class (:float attrs))
+                                 " " (:class-name attrs))) body))
 
 ;;;
 ;;; Panels

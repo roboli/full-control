@@ -13,6 +13,7 @@
   `~(symbol (str "full-control.core/" (name tag) "*")))
 
 (def ^:private general-tags (into #{'with-controls
+                                    'btn
                                     'grid
                                     'table
                                     'modal
@@ -42,6 +43,10 @@
                                                                         'navbar
                                                                         'fixed-layout
                                                                         'fluid-layout))})
+
+   'btn                (partial process-control {:symbol-fn tag->qualilified-symbol
+                                                 :attrs-parser parse-attrs
+                                                 :expander identity})
 
    ;; Layout
    'fixed-layout       (partial process-control {:symbol-fn (return `fixed-layout*)
@@ -82,7 +87,7 @@
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
    
-   'button-h           (partial process-control {:symbol-fn (return `navbar-button*)
+   'button-h           (partial process-control {:symbol-fn (return `navbar-btn*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
