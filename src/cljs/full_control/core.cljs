@@ -271,6 +271,10 @@
 ;;; Tables
 ;;;
 
+(defn grid* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply dom/table #js {:className "table"} body))
+
 (defn grid-view* [attrs & body]
   {:pre [(map? attrs)]}
   (table* (assoc attrs
@@ -278,10 +282,6 @@
                                        (if (:borders attrs) "table-bordered")
                                        (if (:striped attrs) "table-striped")]))
           (apply tbody* attrs body)))
-
-(defn table* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply dom/table #js {:className "table"} body))
 
 ;;;
 ;;; Modals

@@ -45,10 +45,10 @@
                                (column-4
                                 (p (:image-url data))))))))
                    (panel
-                    (header (title1 "Table"))
+                    (header (title1 "Grid"))
                     (p "More data here...")
                     (stretch
-                     (table
+                     (grid
                       (thead
                        (th "Description")
                        (th "Price")

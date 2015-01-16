@@ -15,7 +15,7 @@
 (def ^:private general-tags (into #{'with-controls
                                     'btn
                                     'grid-view
-                                    'table
+                                    'grid
                                     'modal
                                     'form
                                     'form-horizontal
@@ -87,9 +87,9 @@
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
    
-   'navbar-btn           (partial process-control {:symbol-fn (return `navbar-btn*)
-                                                   :attrs-parser parse-attrs
-                                                   :expander identity})
+   'navbar-btn         (partial process-control {:symbol-fn (return `navbar-btn*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander identity})
 
    ;; Panels
    'panel              (partial process-control {:symbol-fn (return `panel*)
@@ -129,13 +129,13 @@
                                                  :expander identity})
 
    ;; Tables
-   'grid-view               (partial process-grid-view {:attrs-parser parse-attrs
-                                                        :expander (expand-tags-with
-                                                                   :available (conj
-                                                                               general-tags
-                                                                               'row))})
+   'grid-view          (partial process-grid-view {:attrs-parser parse-attrs
+                                                   :expander (expand-tags-with
+                                                              :available (conj
+                                                                          general-tags
+                                                                          'row))})
 
-   'table              (partial process-control {:symbol-fn (return `table*)
+   'grid               (partial process-control {:symbol-fn (return `grid*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
                                                             :available #{'thead 'tbody})})
