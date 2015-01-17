@@ -63,6 +63,11 @@
 ;;; General controls
 ;;;
 
+(def sizes {:xs "xs"
+            :sm "sm"
+            :md "md"
+            :lg "lg"})
+
 (def nbsp* (gstr/unescapeEntities "&nbsp;"))
 
 ;; All om.dom/tags
@@ -80,7 +85,10 @@
   {:pre [(map? attrs)]}
   (apply input* (assoc attrs
                   :type "text"
-                  :class-name "form-control") body))
+                  :class-name (str "form-control "
+                                   (if (:size attrs)
+                                     (str "input-" (get sizes (:size attrs))))))
+         body))
 
 (defn txtarea* [attrs & body]
   (apply textarea* (assoc attrs :class-name "form-control") body))
@@ -92,11 +100,6 @@
 ;;;
 ;;; Layout (Bootstap's grid system)
 ;;;
-
-(def col-sizes {:xs "xs"
-                :sm "sm"
-                :md "md"
-                :lg "lg"})
 
 (defn fixed-layout* [attrs & body]
   {:pre [(map? attrs)]}
@@ -112,7 +115,7 @@
 
 (defn column*
   "Returns om.dom/div component with its :className set to
-  'col-size-n col-size-n ...' where size and n are values in the attrs map.
+  'size-n size-n ...' where size and n are values in the attrs map.
   attrs must be in the form of
 
   e.g. {:sizes [{:size :sm :cols 6}
@@ -122,7 +125,7 @@
   {:pre [(map? attrs)]}
   (apply div* {:class-name (str/join " " (map
                                           #(str "col-"
-                                                (get col-sizes (:size %))
+                                                (get sizes (:size %))
                                                 "-"
                                                 (:cols %))
                                           (:sizes attrs)))} body))
@@ -133,7 +136,7 @@
 ;;
 ;; Each column maps with bootstrap's grid system columns class names. Attribute
 ;; available in the attrs map is :size which it can be a value from the
-;; col-sizes map. See defcolumn macro in full-control.core clj namespace.
+;; sizes map. See defcolumn macro in full-control.core clj namespace.
 (defcolumn 1 12)
 
 ;;;
