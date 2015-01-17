@@ -214,22 +214,22 @@
                                                  :expander (expand-group-for-tags-with
                                                             :available (conj
                                                                         general-tags
-                                                                        'form-label
+                                                                        'form-lbl
                                                                         'form-txt
                                                                         'form-txtarea
                                                                         'help
-                                                                        'label-
+                                                                        'lbl-
                                                                         'txt-
                                                                         'txtarea-
                                                                         'help-)
-                                                            :aliases {'form-label 'label
+                                                            :aliases {'form-lbl 'lbl
                                                                       'form-txt 'txt
                                                                       'form-txtarea 'txtarea})})
 
-   'form-label         (partial process-form-label {:symbol-fn (return `label*)
+   'form-lbl           (partial process-form-label {:symbol-fn (return `label*)
                                                     :attrs-parser parse-attrs})
 
-   'label-             (partial process-form-label {:symbol-fn tag->qualilified-symbol
+   'lbl-               (partial process-form-label {:symbol-fn tag->qualilified-symbol
                                                     :attrs-parser parse-column-attrs})
 
    'form-txt           (partial process-form-text {:symbol-fn tag->qualilified-symbol

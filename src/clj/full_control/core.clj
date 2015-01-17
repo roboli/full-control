@@ -97,16 +97,19 @@
   [start & [end]]
   (dofun column-defn start end))
 
+(defmacro deflbl-col [start & [end]]
+  (dofun
+   (fn [n]
+     `(defn ~(symbol (str "lbl-" n "*")) [~'attrs & ~'body]
+        {:pre [(map? ~'attrs)]}
+        (apply lbl* (assoc ~'attrs :cols ~n) ~'body)))
+   start end))
+
 (defn- column-control-defn [stag tag n]
   `(defn ~(symbol (str stag n "*")) [~'attrs & ~'body]
      {:pre [(map? ~'attrs)]}
      (column* {:sizes [(assoc ~'attrs :cols ~n)]}
               (apply ~tag ~'attrs ~'body))))
-
-(defmacro deflabel-col [start & [end]]
-  (dofun
-   (partial column-control-defn "label-" 'label*)
-   start end))
 
 (defmacro deftxt-col [start & [end]]
   (dofun

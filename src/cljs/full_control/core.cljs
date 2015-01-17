@@ -1,7 +1,7 @@
 (ns full-control.core
   (:require-macros [full-control.core :refer [defcolumn
                                               gen-dom-fns
-                                              deflabel-col
+                                              deflbl-col
                                               deftxt-col
                                               deftxtarea-col
                                               defhelp-col]])
@@ -80,6 +80,17 @@
   (apply dom/button #js {:type "button"
                          :className (str "btn btn-default " (:class-name attrs))
                          :onClick (:on-click attrs)} body))
+
+(defn lbl* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply label* (assoc attrs
+                  :class-name (str "control-label "
+                                   (if (:size attrs)
+                                     (str "col-"
+                                          (get sizes (:size attrs))
+                                          "-"
+                                          (:cols attrs)))))
+         body))
 
 (defn txt* [attrs & body]
   {:pre [(map? attrs)]}
@@ -328,7 +339,7 @@
 ;;; Forms
 ;;;
 
-(deflabel-col 1 12)
+(deflbl-col 1 12)
 
 (deftxt-col 1 12)
 

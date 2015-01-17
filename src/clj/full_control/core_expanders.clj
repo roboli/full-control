@@ -13,8 +13,8 @@
 (defn- match-title-name [s]
   (match-name #"title[1-5]$" 'title s))
 
-(defn- match-label-name [s]
-  (match-name #"label-(?:\d|1[0-2])$" 'label- s))
+(defn- match-lbl-name [s]
+  (match-name #"lbl-(?:\d|1[0-2])$" 'lbl- s))
 
 (defn- match-txt-name [s]
   (match-name #"txt-(?:\d|1[0-2])$" 'txt- s))
@@ -61,7 +61,7 @@
 
 (def ^:private expand-group-for-tags-with
   (partial expand-tags (search-tag-with (partial get)
-                                        #(get %1 (match-label-name %2))
+                                        #(get %1 (match-lbl-name %2))
                                         #(get %1 (match-txt-name %2))
                                         #(get %1 (match-txtarea-name %2))
                                         #(get %1 (match-help-name %2)))))

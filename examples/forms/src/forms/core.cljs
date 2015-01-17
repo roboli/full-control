@@ -20,18 +20,18 @@
                        (row
                         (column-6
                          (group-for :description
-                                    (label)
+                                    (lbl)
                                     (txt {:max-length 15})
                                     (help "*")))
                         (column-6
                          (group-for :price
-                                    (label)
+                                    (lbl)
                                     (txt {:max-length 10})
                                     (help "*"))))
                        (row
                         (column-6
                          (group-for :comments
-                                    (label)
+                                    (lbl)
                                     (txtarea)
                                     (help "(optional)")))))))))
                  (row
@@ -43,18 +43,18 @@
                        (row
                         (column-6
                          (group-for :description
-                                    (label-4)
+                                    (lbl-4)
                                     (txt-6)
                                     (help-2 "*")))
                         (column-6
                          (group-for :price
-                                    (label-4)
+                                    (lbl-4)
                                     (txt-6 {:max-length 10})
                                     (help-2 "*"))))
                        (row
                         (column-6
                          (group-for :comments
-                                    (label-4)
+                                    (lbl-4)
                                     (txtarea-6)
                                     (help-2 "(optional)")))))))))
                  (row
