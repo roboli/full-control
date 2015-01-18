@@ -353,7 +353,10 @@
 
 (defn form-group* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply div* {:class-name "form-group"} body))
+  (apply div* {:class-name (str "form-group "
+                                (if (:size attrs)
+                                  (str "form-group-" (get sizes (:size attrs)))))}
+         body))
 
 (defn form-horizontal* [attrs & body]
   {:pre [(map? attrs)]}
