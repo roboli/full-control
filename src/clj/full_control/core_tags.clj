@@ -17,6 +17,7 @@
                                     'txt
                                     'txtarea
                                     'dropdown
+                                    'checkbox
                                     'grid-view
                                     'grid
                                     'modal
@@ -63,6 +64,10 @@
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
                                                             :available #{'option})})
+   
+   'checkbox           (partial process-control {:symbol-fn tag->qualilified-symbol
+                                                 :attrs-parser parse-attrs
+                                                 :expander identity})
 
    ;; Layout
    'fixed-layout       (partial process-control {:symbol-fn (return `fixed-layout*)

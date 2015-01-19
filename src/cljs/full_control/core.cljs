@@ -108,6 +108,12 @@
 (defn dropdown* [attrs & body]
   (apply select* (assoc attrs :class-name "form-control") body))
 
+(defn checkbox* [attrs & body]
+  (div* {:class-name "checkbox"}
+        (apply label* {}
+               (cons (input* (assoc attrs :type "checkbox"))
+                     body))))
+
 (defn page* [attrs & body]
   {:pre [(map? attrs)]}
   (apply div* attrs body))
