@@ -16,6 +16,7 @@
                                     'btn
                                     'txt
                                     'txtarea
+                                    'dropdown
                                     'grid-view
                                     'grid
                                     'modal
@@ -57,6 +58,10 @@
    'txtarea            (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
+
+   'dropdown           (partial process-dropdown {:attrs-parser parse-attrs
+                                                  :expander (expand-tags-with
+                                                             :attrs-parser #{'option})})
 
    ;; Layout
    'fixed-layout       (partial process-control {:symbol-fn (return `fixed-layout*)

@@ -104,6 +104,9 @@
 (defn txtarea* [attrs & body]
   (apply textarea* (assoc attrs :class-name "form-control") body))
 
+(defn dropdown* [attrs & body]
+  (apply select* (assoc attrs :class-name "form-control") body))
+
 (defn page* [attrs & body]
   {:pre [(map? attrs)]}
   (apply div* attrs body))
