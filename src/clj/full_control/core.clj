@@ -125,3 +125,8 @@
   (dofun
    (partial column-control-defn "help-" 'help*)
    start end))
+
+(defmacro defdropdown-col [start & [end]]
+  (dofun
+   (partial column-control-defn "dropdown-" 'dropdown*)
+   start end))

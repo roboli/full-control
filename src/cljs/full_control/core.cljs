@@ -4,6 +4,7 @@
                                               deflbl-col
                                               deftxt-col
                                               deftxtarea-col
+                                              defdropdown-col
                                               defhelp-col]])
   (:require [clojure.string :as str]
             [goog.string :as gstr]
@@ -347,6 +348,8 @@
 (deftxt-col 1 12)
 
 (deftxtarea-col 1 12)
+
+(defdropdown-col 1 12)
 
 (defn help* [attrs & body]
   {:pre [(map? attrs)]}

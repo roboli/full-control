@@ -67,17 +67,17 @@
                                               (update! ~r ~field-key
                                                        (.. v# ~'-target ~'-value))))))))))
 
-(defn- process-dropdown [{:keys [attrs-parser expander]} _ & body]
+(defn- process-form-dropdown [{:keys [symbol-fn attrs-parser expander]} tag & body]
   (let [[attrs [[_ [nm coll] & body]]] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
       (let [field-key (:field-key *attrs*)
             r (gensym "r")]
         `(let ~[r (:cursor *attrs*)]
-           (apply dropdown* ~(assoc attrs
-                               :id (name field-key)
-                               :value (list `get r field-key)
-                               :on-change `(fn [v#]
-                                             (update! ~r ~field-key
-                                                      (.. v# ~'-target ~'-value))))
+           (apply ~(symbol-fn tag) ~(assoc attrs
+                                      :id (name field-key)
+                                      :value (list `get r field-key)
+                                      :on-change `(fn [v#]
+                                                    (update! ~r ~field-key
+                                                             (.. v# ~'-target ~'-value))))
                   (for [~nm ~coll]
                     ~@(doall (map expander body)))))))))

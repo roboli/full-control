@@ -228,6 +228,7 @@
                                                                         'lbl-
                                                                         'txt-
                                                                         'txtarea-
+                                                                        'dropdown-
                                                                         'help-)
                                                             :aliases {'form-lbl 'lbl
                                                                       'form-txt 'txt
@@ -252,9 +253,15 @@
    'txtarea-           (partial process-form-text {:symbol-fn tag->qualilified-symbol
                                                    :attrs-parser parse-column-attrs})
 
-   'form-dropdown      (partial process-dropdown {:attrs-parser parse-attrs
-                                                  :expander (expand-tags-with
-                                                             :attrs-parser #{'option})})
+   'form-dropdown      (partial process-form-dropdown {:symbol-fn tag->qualilified-symbol
+                                                       :attrs-parser parse-attrs
+                                                       :expander (expand-tags-with
+                                                                  :attrs-parser #{'option})})
+
+   'dropdown-          (partial process-form-dropdown {:symbol-fn tag->qualilified-symbol
+                                                       :attrs-parser parse-column-attrs
+                                                       :expander (expand-tags-with
+                                                                  :attrs-parser #{'option})})
 
    'help               (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
