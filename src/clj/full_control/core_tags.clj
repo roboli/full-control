@@ -18,6 +18,7 @@
                                     'txtarea
                                     'dropdown
                                     'checkbox
+                                    'radio
                                     'grid-view
                                     'grid
                                     'modal
@@ -66,6 +67,10 @@
                                                             :available #{'option})})
    
    'checkbox           (partial process-control {:symbol-fn tag->qualilified-symbol
+                                                 :attrs-parser parse-attrs
+                                                 :expander identity})
+   
+   'radio              (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 

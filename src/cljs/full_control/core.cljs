@@ -114,6 +114,12 @@
                (cons (input* (assoc attrs :type "checkbox"))
                      body))))
 
+(defn radio* [attrs & body]
+  (div* {:class-name "radio"}
+        (apply label* {}
+               (cons (input* (assoc attrs :type "radio"))
+                     body))))
+
 (defn page* [attrs & body]
   {:pre [(map? attrs)]}
   (apply div* attrs body))
