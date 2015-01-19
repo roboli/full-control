@@ -59,9 +59,10 @@
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'dropdown           (partial process-dropdown {:attrs-parser parse-attrs
-                                                  :expander (expand-tags-with
-                                                             :attrs-parser #{'option})})
+   'dropdown           (partial process-control {:symbol-fn tag->qualilified-symbol
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-tags-with
+                                                            :available #{'option})})
 
    ;; Layout
    'fixed-layout       (partial process-control {:symbol-fn (return `fixed-layout*)
@@ -222,6 +223,7 @@
                                                                         'form-lbl
                                                                         'form-txt
                                                                         'form-txtarea
+                                                                        'form-dropdown
                                                                         'help
                                                                         'lbl-
                                                                         'txt-
@@ -229,7 +231,8 @@
                                                                         'help-)
                                                             :aliases {'form-lbl 'lbl
                                                                       'form-txt 'txt
-                                                                      'form-txtarea 'txtarea})})
+                                                                      'form-txtarea 'txtarea
+                                                                      'form-dropdown 'dropdown})})
 
    'form-lbl           (partial process-form-label {:symbol-fn (return `label*)
                                                     :attrs-parser parse-attrs})
@@ -248,6 +251,10 @@
 
    'txtarea-           (partial process-form-text {:symbol-fn tag->qualilified-symbol
                                                    :attrs-parser parse-column-attrs})
+
+   'form-dropdown      (partial process-dropdown {:attrs-parser parse-attrs
+                                                  :expander (expand-tags-with
+                                                             :attrs-parser #{'option})})
 
    'help               (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
