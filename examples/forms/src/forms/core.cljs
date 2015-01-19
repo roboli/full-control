@@ -3,7 +3,10 @@
 
 (enable-console-print!)
 
-(def app-state (atom {:item {:description "Screw Driver"
+(def app-state (atom {:brands [{:id 1 :name "Hermex"}
+                               {:id 2 :name "Stanley"}]
+                      :item {:description "Screw Driver"
+                             :brand-id 2
                              :price 44.5
                              :comments "Yellow color plastic."}}))
 
@@ -30,6 +33,13 @@
                                     (help "*"))))
                        (row
                         (column-6
+                         (group-for :brand-id
+                                    (lbl "Brand")
+                                    (dropdown
+                                     (with-source [data (:brands cursor)]
+                                       (option {:value (:id data)} (:name data))))
+                                    (help "*")))
+                        (column-6
                          (group-for :comments
                                     (lbl)
                                     (txtarea)
@@ -53,10 +63,17 @@
                                     (help-2 "*"))))
                        (row
                         (column-6
+                         (group-for :brand-id
+                                    (lbl-4 "Brand")
+                                    (dropdown-6
+                                     (with-source [data (:brands cursor)]
+                                       (option {:value (:id data)} (:name data))))
+                                    (help-2 "*")))
+                        (column-6
                          (group-for :comments
                                     (lbl-4)
                                     (txtarea-6)
-                                    (help-2 "(optional)")))))))))
+                                    (help-2 "(opt)")))))))))
                  (row
                   (column-9
                    (panel
@@ -65,7 +82,7 @@
                      (with-record (:item cursor)
                        (group-for :description
                                   (txt {:max-length 15
-                                             :placeholder "Name"}))
+                                        :placeholder "Name"}))
                        (group-for :price
                                   (txt {:max-length 10}))
                        (group-for :comments
