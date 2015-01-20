@@ -244,6 +244,7 @@
                                                                         'form-txt
                                                                         'form-txtarea
                                                                         'form-dropdown
+                                                                        'form-checkbox
                                                                         'help
                                                                         'lbl-
                                                                         'txt-
@@ -253,7 +254,8 @@
                                                             :aliases {'form-lbl 'lbl
                                                                       'form-txt 'txt
                                                                       'form-txtarea 'txtarea
-                                                                      'form-dropdown 'dropdown})})
+                                                                      'form-dropdown 'dropdown
+                                                                      'form-checkbox 'checkbox})})
 
    'form-lbl           (partial process-form-label {:symbol-fn (return `label*)
                                                     :attrs-parser parse-attrs})
@@ -282,6 +284,9 @@
                                                        :attrs-parser parse-column-attrs
                                                        :expander (expand-tags-with
                                                                   :attrs-parser #{'option})})
+
+   'form-checkbox      (partial process-form-checkbox {:symbol-fn tag->qualilified-symbol
+                                                       :attrs-parser parse-attrs})
 
    'help               (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
