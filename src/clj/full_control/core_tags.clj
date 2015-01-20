@@ -246,10 +246,12 @@
                                                                         'form-dropdown
                                                                         'form-checkbox
                                                                         'help
+                                                                        'column-
                                                                         'lbl-
                                                                         'txt-
                                                                         'txtarea-
                                                                         'dropdown-
+                                                                        'checkbox-
                                                                         'help-)
                                                             :aliases {'form-lbl 'lbl
                                                                       'form-txt 'txt
@@ -287,6 +289,9 @@
 
    'form-checkbox      (partial process-form-checkbox {:symbol-fn tag->qualilified-symbol
                                                        :attrs-parser parse-attrs})
+
+   'checkbox-          (partial process-form-checkbox {:symbol-fn tag->qualilified-symbol
+                                                       :attrs-parser parse-column-attrs})
 
    'help               (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs

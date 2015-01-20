@@ -5,6 +5,7 @@
                                               deftxt-col
                                               deftxtarea-col
                                               defdropdown-col
+                                              defcheckbox-col
                                               defhelp-col]])
   (:require [clojure.string :as str]
             [goog.string :as gstr]
@@ -376,6 +377,8 @@
 (deftxtarea-col 1 12)
 
 (defdropdown-col 1 12)
+
+(defcheckbox-col 1 12)
 
 (defn help* [attrs & body]
   {:pre [(map? attrs)]}

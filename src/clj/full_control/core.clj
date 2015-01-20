@@ -130,3 +130,8 @@
   (dofun
    (partial column-control-defn "dropdown-" 'dropdown*)
    start end))
+
+(defmacro defcheckbox-col [start & [end]]
+  (dofun
+   (partial column-control-defn "checkbox-" 'checkbox*)
+   start end))

@@ -25,6 +25,9 @@
 (defn- match-dropdown-name [s]
   (match-name #"dropdown-(?:\d|1[0-2])$" 'dropdown- s))
 
+(defn- match-checkbox-name [s]
+  (match-name #"checkbox-(?:\d|1[0-2])$" 'checkbox- s))
+
 (defn- match-help-name [s]
   (match-name #"help-(?:\d|1[0-2])$" 'help- s))
 
@@ -64,10 +67,12 @@
 
 (def ^:private expand-group-for-tags-with
   (partial expand-tags (search-tag-with (partial get)
+                                        #(get %1 (match-col-name %2))
                                         #(get %1 (match-lbl-name %2))
                                         #(get %1 (match-txt-name %2))
                                         #(get %1 (match-txtarea-name %2))
                                         #(get %1 (match-dropdown-name %2))
+                                        #(get %1 (match-checkbox-name %2))
                                         #(get %1 (match-help-name %2)))))
 
 (def ^:private expand-tags-with-all
