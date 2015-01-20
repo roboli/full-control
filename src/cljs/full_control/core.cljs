@@ -109,17 +109,20 @@
   (apply select* (assoc attrs :class-name "form-control") body))
 
 (defn checkbox* [attrs & body]
+  {:pre [(map? attrs)]}
   (div* {:class-name "checkbox"}
         (apply label* {}
                (cons (input* (assoc attrs :type "checkbox"))
                      body))))
 
 (defn checkbox-inline* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply label* {:class-name "checkbox-inline"}
          (cons (input* (assoc attrs :type "checkbox"))
                body)))
 
 (defn radio* [attrs & body]
+  {:pre [(map? attrs)]}
   (div* {:class-name "radio"}
         (apply label* {}
                (cons (input* (assoc attrs :type "radio"))
