@@ -20,6 +20,7 @@
                                     'checkbox
                                     'checkbox-inline
                                     'radio
+                                    'radio-inline
                                     'grid-view
                                     'grid
                                     'modal
@@ -76,6 +77,10 @@
                                                  :expander identity})
    
    'radio              (partial process-control {:symbol-fn tag->qualilified-symbol
+                                                 :attrs-parser parse-attrs
+                                                 :expander identity})
+
+   'radio-inline       (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 

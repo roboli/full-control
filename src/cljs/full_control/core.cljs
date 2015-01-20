@@ -128,6 +128,12 @@
                (cons (input* (assoc attrs :type "radio"))
                      body))))
 
+(defn radio-inline* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply label* {:class-name "radio-inline"}
+         (cons (input* (assoc attrs :type "radio"))
+               body)))
+
 (defn page* [attrs & body]
   {:pre [(map? attrs)]}
   (apply div* attrs body))
