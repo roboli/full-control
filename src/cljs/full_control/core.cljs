@@ -114,6 +114,11 @@
                (cons (input* (assoc attrs :type "checkbox"))
                      body))))
 
+(defn checkbox-inline* [attrs & body]
+  (apply label* {:class-name "checkbox-inline"}
+         (cons (input* (assoc attrs :type "checkbox"))
+               body)))
+
 (defn radio* [attrs & body]
   (div* {:class-name "radio"}
         (apply label* {}

@@ -18,6 +18,7 @@
                                     'txtarea
                                     'dropdown
                                     'checkbox
+                                    'checkbox-inline
                                     'radio
                                     'grid-view
                                     'grid
@@ -67,6 +68,10 @@
                                                             :available #{'option})})
    
    'checkbox           (partial process-control {:symbol-fn tag->qualilified-symbol
+                                                 :attrs-parser parse-attrs
+                                                 :expander identity})
+
+   'checkbox-inline    (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
    
