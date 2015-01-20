@@ -19,6 +19,7 @@
                                     'dropdown
                                     'checkbox
                                     'checkbox-inline
+                                    'checkbox-for
                                     'radio
                                     'radio-inline
                                     'grid-view
@@ -234,6 +235,9 @@
                                               ;; HACK: must render &nbsp after each
                                               ;; form-group to display correctly
                                               :transformers [#(interpose `nbsp* %)]})
+
+   'checkbox-for       (partial process-form-checkbox {:symbol-fn (return `checkbox*)
+                                                       :attrs-parser parse-group-for-attrs})
 
    'group-for          (partial process-control {:symbol-fn (return `form-group*)
                                                  :attrs-parser parse-group-for-attrs
