@@ -20,6 +20,7 @@
                                     'checkbox
                                     'checkbox-inline
                                     'checkbox-for
+                                    'checkbox-inline-for
                                     'radio
                                     'radio-inline
                                     'grid-view
@@ -238,6 +239,9 @@
 
    'checkbox-for       (partial process-form-checkbox {:symbol-fn (return `checkbox*)
                                                        :attrs-parser parse-group-for-attrs})
+
+   'checkbox-inline-for (partial process-form-checkbox {:symbol-fn (return `checkbox-inline*)
+                                                        :attrs-parser parse-group-for-attrs})
 
    'group-for          (partial process-control {:symbol-fn (return `form-group*)
                                                  :attrs-parser parse-group-for-attrs
