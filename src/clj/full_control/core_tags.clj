@@ -253,6 +253,7 @@
                                                                         'form-txtarea
                                                                         'form-dropdown
                                                                         'form-checkbox
+                                                                        'form-radio
                                                                         'help
                                                                         'column-
                                                                         'lbl-
@@ -265,7 +266,8 @@
                                                                       'form-txt 'txt
                                                                       'form-txtarea 'txtarea
                                                                       'form-dropdown 'dropdown
-                                                                      'form-checkbox 'checkbox})})
+                                                                      'form-checkbox 'checkbox
+                                                                      'form-radio 'radio})})
 
    'form-lbl           (partial process-form-label {:symbol-fn (return `label*)
                                                     :attrs-parser parse-attrs})
@@ -300,6 +302,9 @@
 
    'checkbox-          (partial process-form-checkbox {:symbol-fn tag->qualilified-symbol
                                                        :attrs-parser parse-column-attrs})
+
+   'form-radio         (partial process-form-radio {:symbol-fn tag->qualilified-symbol
+                                                    :attrs-parser parse-attrs})
 
    'help               (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
