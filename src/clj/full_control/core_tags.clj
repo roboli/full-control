@@ -4,7 +4,7 @@
 ;;; Tags
 ;;;
 
-(def ^:private om-dom-tags (into dom/tags '[input textarea option]))
+(def ^:private om-dom-tags (concat dom/tags '[input textarea option]))
 
 (defn return [x]
   (fn [_] x))
@@ -12,23 +12,23 @@
 (defn- tag->qualilified-symbol [tag]
   `~(symbol (str "full-control.core/" (name tag) "*")))
 
-(def ^:private general-tags (into '[with-controls
-                                    btn
-                                    txt
-                                    txtarea
-                                    dropdown
-                                    checkbox
-                                    checkbox-inline
-                                    checkbox-for
-                                    checkbox-inline-for
-                                    radio
-                                    radio-inline
-                                    grid-view
-                                    grid
-                                    modal
-                                    form
-                                    form-horizontal
-                                    form-inline] om-dom-tags))
+(def ^:private general-tags (concat '[with-controls
+                                      btn
+                                      txt
+                                      txtarea
+                                      dropdown
+                                      checkbox
+                                      checkbox-inline
+                                      checkbox-for
+                                      checkbox-inline-for
+                                      radio
+                                      radio-inline
+                                      grid-view
+                                      grid
+                                      modal
+                                      form
+                                      form-horizontal
+                                      form-inline] om-dom-tags))
 
 (def ^:private general-layout-tags '[row panel navpanel])
 
