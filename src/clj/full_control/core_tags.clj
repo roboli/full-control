@@ -30,7 +30,7 @@
                                     form-horizontal
                                     form-inline] om-dom-tags))
 
-(def ^:private general-layout-tags (conj general-tags 'row 'panel 'navpanel))
+(def ^:private general-layout-tags '[row panel navpanel])
 
 (def ^:private dom-tags
   (reduce #(assoc %1
@@ -48,7 +48,8 @@
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
                                                             :available (conj
-                                                                        general-layout-tags
+                                                                        (concat general-tags
+                                                                                general-layout-tags)
                                                                         'navbar
                                                                         'fixed-layout
                                                                         'fluid-layout))})
@@ -90,12 +91,14 @@
    'fixed-layout       (partial process-control {:symbol-fn (return `fixed-layout*)
                                                  :attrs-parser parse-layout-attrs
                                                  :expander (expand-tags-with
-                                                            :available general-layout-tags)})
+                                                            :available (concat general-tags
+                                                                               general-layout-tags))})
    
    'fluid-layout       (partial process-control {:symbol-fn (return `fluid-layout*)
                                                  :attrs-parser parse-layout-attrs
                                                  :expander (expand-tags-with
-                                                            :available general-layout-tags)})
+                                                            :available (concat general-tags
+                                                                               general-layout-tags))})
    
    'row                (partial process-control {:symbol-fn (return `row*)
                                                  :attrs-parser parse-attrs
@@ -109,7 +112,8 @@
                                                  :attrs-parser parse-column-attrs
                                                  :expander (expand-tags-with
                                                             :available (conj
-                                                                        general-layout-tags
+                                                                        (concat general-tags
+                                                                                general-layout-tags)
                                                                         'group-for))})
 
    ;; Navbar
