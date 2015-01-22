@@ -48,7 +48,9 @@
                                    ~args)}))
       (throw (RuntimeException. "No render-state form provided")))))
 
-(defn- gen-fc-mcr [tag]
+(defn- gen-fc-mcr
+  "Create macro where control can created with defcontrol macro."
+  [tag]
   `(defmacro ~(symbol (str "def" (name tag))) [name# args# & body#]
      (component '~tag name# args# body#)))
 
