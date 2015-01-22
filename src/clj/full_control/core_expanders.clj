@@ -32,10 +32,10 @@
   (match-name #"help-(?:\d|1[0-2])$" 'help- s))
 
 (defn- search-tag-with [& fs]
-  (fn [tags tag]
+  (fn [tags-fns tag]
     (if-let [tf (some #(if (not (nil? %)) %)
                       (for [f fs]
-                        (f tags tag)))]
+                        (f tags-fns tag)))]
       tf)))
 
 (defn- expand-tags
