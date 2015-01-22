@@ -3,7 +3,7 @@
             [om.dom :as dom]))
 
 (def ^{:dynamic true :private true} *attrs* nil)
-(def ^{:dynamic true :private true} *tags* nil)
+(def ^{:dynamic true :private true} *tags-fns* nil)
 
 (load "core_attr_parsers")
 (load "core_expanders")
@@ -43,20 +43,20 @@
                                    (fn [] ~@(or wbody [])))
                                  ~args)
            :render-state-fn (apply (fn ~args
-                                     (fn ~rparams ~(binding [*tags* tags]
-                                                     (apply (tag *tags*) tag rbody))))
+                                     (fn ~rparams ~(binding [*tags-fns* tags-fns]
+                                                     (apply (tag *tags-fns*) tag rbody))))
                                    ~args)}))
       (throw (RuntimeException. "No render-state form provided")))))
 
-(defn- gen-com-mcr [tag]
+(defn- gen-fc-mcr [tag]
   `(defmacro ~(symbol (str "def" (name tag))) [name# args# & body#]
      (component '~tag name# args# body#)))
 
-(defmacro gen-coms-mcrs [& {:keys [tags] :or {tags com-tags}}]
+(defmacro gen-fc-mcrs [& {:keys [tags-fns] :or {tags-fns fc-tags-fns}}]
   (cons `do
-        (map gen-com-mcr (keys tags))))
+        (map gen-fc-mcr (keys tags-fns))))
 
-(gen-coms-mcrs)
+(gen-fc-mcrs)
 
 (defn gen-dom-fn [tag]
   (let [t (symbol (str (name tag) "*"))]

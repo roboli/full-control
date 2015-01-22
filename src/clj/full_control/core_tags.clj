@@ -47,7 +47,7 @@
                                    checkbox-
                                    help-])
 
-(def ^:private dom-tags
+(def ^:private dom-tags-fns
   (reduce #(assoc %1
              %2 (partial process-control {:symbol-fn tag->qualilified-symbol
                                           :attrs-parser parse-attrs
@@ -55,7 +55,7 @@
           {}
           om-dom-tags))
 
-(def ^:private com-tags
+(def ^:private fc-tags-fns
   {'with-controls      (partial process-with-controls {:expander (expand-tags-with-all)})
 
    ;; General
@@ -319,4 +319,4 @@
                                                  :attrs-parser parse-column-attrs
                                                  :expander identity})})
 
-(def tags (merge dom-tags com-tags))
+(def tags-fns (merge dom-tags-fns fc-tags-fns))

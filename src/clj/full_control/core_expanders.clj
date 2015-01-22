@@ -47,8 +47,8 @@
   [f & {:keys [available aliases] :or [aliases {}]}]
   (fn [[tag & body :as form]]
     (if (symbol? tag)
-      (-> *tags*
-          (select-keys (or available (set (keys *tags*))))
+      (-> *tags-fns*
+          (select-keys (or available (set (keys *tags-fns*))))
           (clojure.set/rename-keys aliases)
           (#(or (f % tag) (fn [& _] form)))
           (apply tag body))
