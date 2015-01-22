@@ -53,18 +53,18 @@
       form)))
 
 (def ^:private expand-tags-with
-  (partial expand-tags (search-tag-with (partial get))))
+  (partial expand-tags (search-tag-with get)))
 
 (def ^:private expand-column-tags-with
-  (partial expand-tags (search-tag-with (partial get)
+  (partial expand-tags (search-tag-with get
                                         #(get %1 (match-col-name %2)))))
 
 (def ^:private expand-panel-header-tags-with
-  (partial expand-tags (search-tag-with (partial get)
+  (partial expand-tags (search-tag-with get
                                         #(get %1 (match-title-name %2)))))
 
 (def ^:private expand-group-for-tags-with
-  (partial expand-tags (search-tag-with (partial get)
+  (partial expand-tags (search-tag-with get
                                         #(get %1 (match-col-name %2))
                                         #(get %1 (match-lbl-name %2))
                                         #(get %1 (match-txt-name %2))
@@ -74,6 +74,6 @@
                                         #(get %1 (match-help-name %2)))))
 
 (def ^:private expand-tags-with-all
-  (partial expand-tags (search-tag-with (partial get)
+  (partial expand-tags (search-tag-with get
                                         #(get %1 (match-col-name %2))
                                         #(get %1 (match-title-name %2)))))
