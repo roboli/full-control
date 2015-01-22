@@ -33,10 +33,8 @@
 
 (defn- search-tag-with [& fs]
   (fn [tags-fns tag]
-    (if-let [f (some #(if-not (nil? %) %)
-                     (for [f fs]
-                       (f tags-fns tag)))]
-      f)))
+    (some #(if-not (nil? %) %)
+          ((apply juxt fs) tags-fns tag))))
 
 (defn- expand-tags
   "Applies f to the *tags* map. f must be a searcher function that expects the
