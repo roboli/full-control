@@ -32,6 +32,21 @@
 
 (def ^:private general-layout-tags '[row panel navpanel])
 
+(def ^:private general-form-tags '[form-lbl
+                                   form-txt
+                                   form-txtarea
+                                   form-dropdown
+                                   form-checkbox
+                                   form-radio
+                                   help
+                                   column-
+                                   lbl-
+                                   txt-
+                                   txtarea-
+                                   dropdown-
+                                   checkbox-
+                                   help-])
+
 (def ^:private dom-tags
   (reduce #(assoc %1
              %2 (partial process-control {:symbol-fn tag->qualilified-symbol
@@ -250,22 +265,8 @@
    'group-for          (partial process-control {:symbol-fn (return `form-group*)
                                                  :attrs-parser parse-group-for-attrs
                                                  :expander (expand-group-for-tags-with
-                                                            :available (conj
-                                                                        general-tags
-                                                                        'form-lbl
-                                                                        'form-txt
-                                                                        'form-txtarea
-                                                                        'form-dropdown
-                                                                        'form-checkbox
-                                                                        'form-radio
-                                                                        'help
-                                                                        'column-
-                                                                        'lbl-
-                                                                        'txt-
-                                                                        'txtarea-
-                                                                        'dropdown-
-                                                                        'checkbox-
-                                                                        'help-)
+                                                            :available (concat general-tags
+                                                                               general-form-tags)
                                                             :aliases {'form-lbl 'lbl
                                                                       'form-txt 'txt
                                                                       'form-txtarea 'txtarea
