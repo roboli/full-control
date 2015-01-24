@@ -56,7 +56,8 @@
           om-dom-tags))
 
 (def ^:private fc-tags-fns
-  {'with-controls      (partial process-with-controls {:expander (expand-tags-with-all)})
+  {'with-controls      (partial process-with-controls {:expander (expand-tags-with
+                                                                  :alter-tag-fns [replace-col-tag])})
 
    ;; General
    'page               (partial process-control {:symbol-fn (return `page*)
@@ -117,11 +118,12 @@
    
    'row                (partial process-control {:symbol-fn (return `row*)
                                                  :attrs-parser parse-attrs
-                                                 :expander (expand-column-tags-with
+                                                 :expander (expand-tags-with
                                                             :available (conj
                                                                         general-tags
                                                                         'row
-                                                                        'column-))})
+                                                                        'column-)
+                                                            :alter-tag-fns [replace-col-tag])})
    
    'column-            (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-column-attrs
@@ -136,7 +138,7 @@
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
                                                             :available #{'brand 'navbar-btn}
-                                                            :aliases {'navbar-btn 'btn})
+                                                            :alter-tag-fns [(replace-tag 'btn 'navbar-btn)])
                                                  :transformers [(parse-links-h parse-attrs)
                                                                 apply-spacers]})
 
@@ -157,18 +159,19 @@
                                                                         'panel-header
                                                                         'row
                                                                         'stretch)
-                                                            :aliases {'panel-header 'header})})
+                                                            :alter-tag-fns [(replace-tag 'header 'panel-header)])})
 
    'panel-header       (partial process-control {:symbol-fn (return `panel-header*)
                                                  :attrs-parser parse-attrs
-                                                 :expander (expand-panel-header-tags-with
-                                                            :available #{'title})})
+                                                 :expander (expand-tags-with
+                                                            :available #{'title}
+                                                            :alter-tag-fns [replace-title-tag])})
 
    'navpanel           (partial process-control {:symbol-fn (return `navpanel*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
                                                             :available #{'panel-header 'link}
-                                                            :aliases {'panel-header 'header})})
+                                                            :alter-tag-fns [(replace-tag 'header 'panel-header)])})
 
    'title              (partial process-control {:symbol-fn tag->qualilified-symbol
                                                  :attrs-parser parse-attrs
@@ -224,13 +227,14 @@
                                                                         general-tags
                                                                         'modal-header
                                                                         'modal-footer)
-                                                            :aliases {'modal-header 'header
-                                                                      'modal-footer 'footer})})
+                                                            :alter-tag-fns [(replace-tag 'header 'modal-header)
+                                                                            (replace-tag 'footer 'modal-footer)])})
 
    'modal-header       (partial process-control {:symbol-fn (return `modal-header*)
                                                  :attrs-parser parse-attrs
-                                                 :expander (expand-panel-header-tags-with
-                                                            :available #{'title})})
+                                                 :expander (expand-tags-with
+                                                            :available #{'title}
+                                                            :alter-tag-fns [replace-title-tag])})
 
    'modal-footer       (partial process-control {:symbol-fn (return `modal-footer*)
                                                  :attrs-parser parse-attrs
@@ -264,15 +268,22 @@
 
    'group-for          (partial process-control {:symbol-fn (return `form-group*)
                                                  :attrs-parser parse-group-for-attrs
-                                                 :expander (expand-group-for-tags-with
+                                                 :expander (expand-tags-with
                                                             :available (concat general-tags
                                                                                general-form-tags)
-                                                            :aliases {'form-lbl 'lbl
-                                                                      'form-txt 'txt
-                                                                      'form-txtarea 'txtarea
-                                                                      'form-dropdown 'dropdown
-                                                                      'form-checkbox 'checkbox
-                                                                      'form-radio 'radio})})
+                                                            :alter-tag-fns [(replace-tag 'lbl 'form-lbl)
+                                                                            (replace-tag 'txt 'form-txt)
+                                                                            (replace-tag 'txtarea 'form-txtarea)
+                                                                            (replace-tag 'dropdown 'form-dropdown)
+                                                                            (replace-tag 'checkbox 'form-checkbox)
+                                                                            (replace-tag 'radio 'form-radio)
+                                                                            replace-col-tag
+                                                                            replace-lbl-tag
+                                                                            replace-txt-tag
+                                                                            replace-txtarea-tag
+                                                                            replace-dropdown-tag
+                                                                            replace-checkbox-tag
+                                                                            replace-help-tag])})
 
    'form-lbl           (partial process-form-label {:symbol-fn (return `label*)
                                                     :attrs-parser parse-attrs})

@@ -4,76 +4,46 @@
 ;;; Expanders
 ;;;
 
-(defn- match-name [pattern tag s]
-  (if (re-find pattern (name s)) tag))
+(defn- replace-tag [old new]
+  (fn [tag]
+    (if (= tag old) new)))
 
-(defn- match-col-name [s]
-  (match-name #"column-(?:\d|1[0-2])$" 'column- s))
+(defn- replace-tag-with-regexp [pattern new-tag tag]
+  (if (re-find pattern (name tag)) new-tag))
 
-(defn- match-title-name [s]
-  (match-name #"title[1-5]$" 'title s))
+(def ^:private replace-col-tag
+  (partial replace-tag-with-regexp #"column-(?:\d|1[0-2])$" 'column-))
 
-(defn- match-lbl-name [s]
-  (match-name #"lbl-(?:\d|1[0-2])$" 'lbl- s))
+(def ^:private replace-title-tag
+  (partial replace-tag-with-regexp #"title[1-5]$" 'title))
 
-(defn- match-txt-name [s]
-  (match-name #"txt-(?:\d|1[0-2])$" 'txt- s))
+(def ^:private replace-lbl-tag
+  (partial replace-tag-with-regexp #"lbl-(?:\d|1[0-2])$" 'lbl-))
 
-(defn- match-txtarea-name [s]
-  (match-name #"txtarea-(?:\d|1[0-2])$" 'txtarea- s))
+(def ^:private replace-txt-tag
+  (partial replace-tag-with-regexp #"txt-(?:\d|1[0-2])$" 'txt-))
 
-(defn- match-dropdown-name [s]
-  (match-name #"dropdown-(?:\d|1[0-2])$" 'dropdown- s))
+(def ^:private replace-txtarea-tag
+  (partial replace-tag-with-regexp #"txtarea-(?:\d|1[0-2])$" 'txtarea-))
 
-(defn- match-checkbox-name [s]
-  (match-name #"checkbox-(?:\d|1[0-2])$" 'checkbox- s))
+(def ^:private replace-dropdown-tag
+  (partial replace-tag-with-regexp #"dropdown-(?:\d|1[0-2])$" 'dropdown-))
 
-(defn- match-help-name [s]
-  (match-name #"help-(?:\d|1[0-2])$" 'help- s))
+(def ^:private replace-checkbox-tag
+  (partial replace-tag-with-regexp #"checkbox-(?:\d|1[0-2])$" 'checkbox-))
 
-(defn- search-tag-with [& fs]
-  (fn [tags-fns tag]
-    (some #(if-not (nil? %) %)
-          ((apply juxt fs) tags-fns tag))))
+(def ^:private replace-help-tag
+  (partial replace-tag-with-regexp #"help-(?:\d|1[0-2])$" 'help-))
 
-(defn- expand-tags
-  "Applies f to the *tags* map. f must be a searcher function that expects the
-  *tags* map and a tag (symbol) to be search. available and aliases are a set
-  and map respectively, their use is to filter and rename keys in the *tags* map
-  before making the search. A function is returned which expects a control in
-  the form of e.g. (button attrs body), where button is the tag to be searched."
-  [f & {:keys [available aliases] :or [aliases {}]}]
+(defn- replace-tag-with-fns [fs tag]
+  (some #(if-not (nil? %) %)
+        ((apply juxt fs) tag)))
+
+(defn- expand-tags-with
+  [& {:keys [available alter-tag-fns] :or {alter-tag-fns [identity]}}]
   (fn [[tag & body :as form]]
     (if (symbol? tag)
-      (-> *tags-fns*
-          (select-keys (or available (set (keys *tags-fns*))))
-          (clojure.set/rename-keys aliases)
-          (#(or (f % tag) (fn [& _] form)))
+      (-> (if available (select-keys *tags-fns* available) *tags-fns*)
+          (get (or (replace-tag-with-fns alter-tag-fns tag) tag) (fn [& _] form))
           (apply tag body))
       form)))
-
-(def ^:private expand-tags-with
-  (partial expand-tags (search-tag-with get)))
-
-(def ^:private expand-column-tags-with
-  (partial expand-tags (search-tag-with get
-                                        #(get %1 (match-col-name %2)))))
-
-(def ^:private expand-panel-header-tags-with
-  (partial expand-tags (search-tag-with get
-                                        #(get %1 (match-title-name %2)))))
-
-(def ^:private expand-group-for-tags-with
-  (partial expand-tags (search-tag-with get
-                                        #(get %1 (match-col-name %2))
-                                        #(get %1 (match-lbl-name %2))
-                                        #(get %1 (match-txt-name %2))
-                                        #(get %1 (match-txtarea-name %2))
-                                        #(get %1 (match-dropdown-name %2))
-                                        #(get %1 (match-checkbox-name %2))
-                                        #(get %1 (match-help-name %2)))))
-
-(def ^:private expand-tags-with-all
-  (partial expand-tags (search-tag-with get
-                                        #(get %1 (match-col-name %2))
-                                        #(get %1 (match-title-name %2)))))
