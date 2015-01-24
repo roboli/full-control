@@ -8,7 +8,12 @@
                       :item {:description "Screw Driver"
                              :brand-id 2
                              :price 44.5
-                             :comments "Yellow color plastic."}}))
+                             :active true
+                             :comments "Yellow color plastic."
+                             :non-taxable false
+                             :allow-credit false
+                             :allow-discounts false
+                             :type "1"}}))
 
 (defpage page [cursor owner opts]
   (render-state [st]
@@ -43,7 +48,29 @@
                          (group-for :comments
                                     (lbl)
                                     (txtarea)
-                                    (help "(optional)")))))))))
+                                    (help "(optional)"))))
+                       (row
+                        (column-6
+                         (group-for :active
+                                    (checkbox))))
+                       (row
+                        (column-6
+                         (label "Extras")
+                         (checkbox-for :non-taxable)
+                         (checkbox-for :allow-credit)
+                         (checkbox-for :allow-discounts))
+                        (column-6
+                         (label "Extras Inline")
+                         (br)
+                         (checkbox-inline-for :non-taxable)
+                         (checkbox-inline-for :allow-credit)
+                         (checkbox-inline-for :allow-discounts)))
+                       (row
+                        (column-6
+                         (group-for :type
+                                    (lbl)
+                                    (radio {:value "1"} "Service")
+                                    (radio {:value "2"} "Asset")))))))))
                  (row
                   (column-9
                    (panel
@@ -73,7 +100,36 @@
                          (group-for :comments
                                     (lbl-4)
                                     (txtarea-6)
-                                    (help-2 "(opt)")))))))))
+                                    (help-2 "(opt)"))))
+                       (row
+                        (column-6
+                         (group-for :active
+                                    (column-4)
+                                    (checkbox-6))))
+                       (row
+                        (column-6
+                         (row
+                          (column-4
+                           (label "Extras"))
+                          (column-6
+                           (checkbox-for :non-taxable)
+                           (checkbox-for :allow-credit)
+                           (checkbox-for :allow-discounts))))
+                        (column-6
+                         (row
+                          (column-4
+                           (label "Extras Inline"))
+                          (column-6
+                           (checkbox-inline-for :non-taxable "NT")
+                           (checkbox-inline-for :allow-credit "AC")
+                           (checkbox-inline-for :allow-discounts "AD")))))
+                       (row
+                        (column-6
+                         (group-for :type
+                                    (lbl-4)
+                                    (column-6
+                                     (radio {:value "1"} "Service")
+                                     (radio {:value "2"} "Asset"))))))))))
                  (row
                   (column-9
                    (panel
