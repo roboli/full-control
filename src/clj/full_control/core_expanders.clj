@@ -35,6 +35,9 @@
 (def ^:private replace-help-tag
   (partial replace-tag-with-regexp #"help-(?:\d|1[0-2])$" 'help-))
 
+(def ^:private replace-form-col-tag
+  (partial replace-tag-with-regexp #"column-(?:\d|1[0-2])$" 'form-column-))
+
 (defn- replace-tag-with-fns [fs tag]
   (some #(if-not (nil? %) %)
         ((apply juxt fs) tag)))
@@ -47,3 +50,16 @@
           (get (or (replace-tag-with-fns alter-tag-fns tag) tag) (fn [& _] form))
           (apply tag body))
       form)))
+
+(def ^:private group-for-alter-fns [(replace-tag 'lbl 'form-lbl)
+                                    (replace-tag 'txt 'form-txt)
+                                    (replace-tag 'txtarea 'form-txtarea)
+                                    (replace-tag 'dropdown 'form-dropdown)
+                                    (replace-tag 'checkbox 'form-checkbox)
+                                    (replace-tag 'radio 'form-radio)
+                                    replace-lbl-tag
+                                    replace-txt-tag
+                                    replace-txtarea-tag
+                                    replace-dropdown-tag
+                                    replace-checkbox-tag
+                                    replace-help-tag])

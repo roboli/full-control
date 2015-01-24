@@ -32,14 +32,14 @@
 
 (def ^:private general-layout-tags '[row panel navpanel])
 
-(def ^:private general-form-tags '[form-lbl
+(def ^:private general-form-tags '[form-column-
+                                   form-lbl
                                    form-txt
                                    form-txtarea
                                    form-dropdown
                                    form-checkbox
                                    form-radio
                                    help
-                                   column-
                                    lbl-
                                    txt-
                                    txtarea-
@@ -271,19 +271,15 @@
                                                  :expander (expand-tags-with
                                                             :available (concat general-tags
                                                                                general-form-tags)
-                                                            :alter-tag-fns [(replace-tag 'lbl 'form-lbl)
-                                                                            (replace-tag 'txt 'form-txt)
-                                                                            (replace-tag 'txtarea 'form-txtarea)
-                                                                            (replace-tag 'dropdown 'form-dropdown)
-                                                                            (replace-tag 'checkbox 'form-checkbox)
-                                                                            (replace-tag 'radio 'form-radio)
-                                                                            replace-col-tag
-                                                                            replace-lbl-tag
-                                                                            replace-txt-tag
-                                                                            replace-txtarea-tag
-                                                                            replace-dropdown-tag
-                                                                            replace-checkbox-tag
-                                                                            replace-help-tag])})
+                                                            :alter-tag-fns (conj group-for-alter-fns
+                                                                                 replace-form-col-tag))})
+
+   'form-column-       (partial process-control {:symbol-fn tag->qualilified-symbol
+                                                 :attrs-parser parse-column-attrs
+                                                 :expander (expand-tags-with
+                                                            :available (concat general-tags
+                                                                               general-form-tags)
+                                                            :alter-tag-fns group-for-alter-fns)})       
 
    'form-lbl           (partial process-form-label {:symbol-fn (return `label*)
                                                     :attrs-parser parse-attrs})
