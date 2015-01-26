@@ -60,7 +60,7 @@
 
 (gen-fc-mcrs)
 
-(defn gen-dom-fn [tag]
+(defn gen-om-fn [tag]
   (let [t (symbol (str (name tag) "*"))]
     `(defn ~t [attrs# & body#]
        {:pre [(map? attrs#)]}
@@ -68,9 +68,9 @@
               (cljs.core/clj->js (full-control.utils/normalize-attrs attrs#))
               body#))))
 
-(defmacro gen-dom-fns []
+(defmacro gen-om-fns []
   (cons `do
-        (map gen-dom-fn om-dom-tags)))
+        (map gen-om-fn om-tags)))
 
 ;;;
 ;;; Layout

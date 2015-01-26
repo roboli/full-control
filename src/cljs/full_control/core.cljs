@@ -1,6 +1,6 @@
 (ns full-control.core
   (:require-macros [full-control.core :refer [defcolumn
-                                              gen-dom-fns
+                                              gen-om-fns
                                               deflbl-col
                                               deftxt-col
                                               deftxtarea-col
@@ -73,7 +73,7 @@
 (def nbsp* (gstr/unescapeEntities "&nbsp;"))
 
 ;; All om.dom/tags
-(gen-dom-fns)
+(gen-om-fns)
 
 (defn btn*
   "Attributes available in the attrs map are :class-name, :on-click."

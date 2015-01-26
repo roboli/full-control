@@ -4,7 +4,7 @@
 ;;; Tags
 ;;;
 
-(def ^:private om-dom-tags (concat dom/tags '[input textarea option]))
+(def ^:private om-tags (concat dom/tags '[input textarea option]))
 
 (defn return [x]
   (fn [_] x))
@@ -28,7 +28,7 @@
                                       modal
                                       form
                                       form-horizontal
-                                      form-inline] om-dom-tags))
+                                      form-inline] om-tags))
 
 (def ^:private general-layout-tags '[row panel navpanel])
 
@@ -47,13 +47,13 @@
                                    checkbox-
                                    help-])
 
-(def ^:private dom-tags-fns
+(def ^:private om-tags-fns
   (reduce #(assoc %1
              %2 (partial process-control {:symbol-fn tag->qualilified-symbol
                                           :attrs-parser parse-attrs
                                           :expander identity}))
           {}
-          om-dom-tags))
+          om-tags))
 
 (def ^:private fc-tags-fns
   {'with-controls      (partial process-with-controls {:expander (expand-tags-with
@@ -326,4 +326,4 @@
                                                  :attrs-parser parse-column-attrs
                                                  :expander identity})})
 
-(def tags-fns (merge dom-tags-fns fc-tags-fns))
+(def tags-fns (merge om-tags-fns fc-tags-fns))
