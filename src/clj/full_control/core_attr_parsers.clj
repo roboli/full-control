@@ -39,7 +39,7 @@
 (defn- parse-column-attrs [body]
   ((comp merge-size default-empty parse-m) body))
 
-(defn- parse-group-for-attrs [body]
+(defn- parse-field-key-attrs [body]
   ((comp default-empty parse-m parse-field-key) body))
 
 (defn- parse-inline-attrs [body]

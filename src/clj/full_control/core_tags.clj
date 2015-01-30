@@ -247,13 +247,13 @@
                                                          :available #{'group-for})})
 
    'checkbox-for       (partial process-form-checkbox {:symbol-fn (return `checkbox*)
-                                                       :attrs-parser parse-group-for-attrs})
+                                                       :attrs-parser parse-field-key-attrs})
 
    'checkbox-inline-for (partial process-form-checkbox {:symbol-fn (return `checkbox-inline*)
-                                                        :attrs-parser parse-group-for-attrs})
+                                                        :attrs-parser parse-field-key-attrs})
 
    'group-for          (partial process-control {:symbol-fn (return `form-group*)
-                                                 :attrs-parser parse-group-for-attrs
+                                                 :attrs-parser parse-field-key-attrs
                                                  :expander (expand-tags-with
                                                             :available (concat general-tags
                                                                                form-tags)
