@@ -4,24 +4,22 @@
 ;;; navbar transformers
 ;;;
 
-(defn- parse-links-h
+(defn- parse-links
   "Group and transform all continuous 'link symbols in a navbar control into a
-  links-group control. Expects a attributes parser function and returns f that
-  expects the body to transform."
-  [attrs-parser]
-  (fn [body]
-    (->> body
-         (partition-by #(= (first %) 'link))
-         (map (fn [coll]
-                (if (= (ffirst coll) 'link)
-                  (list (list 'full-control.core/links-group
-                              {:links
-                               (vec
-                                (map #(let [[attrs body] (attrs-parser (rest %))]
-                                        (assoc attrs :body (vec body)))
-                                     coll))}))
-                  coll)))
-         (mapcat identity))))
+  links-group control."
+  [body]
+  (->> body
+       (partition-by #(= (first %) 'link))
+       (map (fn [coll]
+              (if (= (ffirst coll) 'link)
+                (list (list 'full-control.core/links-group
+                            {:links
+                             (vec
+                              (map #(let [[attrs body] (parse-attrs (rest %))]
+                                      (assoc attrs :body (vec body)))
+                                   coll))}))
+                coll)))
+       (mapcat identity)))
 
 (defn- apply-spacers
   "Float controls to the right side of the spacer. It inserts or updates the

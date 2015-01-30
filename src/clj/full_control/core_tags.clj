@@ -134,13 +134,9 @@
                                                                         'group-for))})
 
    ;; Navbar
-   'navbar             (partial process-control {:symbol-fn (return `navbar*)
-                                                 :attrs-parser parse-attrs
-                                                 :expander (expand-tags-with
-                                                            :available #{'brand 'navbar-btn}
-                                                            :alter-tag-fns [(replace-tag 'btn 'navbar-btn)])
-                                                 :transformers [(parse-links-h parse-attrs)
-                                                                apply-spacers]})
+   'navbar             (partial process-navbar {:expander (expand-tags-with
+                                                           :available #{'brand 'navbar-btn}
+                                                           :alter-tag-fns [(replace-tag 'btn 'navbar-btn)])})
 
    'brand              (partial process-control {:symbol-fn (return `brand*)
                                                  :attrs-parser parse-attrs
@@ -255,10 +251,7 @@
    'form-inline        (partial process-form {:symbol-fn tag->qualilified-symbol
                                               :attrs-parser parse-inline-attrs
                                               :expander (expand-tags-with
-                                                         :available #{'row 'group-for})
-                                              ;; HACK: must render &nbsp after each
-                                              ;; form-group to display correctly
-                                              :transformers [#(interpose `nbsp* %)]})
+                                                         :available #{'row 'group-for})})
 
    'checkbox-for       (partial process-form-checkbox {:symbol-fn (return `checkbox*)
                                                        :attrs-parser parse-group-for-attrs})
