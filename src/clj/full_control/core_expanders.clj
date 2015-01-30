@@ -57,6 +57,8 @@
                                     (replace-tag 'dropdown 'group-dropdown)
                                     (replace-tag 'checkbox 'group-checkbox)
                                     (replace-tag 'radio 'group-radio)
+                                    (replace-tag 'help 'group-help)
+                                    replace-group-col-tag
                                     replace-lbl-tag
                                     replace-txt-tag
                                     replace-txtarea-tag

@@ -257,9 +257,7 @@
                                                  :expander (expand-tags-with
                                                             :available (concat general-tags
                                                                                form-group-tags)
-                                                            :alter-tag-fns (conj group-for-alter-fns
-                                                                                 replace-group-col-tag
-                                                                                 (replace-tag 'help 'group-help)))})
+                                                            :alter-tag-fns group-for-alter-fns)})
 
    'group-column-       (partial process-control {:symbol-fn symbol->qly-symbol
                                                   :attrs-parser parse-column-attrs
