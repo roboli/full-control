@@ -70,36 +70,36 @@
                                                                         'fixed-layout
                                                                         'fluid-layout))})
 
-   'btn                (partial process-control {:symbol-fn symbol->qly-symbol
+   'btn                (partial process-control {:symbol-fn (return `btn*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'txt                (partial process-control {:symbol-fn symbol->qly-symbol
+   'txt                (partial process-control {:symbol-fn (return `txt*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'txtarea            (partial process-control {:symbol-fn symbol->qly-symbol
+   'txtarea            (partial process-control {:symbol-fn (return `txtarea*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'dropdown           (partial process-control {:symbol-fn symbol->qly-symbol
+   'dropdown           (partial process-control {:symbol-fn (return `dropdown*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
                                                             :available #{'option})})
    
-   'checkbox           (partial process-control {:symbol-fn symbol->qly-symbol
+   'checkbox           (partial process-control {:symbol-fn (return `checkbox*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'checkbox-inline    (partial process-control {:symbol-fn symbol->qly-symbol
+   'checkbox-inline    (partial process-control {:symbol-fn (return `checkbox-inline*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
    
-   'radio              (partial process-control {:symbol-fn symbol->qly-symbol
+   'radio              (partial process-control {:symbol-fn (return `radio*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'radio-inline       (partial process-control {:symbol-fn symbol->qly-symbol
+   'radio-inline       (partial process-control {:symbol-fn (return `radio-inline*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
@@ -239,17 +239,17 @@
                                                             :available general-tags)})
 
    ;; Forms
-   'form               (partial process-form {:symbol-fn symbol->qly-symbol
+   'form               (partial process-form {:symbol-fn (return `form*)
                                               :attrs-parser parse-attrs
                                               :expander (expand-tags-with
                                                          :available #{'row 'group-for})})
 
-   'form-horizontal    (partial process-form {:symbol-fn symbol->qly-symbol
+   'form-horizontal    (partial process-form {:symbol-fn (return `form-horizontal*)
                                               :attrs-parser parse-attrs
                                               :expander (expand-tags-with
                                                          :available #{'row 'group-for})})
 
-   'form-inline        (partial process-form {:symbol-fn symbol->qly-symbol
+   'form-inline        (partial process-form {:symbol-fn (return `form-inline*)
                                               :attrs-parser parse-inline-attrs
                                               :expander (expand-tags-with
                                                          :available #{'row 'group-for})})
@@ -281,19 +281,19 @@
    'lbl-               (partial process-form-label {:symbol-fn symbol->qly-symbol
                                                     :attrs-parser parse-column-attrs})
 
-   'form-txt           (partial process-form-text {:symbol-fn symbol->qly-symbol
+   'form-txt           (partial process-form-text {:symbol-fn (return `txt*)
                                                    :attrs-parser parse-attrs})
 
    'txt-               (partial process-form-text {:symbol-fn symbol->qly-symbol
                                                    :attrs-parser parse-column-attrs})
 
-   'form-txtarea       (partial process-form-text {:symbol-fn symbol->qly-symbol
+   'form-txtarea       (partial process-form-text {:symbol-fn (return `txtarea*)
                                                    :attrs-parser parse-attrs})
 
    'txtarea-           (partial process-form-text {:symbol-fn symbol->qly-symbol
                                                    :attrs-parser parse-column-attrs})
 
-   'form-dropdown      (partial process-form-dropdown {:symbol-fn symbol->qly-symbol
+   'form-dropdown      (partial process-form-dropdown {:symbol-fn (return `dropdown*)
                                                        :attrs-parser parse-attrs
                                                        :expander (expand-tags-with
                                                                   :attrs-parser #{'option})})
@@ -303,16 +303,16 @@
                                                        :expander (expand-tags-with
                                                                   :attrs-parser #{'option})})
 
-   'form-checkbox      (partial process-form-checkbox {:symbol-fn symbol->qly-symbol
+   'form-checkbox      (partial process-form-checkbox {:symbol-fn (return `checkbox*)
                                                        :attrs-parser parse-attrs})
 
    'checkbox-          (partial process-form-checkbox {:symbol-fn symbol->qly-symbol
                                                        :attrs-parser parse-column-attrs})
 
-   'form-radio         (partial process-form-radio {:symbol-fn symbol->qly-symbol
+   'form-radio         (partial process-form-radio {:symbol-fn (return `radio*)
                                                     :attrs-parser parse-attrs})
 
-   'help               (partial process-control {:symbol-fn symbol->qly-symbol
+   'help               (partial process-control {:symbol-fn (return `help*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
