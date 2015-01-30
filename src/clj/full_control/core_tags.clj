@@ -134,7 +134,8 @@
                                                                         'group-for))})
 
    ;; Navbar
-   'navbar             (partial process-navbar {:expander (expand-tags-with
+   'navbar             (partial process-navbar {:attrs-parser parse-attrs
+                                                :expander (expand-tags-with
                                                            :available #{'brand 'navbar-btn}
                                                            :alter-tag-fns [(replace-tag 'btn 'navbar-btn)])})
 

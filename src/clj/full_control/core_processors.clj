@@ -17,8 +17,8 @@
     (binding [*attrs* (merge *attrs* attrs)]
       (list* symbol attrs (doall (map expander body))))))
 
-(defn- process-navbar [{:keys [expander]} _ & body]
-  (let [[attrs body] (parse-attrs body)]
+(defn- process-navbar [{:keys [attrs-parser expander]} _ & body]
+  (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
       (list* `navbar* attrs (->> body
                                  (map expander)
