@@ -14,20 +14,20 @@
 
 (def ^:private layout-tags '[navbar fixed-layout fluid-layout modal])
 
-(def ^:private form-tags '[form-column-
-                           form-lbl
-                           form-txt
-                           form-txtarea
-                           form-dropdown
-                           form-checkbox
-                           form-radio
-                           form-help
-                           form-lbl-
-                           form-txt-
-                           form-txtarea-
-                           form-dropdown-
-                           form-checkbox-
-                           form-help-])
+(def ^:private form-group-tags '[group-column-
+                                 group-lbl
+                                 group-txt
+                                 group-txtarea
+                                 group-dropdown
+                                 group-checkbox
+                                 group-radio
+                                 group-help
+                                 group-lbl-
+                                 group-txt-
+                                 group-txtarea-
+                                 group-dropdown-
+                                 group-checkbox-
+                                 group-help-])
 
 (def ^:private general-tags (concat '[with-controls
                                       btn
@@ -256,61 +256,61 @@
                                                  :attrs-parser parse-field-key-attrs
                                                  :expander (expand-tags-with
                                                             :available (concat general-tags
-                                                                               form-tags)
+                                                                               form-group-tags)
                                                             :alter-tag-fns (conj group-for-alter-fns
-                                                                                 replace-form-col-tag
-                                                                                 (replace-tag 'help 'form-help)))})
+                                                                                 replace-group-col-tag
+                                                                                 (replace-tag 'help 'group-help)))})
 
-   'form-column-       (partial process-control {:symbol-fn symbol->qly-symbol
-                                                 :attrs-parser parse-column-attrs
-                                                 :expander (expand-tags-with
-                                                            :available (concat general-tags
-                                                                               form-tags)
-                                                            :alter-tag-fns group-for-alter-fns)})       
+   'group-column-       (partial process-control {:symbol-fn symbol->qly-symbol
+                                                  :attrs-parser parse-column-attrs
+                                                  :expander (expand-tags-with
+                                                             :available (concat general-tags
+                                                                                form-group-tags)
+                                                             :alter-tag-fns group-for-alter-fns)})       
 
-   'form-lbl           (partial process-form-label {:symbol-fn (return `label*)
-                                                    :attrs-parser parse-attrs})
+   'group-lbl           (partial process-field-label {:symbol-fn (return `label*)
+                                                      :attrs-parser parse-attrs})
 
-   'form-lbl-          (partial process-form-label {:symbol-fn symbol->qly-symbol
-                                                    :attrs-parser parse-column-attrs})
+   'group-lbl-          (partial process-field-label {:symbol-fn symbol->qly-symbol
+                                                      :attrs-parser parse-column-attrs})
 
-   'form-txt           (partial process-form-text {:symbol-fn (return `txt*)
-                                                   :attrs-parser parse-attrs})
+   'group-txt           (partial process-field-text {:symbol-fn (return `txt*)
+                                                     :attrs-parser parse-attrs})
 
-   'form-txt-          (partial process-form-text {:symbol-fn symbol->qly-symbol
-                                                   :attrs-parser parse-column-attrs})
+   'group-txt-          (partial process-field-text {:symbol-fn symbol->qly-symbol
+                                                     :attrs-parser parse-column-attrs})
 
-   'form-txtarea       (partial process-form-text {:symbol-fn (return `txtarea*)
-                                                   :attrs-parser parse-attrs})
+   'group-txtarea       (partial process-field-text {:symbol-fn (return `txtarea*)
+                                                     :attrs-parser parse-attrs})
 
-   'form-txtarea-      (partial process-form-text {:symbol-fn symbol->qly-symbol
-                                                   :attrs-parser parse-column-attrs})
+   'group-txtarea-      (partial process-field-text {:symbol-fn symbol->qly-symbol
+                                                     :attrs-parser parse-column-attrs})
 
-   'form-dropdown      (partial process-form-dropdown {:symbol-fn (return `dropdown*)
-                                                       :attrs-parser parse-attrs
-                                                       :expander (expand-tags-with
-                                                                  :attrs-parser #{'option})})
+   'group-dropdown      (partial process-field-dropdown {:symbol-fn (return `dropdown*)
+                                                         :attrs-parser parse-attrs
+                                                         :expander (expand-tags-with
+                                                                    :attrs-parser #{'option})})
 
-   'form-dropdown-     (partial process-form-dropdown {:symbol-fn symbol->qly-symbol
-                                                       :attrs-parser parse-column-attrs
-                                                       :expander (expand-tags-with
-                                                                  :attrs-parser #{'option})})
+   'group-dropdown-     (partial process-field-dropdown {:symbol-fn symbol->qly-symbol
+                                                         :attrs-parser parse-column-attrs
+                                                         :expander (expand-tags-with
+                                                                    :attrs-parser #{'option})})
 
-   'form-checkbox      (partial process-field-checkbox {:symbol-fn (return `checkbox*)
-                                                        :attrs-parser parse-attrs})
+   'group-checkbox      (partial process-field-checkbox {:symbol-fn (return `checkbox*)
+                                                         :attrs-parser parse-attrs})
 
-   'form-checkbox-     (partial process-field-checkbox {:symbol-fn symbol->qly-symbol
-                                                        :attrs-parser parse-column-attrs})
+   'group-checkbox-     (partial process-field-checkbox {:symbol-fn symbol->qly-symbol
+                                                         :attrs-parser parse-column-attrs})
 
-   'form-radio         (partial process-form-radio {:symbol-fn (return `radio*)
-                                                    :attrs-parser parse-attrs})
+   'group-radio         (partial process-field-radio {:symbol-fn (return `radio*)
+                                                      :attrs-parser parse-attrs})
 
-   'form-help          (partial process-control {:symbol-fn (return `help*)
-                                                 :attrs-parser parse-attrs
-                                                 :expander identity})
+   'group-help          (partial process-control {:symbol-fn (return `help*)
+                                                  :attrs-parser parse-attrs
+                                                  :expander identity})
 
-   'form-help-         (partial process-control {:symbol-fn symbol->qly-symbol
-                                                 :attrs-parser parse-column-attrs
-                                                 :expander identity})})
+   'group-help-         (partial process-control {:symbol-fn symbol->qly-symbol
+                                                  :attrs-parser parse-column-attrs
+                                                  :expander identity})})
 
 (def tags-fns (merge om-tags-fns fc-tags-fns))

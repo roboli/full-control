@@ -18,25 +18,25 @@
   (partial replace-tag-with-regexp #"title[1-5]$" 'title))
 
 (def ^:private replace-lbl-tag
-  (partial replace-tag-with-regexp #"lbl-(?:\d|1[0-2])$" 'form-lbl-))
+  (partial replace-tag-with-regexp #"lbl-(?:\d|1[0-2])$" 'group-lbl-))
 
 (def ^:private replace-txt-tag
-  (partial replace-tag-with-regexp #"txt-(?:\d|1[0-2])$" 'form-txt-))
+  (partial replace-tag-with-regexp #"txt-(?:\d|1[0-2])$" 'group-txt-))
 
 (def ^:private replace-txtarea-tag
-  (partial replace-tag-with-regexp #"txtarea-(?:\d|1[0-2])$" 'form-txtarea-))
+  (partial replace-tag-with-regexp #"txtarea-(?:\d|1[0-2])$" 'group-txtarea-))
 
 (def ^:private replace-dropdown-tag
-  (partial replace-tag-with-regexp #"dropdown-(?:\d|1[0-2])$" 'form-dropdown-))
+  (partial replace-tag-with-regexp #"dropdown-(?:\d|1[0-2])$" 'group-dropdown-))
 
 (def ^:private replace-checkbox-tag
-  (partial replace-tag-with-regexp #"checkbox-(?:\d|1[0-2])$" 'form-checkbox-))
+  (partial replace-tag-with-regexp #"checkbox-(?:\d|1[0-2])$" 'group-checkbox-))
 
 (def ^:private replace-help-tag
-  (partial replace-tag-with-regexp #"help-(?:\d|1[0-2])$" 'form-help-))
+  (partial replace-tag-with-regexp #"help-(?:\d|1[0-2])$" 'group-help-))
 
-(def ^:private replace-form-col-tag
-  (partial replace-tag-with-regexp #"column-(?:\d|1[0-2])$" 'form-column-))
+(def ^:private replace-group-col-tag
+  (partial replace-tag-with-regexp #"column-(?:\d|1[0-2])$" 'group-column-))
 
 (defn- replace-tag-with-fns [fs tag]
   (some #(if-not (nil? %) %)
@@ -51,12 +51,12 @@
           (apply tag body))
       form)))
 
-(def ^:private group-for-alter-fns [(replace-tag 'lbl 'form-lbl)
-                                    (replace-tag 'txt 'form-txt)
-                                    (replace-tag 'txtarea 'form-txtarea)
-                                    (replace-tag 'dropdown 'form-dropdown)
-                                    (replace-tag 'checkbox 'form-checkbox)
-                                    (replace-tag 'radio 'form-radio)
+(def ^:private group-for-alter-fns [(replace-tag 'lbl 'group-lbl)
+                                    (replace-tag 'txt 'group-txt)
+                                    (replace-tag 'txtarea 'group-txtarea)
+                                    (replace-tag 'dropdown 'group-dropdown)
+                                    (replace-tag 'checkbox 'group-checkbox)
+                                    (replace-tag 'radio 'group-radio)
                                     replace-lbl-tag
                                     replace-txt-tag
                                     replace-txtarea-tag
