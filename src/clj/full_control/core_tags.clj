@@ -31,6 +31,7 @@
 
 (def ^:private general-tags (concat '[with-controls
                                       btn
+                                      lbl
                                       txt
                                       txtarea
                                       dropdown
@@ -67,6 +68,10 @@
                                                             :available layout-tags)})
 
    'btn                (partial process-control {:symbol-fn (return `btn*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander identity})
+
+   'lbl                (partial process-control {:symbol-fn (return `label*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
