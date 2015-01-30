@@ -14,6 +14,13 @@
 
 (def ^:private layout-tags '[navbar fixed-layout fluid-layout modal])
 
+(def ^:private form-tags '[lbl-for
+                           txt-for
+                           txtarea-for
+                           dropdown-for
+                           checkbox-for
+                           checkbox-inline-for])
+
 (def ^:private form-group-tags '[group-column-
                                  group-lbl
                                  group-txt
@@ -37,8 +44,6 @@
                                       dropdown
                                       checkbox
                                       checkbox-inline
-                                      checkbox-for
-                                      checkbox-inline-for
                                       radio
                                       radio-inline
                                       help
@@ -88,7 +93,7 @@
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
                                                             :available #{'option})})
-   
+
    'checkbox           (partial process-control {:symbol-fn (return `checkbox*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
@@ -97,12 +102,6 @@
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'checkbox-for       (partial process-field-checkbox {:symbol-fn (return `checkbox*)
-                                                        :attrs-parser parse-field-key-attrs})
-
-   'checkbox-inline-for (partial process-field-checkbox {:symbol-fn (return `checkbox-inline*)
-                                                         :attrs-parser parse-field-key-attrs})
-   
    'radio              (partial process-control {:symbol-fn (return `radio*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
@@ -136,7 +135,8 @@
                                                  :attrs-parser parse-column-attrs
                                                  :expander (expand-tags-with
                                                             :available (conj
-                                                                        general-tags
+                                                                        (concat general-tags
+                                                                                form-tags)
                                                                         'row
                                                                         'group-for))})
 
@@ -261,6 +261,29 @@
                                               :attrs-parser parse-inline-attrs
                                               :expander (expand-tags-with
                                                          :available #{'group-for})})
+
+   'lbl-for            (partial process-field-label {:symbol-fn (return `label*)
+                                                     :attrs-parser parse-field-key-attrs
+                                                     :expander identity})
+
+   'txt-for            (partial process-field-text {:symbol-fn (return `txt*)
+                                                    :attrs-parser parse-field-key-attrs
+                                                    :expander identity})
+
+   'txtarea-for        (partial process-field-text {:symbol-fn (return `txtarea*)
+                                                    :attrs-parser parse-field-key-attrs
+                                                    :expander identity})
+
+   'dropdown-for       (partial process-field-dropdown {:symbol-fn (return `dropdown*)
+                                                        :attrs-parser parse-field-key-attrs
+                                                        :expander (expand-tags-with
+                                                                   :available #{'option})})
+
+   'checkbox-for       (partial process-field-checkbox {:symbol-fn (return `checkbox*)
+                                                        :attrs-parser parse-field-key-attrs})
+
+   'checkbox-inline-for (partial process-field-checkbox {:symbol-fn (return `checkbox-inline*)
+                                                         :attrs-parser parse-field-key-attrs})
 
    'group-for          (partial process-control {:symbol-fn (return `form-group*)
                                                  :attrs-parser parse-field-key-attrs
