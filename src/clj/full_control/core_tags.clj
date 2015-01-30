@@ -42,7 +42,6 @@
                                       radio-inline
                                       grid-view
                                       grid
-                                      modal
                                       form
                                       form-horizontal
                                       form-inline
