@@ -90,6 +90,12 @@
    'checkbox-inline    (partial process-control {:symbol-fn (return `checkbox-inline*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
+
+   'checkbox-for       (partial process-field-checkbox {:symbol-fn (return `checkbox*)
+                                                        :attrs-parser parse-field-key-attrs})
+
+   'checkbox-inline-for (partial process-field-checkbox {:symbol-fn (return `checkbox-inline*)
+                                                         :attrs-parser parse-field-key-attrs})
    
    'radio              (partial process-control {:symbol-fn (return `radio*)
                                                  :attrs-parser parse-attrs
@@ -246,12 +252,6 @@
                                               :expander (expand-tags-with
                                                          :available #{'group-for})})
 
-   'checkbox-for       (partial process-form-checkbox {:symbol-fn (return `checkbox*)
-                                                       :attrs-parser parse-field-key-attrs})
-
-   'checkbox-inline-for (partial process-form-checkbox {:symbol-fn (return `checkbox-inline*)
-                                                        :attrs-parser parse-field-key-attrs})
-
    'group-for          (partial process-control {:symbol-fn (return `form-group*)
                                                  :attrs-parser parse-field-key-attrs
                                                  :expander (expand-tags-with
@@ -295,11 +295,11 @@
                                                        :expander (expand-tags-with
                                                                   :attrs-parser #{'option})})
 
-   'form-checkbox      (partial process-form-checkbox {:symbol-fn (return `checkbox*)
-                                                       :attrs-parser parse-attrs})
+   'form-checkbox      (partial process-field-checkbox {:symbol-fn (return `checkbox*)
+                                                        :attrs-parser parse-attrs})
 
-   'checkbox-          (partial process-form-checkbox {:symbol-fn symbol->qly-symbol
-                                                       :attrs-parser parse-column-attrs})
+   'checkbox-          (partial process-field-checkbox {:symbol-fn symbol->qly-symbol
+                                                        :attrs-parser parse-column-attrs})
 
    'form-radio         (partial process-form-radio {:symbol-fn (return `radio*)
                                                     :attrs-parser parse-attrs})

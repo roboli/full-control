@@ -39,6 +39,20 @@
       `(apply tbody* ~attrs (for [~name ~coll]
                               (tr* {} ~@(doall (map expander body))))))))
 
+(defn- process-field-checkbox [{:keys [symbol-fn attrs-parser]} tag & body]
+  (let [[attrs body] (attrs-parser body)]
+    (binding [*attrs* (merge *attrs* attrs)]
+      (let [field-key (:field-key *attrs*)
+            r (gensym "r")]
+        `(let ~[r (:cursor *attrs*)]
+           (~(symbol-fn tag) ~(assoc attrs
+                                :id (name field-key)
+                                :checked (list `get r field-key)
+                                :on-change `(fn [v#]
+                                              (update! ~r ~field-key
+                                                       (.. v# ~'-target ~'-checked))))
+            ~(or (first body) (str/capitalize (name field-key)))))))))
+
 (defn- process-form [{:keys [symbol-fn attrs-parser expander]} tag & body]
   (let [[attrs [[_ cursor & body]]] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* (assoc attrs :cursor cursor))]
@@ -86,20 +100,6 @@
                                                              (.. v# ~'-target ~'-value))))
                   (for [~nm ~coll]
                     ~@(doall (map expander body)))))))))
-
-(defn- process-form-checkbox [{:keys [symbol-fn attrs-parser]} tag & body]
-  (let [[attrs body] (attrs-parser body)]
-    (binding [*attrs* (merge *attrs* attrs)]
-      (let [field-key (:field-key *attrs*)
-            r (gensym "r")]
-        `(let ~[r (:cursor *attrs*)]
-           (~(symbol-fn tag) ~(assoc attrs
-                                :id (name field-key)
-                                :checked (list `get r field-key)
-                                :on-change `(fn [v#]
-                                              (update! ~r ~field-key
-                                                       (.. v# ~'-target ~'-checked))))
-            ~(or (first body) (str/capitalize (name field-key)))))))))
 
 (defn- process-form-radio [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
