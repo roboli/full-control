@@ -30,22 +30,22 @@
                                       form-horizontal
                                       form-inline] om-tags))
 
-(def ^:private general-layout-tags '[row panel navpanel])
+(def ^:private layout-tags '[row panel navpanel])
 
-(def ^:private general-form-tags '[form-column-
-                                   form-lbl
-                                   form-txt
-                                   form-txtarea
-                                   form-dropdown
-                                   form-checkbox
-                                   form-radio
-                                   help
-                                   lbl-
-                                   txt-
-                                   txtarea-
-                                   dropdown-
-                                   checkbox-
-                                   help-])
+(def ^:private form-tags '[form-column-
+                           form-lbl
+                           form-txt
+                           form-txtarea
+                           form-dropdown
+                           form-checkbox
+                           form-radio
+                           help
+                           lbl-
+                           txt-
+                           txtarea-
+                           dropdown-
+                           checkbox-
+                           help-])
 
 (def ^:private om-tags-fns
   (reduce #(assoc %1
@@ -65,7 +65,7 @@
                                                  :expander (expand-tags-with
                                                             :available (conj
                                                                         (concat general-tags
-                                                                                general-layout-tags)
+                                                                                layout-tags)
                                                                         'navbar
                                                                         'fixed-layout
                                                                         'fluid-layout))})
@@ -108,13 +108,13 @@
                                                  :attrs-parser parse-layout-attrs
                                                  :expander (expand-tags-with
                                                             :available (concat general-tags
-                                                                               general-layout-tags))})
+                                                                               layout-tags))})
    
    'fluid-layout       (partial process-control {:symbol-fn (return `fluid-layout*)
                                                  :attrs-parser parse-layout-attrs
                                                  :expander (expand-tags-with
                                                             :available (concat general-tags
-                                                                               general-layout-tags))})
+                                                                               layout-tags))})
    
    'row                (partial process-control {:symbol-fn (return `row*)
                                                  :attrs-parser parse-attrs
@@ -130,7 +130,7 @@
                                                  :expander (expand-tags-with
                                                             :available (conj
                                                                         (concat general-tags
-                                                                                general-layout-tags)
+                                                                                layout-tags)
                                                                         'group-for))})
 
    ;; Navbar
@@ -264,7 +264,7 @@
                                                  :attrs-parser parse-group-for-attrs
                                                  :expander (expand-tags-with
                                                             :available (concat general-tags
-                                                                               general-form-tags)
+                                                                               form-tags)
                                                             :alter-tag-fns (conj group-for-alter-fns
                                                                                  replace-form-col-tag))})
 
@@ -272,7 +272,7 @@
                                                  :attrs-parser parse-column-attrs
                                                  :expander (expand-tags-with
                                                             :available (concat general-tags
-                                                                               general-form-tags)
+                                                                               form-tags)
                                                             :alter-tag-fns group-for-alter-fns)})       
 
    'form-lbl           (partial process-form-label {:symbol-fn (return `label*)
