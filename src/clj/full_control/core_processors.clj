@@ -39,6 +39,16 @@
       `(apply tbody* ~attrs (for [~name ~coll]
                               (tr* {} ~@(doall (map expander body))))))))
 
+(defn- process-form [{:keys [symbol-fn attrs-parser expander]} tag & body]
+  (let [[attrs [[_ cursor & body]]] (attrs-parser body)]
+    (binding [*attrs* (merge *attrs* (assoc attrs :cursor cursor))]
+      (list* (symbol-fn tag) attrs (->> body
+                                        (map expander)
+                                        doall
+                                        ;; HACK: must render &nbsp after each
+                                        ;; form-group to display correctly
+                                        (interpose `nbsp*))))))
+
 (defn- process-field-checkbox [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
@@ -53,24 +63,14 @@
                                                        (.. v# ~'-target ~'-checked))))
             ~(or (first body) (str/capitalize (name field-key)))))))))
 
-(defn- process-form [{:keys [symbol-fn attrs-parser expander]} tag & body]
-  (let [[attrs [[_ cursor & body]]] (attrs-parser body)]
-    (binding [*attrs* (merge *attrs* (assoc attrs :cursor cursor))]
-      (list* (symbol-fn tag) attrs (->> body
-                                        (map expander)
-                                        doall
-                                        ;; HACK: must render &nbsp after each
-                                        ;; form-group to display correctly
-                                        (interpose `nbsp*))))))
-
-(defn- process-form-label [{:keys [symbol-fn attrs-parser]} tag & body]
+(defn- process-field-label [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
       (let [field-key (name (:field-key *attrs*))]
         (list (symbol-fn tag) (assoc attrs :html-for field-key)
               (if-not (empty? body) (first body) (str/capitalize field-key)))))))
 
-(defn- process-form-text [{:keys [symbol-fn attrs-parser]} tag & body]
+(defn- process-field-text [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
       (let [field-key (:field-key *attrs*)
@@ -86,7 +86,7 @@
                                               (update! ~r ~field-key
                                                        (.. v# ~'-target ~'-value))))))))))
 
-(defn- process-form-dropdown [{:keys [symbol-fn attrs-parser expander]} tag & body]
+(defn- process-field-dropdown [{:keys [symbol-fn attrs-parser expander]} tag & body]
   (let [[attrs [[_ [nm coll] & body]]] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
       (let [field-key (:field-key *attrs*)
@@ -101,7 +101,7 @@
                   (for [~nm ~coll]
                     ~@(doall (map expander body)))))))))
 
-(defn- process-form-radio [{:keys [symbol-fn attrs-parser]} tag & body]
+(defn- process-field-radio [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
       (let [field-key (:field-key *attrs*)
