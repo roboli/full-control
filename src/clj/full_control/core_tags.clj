@@ -41,6 +41,7 @@
                                       checkbox-inline-for
                                       radio
                                       radio-inline
+                                      help
                                       grid-view
                                       grid
                                       form
@@ -107,6 +108,10 @@
                                                  :expander identity})
 
    'radio-inline       (partial process-control {:symbol-fn (return `radio-inline*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander identity})
+
+   'help               (partial process-control {:symbol-fn (return `help*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
