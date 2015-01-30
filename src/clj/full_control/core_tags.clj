@@ -9,7 +9,7 @@
 (defn return [x]
   (fn [_] x))
 
-(defn- tag->qualilified-symbol [tag]
+(defn- symbol->qly-symbol [tag]
   (symbol (str "full-control.core/" (name tag) "*")))
 
 (def ^:private general-tags (concat '[with-controls
@@ -49,7 +49,7 @@
 
 (def ^:private om-tags-fns
   (reduce #(assoc %1
-             %2 (partial process-control {:symbol-fn tag->qualilified-symbol
+             %2 (partial process-control {:symbol-fn symbol->qly-symbol
                                           :attrs-parser parse-attrs
                                           :expander identity}))
           {}
@@ -70,36 +70,36 @@
                                                                         'fixed-layout
                                                                         'fluid-layout))})
 
-   'btn                (partial process-control {:symbol-fn tag->qualilified-symbol
+   'btn                (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'txt                (partial process-control {:symbol-fn tag->qualilified-symbol
+   'txt                (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'txtarea            (partial process-control {:symbol-fn tag->qualilified-symbol
+   'txtarea            (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'dropdown           (partial process-control {:symbol-fn tag->qualilified-symbol
+   'dropdown           (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
                                                             :available #{'option})})
    
-   'checkbox           (partial process-control {:symbol-fn tag->qualilified-symbol
+   'checkbox           (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'checkbox-inline    (partial process-control {:symbol-fn tag->qualilified-symbol
+   'checkbox-inline    (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
    
-   'radio              (partial process-control {:symbol-fn tag->qualilified-symbol
+   'radio              (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'radio-inline       (partial process-control {:symbol-fn tag->qualilified-symbol
+   'radio-inline       (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
@@ -125,7 +125,7 @@
                                                                         'column-)
                                                             :alter-tag-fns [replace-col-tag])})
    
-   'column-            (partial process-control {:symbol-fn tag->qualilified-symbol
+   'column-            (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs
                                                  :expander (expand-tags-with
                                                             :available (conj
@@ -170,7 +170,7 @@
                                                             :available #{'panel-header 'link}
                                                             :alter-tag-fns [(replace-tag 'header 'panel-header)])})
 
-   'title              (partial process-control {:symbol-fn tag->qualilified-symbol
+   'title              (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
    
@@ -239,17 +239,17 @@
                                                             :available general-tags)})
 
    ;; Forms
-   'form               (partial process-form {:symbol-fn tag->qualilified-symbol
+   'form               (partial process-form {:symbol-fn symbol->qly-symbol
                                               :attrs-parser parse-attrs
                                               :expander (expand-tags-with
                                                          :available #{'row 'group-for})})
 
-   'form-horizontal    (partial process-form {:symbol-fn tag->qualilified-symbol
+   'form-horizontal    (partial process-form {:symbol-fn symbol->qly-symbol
                                               :attrs-parser parse-attrs
                                               :expander (expand-tags-with
                                                          :available #{'row 'group-for})})
 
-   'form-inline        (partial process-form {:symbol-fn tag->qualilified-symbol
+   'form-inline        (partial process-form {:symbol-fn symbol->qly-symbol
                                               :attrs-parser parse-inline-attrs
                                               :expander (expand-tags-with
                                                          :available #{'row 'group-for})})
@@ -268,7 +268,7 @@
                                                             :alter-tag-fns (conj group-for-alter-fns
                                                                                  replace-form-col-tag))})
 
-   'form-column-       (partial process-control {:symbol-fn tag->qualilified-symbol
+   'form-column-       (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs
                                                  :expander (expand-tags-with
                                                             :available (concat general-tags
@@ -278,45 +278,45 @@
    'form-lbl           (partial process-form-label {:symbol-fn (return `label*)
                                                     :attrs-parser parse-attrs})
 
-   'lbl-               (partial process-form-label {:symbol-fn tag->qualilified-symbol
+   'lbl-               (partial process-form-label {:symbol-fn symbol->qly-symbol
                                                     :attrs-parser parse-column-attrs})
 
-   'form-txt           (partial process-form-text {:symbol-fn tag->qualilified-symbol
+   'form-txt           (partial process-form-text {:symbol-fn symbol->qly-symbol
                                                    :attrs-parser parse-attrs})
 
-   'txt-               (partial process-form-text {:symbol-fn tag->qualilified-symbol
+   'txt-               (partial process-form-text {:symbol-fn symbol->qly-symbol
                                                    :attrs-parser parse-column-attrs})
 
-   'form-txtarea       (partial process-form-text {:symbol-fn tag->qualilified-symbol
+   'form-txtarea       (partial process-form-text {:symbol-fn symbol->qly-symbol
                                                    :attrs-parser parse-attrs})
 
-   'txtarea-           (partial process-form-text {:symbol-fn tag->qualilified-symbol
+   'txtarea-           (partial process-form-text {:symbol-fn symbol->qly-symbol
                                                    :attrs-parser parse-column-attrs})
 
-   'form-dropdown      (partial process-form-dropdown {:symbol-fn tag->qualilified-symbol
+   'form-dropdown      (partial process-form-dropdown {:symbol-fn symbol->qly-symbol
                                                        :attrs-parser parse-attrs
                                                        :expander (expand-tags-with
                                                                   :attrs-parser #{'option})})
 
-   'dropdown-          (partial process-form-dropdown {:symbol-fn tag->qualilified-symbol
+   'dropdown-          (partial process-form-dropdown {:symbol-fn symbol->qly-symbol
                                                        :attrs-parser parse-column-attrs
                                                        :expander (expand-tags-with
                                                                   :attrs-parser #{'option})})
 
-   'form-checkbox      (partial process-form-checkbox {:symbol-fn tag->qualilified-symbol
+   'form-checkbox      (partial process-form-checkbox {:symbol-fn symbol->qly-symbol
                                                        :attrs-parser parse-attrs})
 
-   'checkbox-          (partial process-form-checkbox {:symbol-fn tag->qualilified-symbol
+   'checkbox-          (partial process-form-checkbox {:symbol-fn symbol->qly-symbol
                                                        :attrs-parser parse-column-attrs})
 
-   'form-radio         (partial process-form-radio {:symbol-fn tag->qualilified-symbol
+   'form-radio         (partial process-form-radio {:symbol-fn symbol->qly-symbol
                                                     :attrs-parser parse-attrs})
 
-   'help               (partial process-control {:symbol-fn tag->qualilified-symbol
+   'help               (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'help-              (partial process-control {:symbol-fn tag->qualilified-symbol
+   'help-              (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs
                                                  :expander identity})})
 
