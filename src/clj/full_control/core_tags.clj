@@ -10,7 +10,7 @@
   (fn [_] x))
 
 (defn- tag->qualilified-symbol [tag]
-  `~(symbol (str "full-control.core/" (name tag) "*")))
+  (symbol (str "full-control.core/" (name tag) "*")))
 
 (def ^:private general-tags (concat '[with-controls
                                       btn
