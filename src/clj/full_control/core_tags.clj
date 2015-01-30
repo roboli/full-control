@@ -12,6 +12,23 @@
 (defn- symbol->qly-symbol [tag]
   (symbol (str "full-control.core/" (name tag) "*")))
 
+(def ^:private layout-tags '[navbar fixed-layout fluid-layout modal])
+
+(def ^:private form-tags '[form-column-
+                           form-lbl
+                           form-txt
+                           form-txtarea
+                           form-dropdown
+                           form-checkbox
+                           form-radio
+                           help
+                           lbl-
+                           txt-
+                           txtarea-
+                           dropdown-
+                           checkbox-
+                           help-])
+
 (def ^:private general-tags (concat '[with-controls
                                       btn
                                       txt
@@ -28,24 +45,9 @@
                                       modal
                                       form
                                       form-horizontal
-                                      form-inline] om-tags))
-
-(def ^:private layout-tags '[row panel navpanel])
-
-(def ^:private form-tags '[form-column-
-                           form-lbl
-                           form-txt
-                           form-txtarea
-                           form-dropdown
-                           form-checkbox
-                           form-radio
-                           help
-                           lbl-
-                           txt-
-                           txtarea-
-                           dropdown-
-                           checkbox-
-                           help-])
+                                      form-inline
+                                      panel
+                                      navpanel] om-tags))
 
 (def ^:private om-tags-fns
   (reduce #(assoc %1
@@ -63,12 +65,7 @@
    'page               (partial process-control {:symbol-fn (return `page*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
-                                                            :available (conj
-                                                                        (concat general-tags
-                                                                                layout-tags)
-                                                                        'navbar
-                                                                        'fixed-layout
-                                                                        'fluid-layout))})
+                                                            :available layout-tags)})
 
    'btn                (partial process-control {:symbol-fn (return `btn*)
                                                  :attrs-parser parse-attrs
@@ -107,30 +104,25 @@
    'fixed-layout       (partial process-control {:symbol-fn (return `fixed-layout*)
                                                  :attrs-parser parse-layout-attrs
                                                  :expander (expand-tags-with
-                                                            :available (concat general-tags
-                                                                               layout-tags))})
+                                                            :available #{'row})})
    
    'fluid-layout       (partial process-control {:symbol-fn (return `fluid-layout*)
                                                  :attrs-parser parse-layout-attrs
                                                  :expander (expand-tags-with
-                                                            :available (concat general-tags
-                                                                               layout-tags))})
+                                                            :available #{'row})})
    
    'row                (partial process-control {:symbol-fn (return `row*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
-                                                            :available (conj
-                                                                        general-tags
-                                                                        'row
-                                                                        'column-)
+                                                            :available #{'with-controls 'row 'column-}
                                                             :alter-tag-fns [replace-col-tag])})
    
    'column-            (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs
                                                  :expander (expand-tags-with
                                                             :available (conj
-                                                                        (concat general-tags
-                                                                                layout-tags)
+                                                                        general-tags
+                                                                        'row
                                                                         'group-for))})
 
    ;; Navbar
@@ -223,7 +215,8 @@
                                                             :available (conj
                                                                         general-tags
                                                                         'modal-header
-                                                                        'modal-footer)
+                                                                        'modal-footer
+                                                                        'row)
                                                             :alter-tag-fns [(replace-tag 'header 'modal-header)
                                                                             (replace-tag 'footer 'modal-footer)])})
 
@@ -242,17 +235,17 @@
    'form               (partial process-form {:symbol-fn (return `form*)
                                               :attrs-parser parse-attrs
                                               :expander (expand-tags-with
-                                                         :available #{'row 'group-for})})
+                                                         :available #{'row})})
 
    'form-horizontal    (partial process-form {:symbol-fn (return `form-horizontal*)
                                               :attrs-parser parse-attrs
                                               :expander (expand-tags-with
-                                                         :available #{'row 'group-for})})
+                                                         :available #{'row})})
 
    'form-inline        (partial process-form {:symbol-fn (return `form-inline*)
                                               :attrs-parser parse-inline-attrs
                                               :expander (expand-tags-with
-                                                         :available #{'row 'group-for})})
+                                                         :available #{'group-for})})
 
    'checkbox-for       (partial process-form-checkbox {:symbol-fn (return `checkbox*)
                                                        :attrs-parser parse-group-for-attrs})
