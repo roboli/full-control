@@ -17,27 +17,6 @@
 (def ^:private replace-title-tag
   (partial replace-tag-with-regexp #"title[1-5]$" 'title))
 
-(def ^:private replace-lbl-tag
-  (partial replace-tag-with-regexp #"lbl-(?:\d|1[0-2])$" 'group-lbl-))
-
-(def ^:private replace-txt-tag
-  (partial replace-tag-with-regexp #"txt-(?:\d|1[0-2])$" 'group-txt-))
-
-(def ^:private replace-txtarea-tag
-  (partial replace-tag-with-regexp #"txtarea-(?:\d|1[0-2])$" 'group-txtarea-))
-
-(def ^:private replace-dropdown-tag
-  (partial replace-tag-with-regexp #"dropdown-(?:\d|1[0-2])$" 'group-dropdown-))
-
-(def ^:private replace-checkbox-tag
-  (partial replace-tag-with-regexp #"checkbox-(?:\d|1[0-2])$" 'group-checkbox-))
-
-(def ^:private replace-help-tag
-  (partial replace-tag-with-regexp #"help-(?:\d|1[0-2])$" 'group-help-))
-
-(def ^:private replace-group-col-tag
-  (partial replace-tag-with-regexp #"column-(?:\d|1[0-2])$" 'group-column-))
-
 (defn- replace-tag-with-fns [fs tag]
   (some #(if-not (nil? %) %)
         ((apply juxt fs) tag)))
@@ -58,10 +37,10 @@
                                     (replace-tag 'checkbox 'group-checkbox)
                                     (replace-tag 'radio 'group-radio)
                                     (replace-tag 'help 'group-help)
-                                    replace-group-col-tag
-                                    replace-lbl-tag
-                                    replace-txt-tag
-                                    replace-txtarea-tag
-                                    replace-dropdown-tag
-                                    replace-checkbox-tag
-                                    replace-help-tag])
+                                    (partial replace-tag-with-regexp #"column-(?:\d|1[0-2])$" 'group-column-)
+                                    (partial replace-tag-with-regexp #"lbl-(?:\d|1[0-2])$" 'group-lbl-)
+                                    (partial replace-tag-with-regexp #"txt-(?:\d|1[0-2])$" 'group-txt-)
+                                    (partial replace-tag-with-regexp #"txtarea-(?:\d|1[0-2])$" 'group-txtarea-)
+                                    (partial replace-tag-with-regexp #"dropdown-(?:\d|1[0-2])$" 'group-dropdown-)
+                                    (partial replace-tag-with-regexp #"checkbox-(?:\d|1[0-2])$" 'group-checkbox-)
+                                    (partial replace-tag-with-regexp #"help-(?:\d|1[0-2])$" 'group-help-)])
