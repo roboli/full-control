@@ -21,13 +21,13 @@
                            form-dropdown
                            form-checkbox
                            form-radio
-                           help
-                           lbl-
-                           txt-
-                           txtarea-
-                           dropdown-
-                           checkbox-
-                           help-])
+                           form-help
+                           form-lbl-
+                           form-txt-
+                           form-txtarea-
+                           form-dropdown-
+                           form-checkbox-
+                           form-help-])
 
 (def ^:private general-tags (concat '[with-controls
                                       btn
@@ -258,7 +258,8 @@
                                                             :available (concat general-tags
                                                                                form-tags)
                                                             :alter-tag-fns (conj group-for-alter-fns
-                                                                                 replace-form-col-tag))})
+                                                                                 replace-form-col-tag
+                                                                                 (replace-tag 'help 'form-help)))})
 
    'form-column-       (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs
@@ -270,19 +271,19 @@
    'form-lbl           (partial process-form-label {:symbol-fn (return `label*)
                                                     :attrs-parser parse-attrs})
 
-   'lbl-               (partial process-form-label {:symbol-fn symbol->qly-symbol
+   'form-lbl-          (partial process-form-label {:symbol-fn symbol->qly-symbol
                                                     :attrs-parser parse-column-attrs})
 
    'form-txt           (partial process-form-text {:symbol-fn (return `txt*)
                                                    :attrs-parser parse-attrs})
 
-   'txt-               (partial process-form-text {:symbol-fn symbol->qly-symbol
+   'form-txt-          (partial process-form-text {:symbol-fn symbol->qly-symbol
                                                    :attrs-parser parse-column-attrs})
 
    'form-txtarea       (partial process-form-text {:symbol-fn (return `txtarea*)
                                                    :attrs-parser parse-attrs})
 
-   'txtarea-           (partial process-form-text {:symbol-fn symbol->qly-symbol
+   'form-txtarea-      (partial process-form-text {:symbol-fn symbol->qly-symbol
                                                    :attrs-parser parse-column-attrs})
 
    'form-dropdown      (partial process-form-dropdown {:symbol-fn (return `dropdown*)
@@ -290,7 +291,7 @@
                                                        :expander (expand-tags-with
                                                                   :attrs-parser #{'option})})
 
-   'dropdown-          (partial process-form-dropdown {:symbol-fn symbol->qly-symbol
+   'form-dropdown-     (partial process-form-dropdown {:symbol-fn symbol->qly-symbol
                                                        :attrs-parser parse-column-attrs
                                                        :expander (expand-tags-with
                                                                   :attrs-parser #{'option})})
@@ -298,17 +299,17 @@
    'form-checkbox      (partial process-field-checkbox {:symbol-fn (return `checkbox*)
                                                         :attrs-parser parse-attrs})
 
-   'checkbox-          (partial process-field-checkbox {:symbol-fn symbol->qly-symbol
+   'form-checkbox-     (partial process-field-checkbox {:symbol-fn symbol->qly-symbol
                                                         :attrs-parser parse-column-attrs})
 
    'form-radio         (partial process-form-radio {:symbol-fn (return `radio*)
                                                     :attrs-parser parse-attrs})
 
-   'help               (partial process-control {:symbol-fn (return `help*)
+   'form-help          (partial process-control {:symbol-fn (return `help*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'help-              (partial process-control {:symbol-fn symbol->qly-symbol
+   'form-help-         (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs
                                                  :expander identity})})
 

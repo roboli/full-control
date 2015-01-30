@@ -18,22 +18,22 @@
   (partial replace-tag-with-regexp #"title[1-5]$" 'title))
 
 (def ^:private replace-lbl-tag
-  (partial replace-tag-with-regexp #"lbl-(?:\d|1[0-2])$" 'lbl-))
+  (partial replace-tag-with-regexp #"lbl-(?:\d|1[0-2])$" 'form-lbl-))
 
 (def ^:private replace-txt-tag
-  (partial replace-tag-with-regexp #"txt-(?:\d|1[0-2])$" 'txt-))
+  (partial replace-tag-with-regexp #"txt-(?:\d|1[0-2])$" 'form-txt-))
 
 (def ^:private replace-txtarea-tag
-  (partial replace-tag-with-regexp #"txtarea-(?:\d|1[0-2])$" 'txtarea-))
+  (partial replace-tag-with-regexp #"txtarea-(?:\d|1[0-2])$" 'form-txtarea-))
 
 (def ^:private replace-dropdown-tag
-  (partial replace-tag-with-regexp #"dropdown-(?:\d|1[0-2])$" 'dropdown-))
+  (partial replace-tag-with-regexp #"dropdown-(?:\d|1[0-2])$" 'form-dropdown-))
 
 (def ^:private replace-checkbox-tag
-  (partial replace-tag-with-regexp #"checkbox-(?:\d|1[0-2])$" 'checkbox-))
+  (partial replace-tag-with-regexp #"checkbox-(?:\d|1[0-2])$" 'form-checkbox-))
 
 (def ^:private replace-help-tag
-  (partial replace-tag-with-regexp #"help-(?:\d|1[0-2])$" 'help-))
+  (partial replace-tag-with-regexp #"help-(?:\d|1[0-2])$" 'form-help-))
 
 (def ^:private replace-form-col-tag
   (partial replace-tag-with-regexp #"column-(?:\d|1[0-2])$" 'form-column-))
