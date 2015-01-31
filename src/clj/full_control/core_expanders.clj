@@ -54,6 +54,14 @@
           (apply tag body))
       form)))
 
+(def ^:private row-alter-fns [replace-col-tag
+                              (replace-lbl-col-tag-with 'lbl-)
+                              (replace-txt-col-tag-with 'txt-)
+                              (replace-txtarea-col-tag-with 'txtarea-)
+                              (replace-dropdown-col-tag-with 'dropdown-)
+                              (replace-checkbox-col-tag-with 'checkbox-)
+                              (replace-help-col-tag-with 'help-)])
+
 (def ^:private group-for-alter-fns [(replace-tag 'lbl 'group-lbl)
                                     (replace-tag 'txt 'group-txt)
                                     (replace-tag 'txtarea 'group-txtarea)

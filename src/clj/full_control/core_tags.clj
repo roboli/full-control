@@ -14,6 +14,16 @@
 
 (def ^:private layout-tags '[navbar fixed-layout fluid-layout modal])
 
+(def ^:private row-tags '[with-controls
+                          row
+                          column-
+                          lbl-
+                          txt-
+                          txtarea-
+                          dropdown-
+                          checkbox-
+                          help-])
+
 (def ^:private form-tags '[lbl-for
                            txt-for
                            txtarea-for
@@ -128,22 +138,8 @@
    'row                (partial process-control {:symbol-fn (return `row*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
-                                                            :available #{'with-controls
-                                                                         'row
-                                                                         'column-
-                                                                         'lbl-
-                                                                         'txt-
-                                                                         'txtarea-
-                                                                         'dropdown-
-                                                                         'checkbox-
-                                                                         'help-}
-                                                            :alter-tag-fns [replace-col-tag
-                                                                            (replace-lbl-col-tag-with 'lbl-)
-                                                                            (replace-txt-col-tag-with 'txt-)
-                                                                            (replace-txtarea-col-tag-with 'txtarea-)
-                                                                            (replace-dropdown-col-tag-with 'dropdown-)
-                                                                            (replace-checkbox-col-tag-with 'checkbox-)
-                                                                            (replace-help-col-tag-with 'help-)])})
+                                                            :available row-tags
+                                                            :alter-tag-fns row-alter-fns)})
    
    'column-            (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs
