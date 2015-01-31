@@ -75,7 +75,7 @@
 
 (def ^:private fc-tags-fns
   {'with-controls      (partial process-with-controls {:expander (expand-tags-with
-                                                                  :alter-tag-fns [replace-col-tag])})
+                                                                  :alter-tag-fns [(replace-col-tag-with 'column-)])})
 
    ;; General
    'page               (partial process-control {:symbol-fn (return `page*)

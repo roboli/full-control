@@ -11,11 +11,12 @@
 (defn- replace-tag-with-regexp [pattern new-tag tag]
   (if (re-find pattern (name tag)) new-tag))
 
-(def ^:private replace-col-tag
-  (partial replace-tag-with-regexp #"column-(?:\d|1[0-2])$" 'column-))
-
 (def ^:private replace-title-tag
   (partial replace-tag-with-regexp #"title[1-5]$" 'title))
+
+(defn- replace-col-tag-with [new-tag]
+  (fn [tag]
+    (replace-tag-with-regexp #"column-(?:\d|1[0-2])$" new-tag tag)))
 
 (defn- replace-lbl-col-tag-with [new-tag]
   (fn [tag]
@@ -54,7 +55,7 @@
           (apply tag body))
       form)))
 
-(def ^:private row-alter-fns [replace-col-tag
+(def ^:private row-alter-fns [(replace-col-tag-with 'column-)
                               (replace-lbl-col-tag-with 'lbl-)
                               (replace-txt-col-tag-with 'txt-)
                               (replace-txtarea-col-tag-with 'txtarea-)
@@ -69,7 +70,7 @@
                                     (replace-tag 'checkbox 'group-checkbox)
                                     (replace-tag 'radio 'group-radio)
                                     (replace-tag 'help 'group-help)
-                                    (partial replace-tag-with-regexp #"column-(?:\d|1[0-2])$" 'group-column-)
+                                    (replace-col-tag-with 'group-column-)
                                     (replace-lbl-col-tag-with 'group-lbl-)
                                     (replace-txt-col-tag-with 'group-txt-)
                                     (replace-txtarea-col-tag-with 'group-txtarea-)
