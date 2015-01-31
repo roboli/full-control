@@ -162,6 +162,7 @@
                                                                         (concat general-tags
                                                                                 form-tags)
                                                                         'row
+                                                                        'group
                                                                         'group-for))})
 
    'lbl-               (partial process-control {:symbol-fn symbol->qly-symbol
@@ -354,6 +355,13 @@
 
    'checkbox-inline-for (partial process-field-checkbox {:symbol-fn (return `checkbox-inline*)
                                                          :attrs-parser parse-field-key-attrs})
+
+   'group              (partial process-control {:symbol-fn (return `form-group*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-tags-with
+                                                            :available (concat row-tags
+                                                                               form-tags)
+                                                            :alter-tag-fns row-alter-fns)})
 
    'group-for          (partial process-control {:symbol-fn (return `form-group*)
                                                  :attrs-parser parse-field-key-attrs
