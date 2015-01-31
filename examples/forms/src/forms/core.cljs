@@ -55,12 +55,12 @@
                                     (checkbox))))
                        (row
                         (column-6
-                         (label "Extras")
+                         (lbl "Extras")
                          (checkbox-for :non-taxable)
                          (checkbox-for :allow-credit)
                          (checkbox-for :allow-discounts))
                         (column-6
-                         (label "Extras Inline")
+                         (lbl "Extras Inline")
                          (br)
                          (checkbox-inline-for :non-taxable)
                          (checkbox-inline-for :allow-credit)
@@ -70,7 +70,15 @@
                          (group-for :type
                                     (lbl)
                                     (radio {:value "1"} "Service")
-                                    (radio {:value "2"} "Asset")))))))))
+                                    (radio {:value "2"} "Asset")))
+                        (column-6
+                         (group-for :type
+                                    (lbl "Type Inline")
+                                    (br)
+                                    (radio-inline {:value "1"
+                                                   :name "type1"} "Service")
+                                    (radio-inline {:value "2"
+                                                   :name "type1"} "Asset")))))))))
                  (row
                   (column-9
                    (panel
@@ -109,16 +117,14 @@
                        (row
                         (column-6
                          (row
-                          (column-4
-                           (label "Extras"))
+                          (lbl-4 "Extras")
                           (column-6
                            (checkbox-for :non-taxable)
                            (checkbox-for :allow-credit)
                            (checkbox-for :allow-discounts))))
                         (column-6
                          (row
-                          (column-4
-                           (label "Extras Inline"))
+                          (lbl-4 "Extras Inline")
                           (column-6
                            (checkbox-inline-for :non-taxable "NT")
                            (checkbox-inline-for :allow-credit "AC")
@@ -129,7 +135,15 @@
                                     (lbl-4)
                                     (column-6
                                      (radio {:value "1"} "Service")
-                                     (radio {:value "2"} "Asset"))))))))))
+                                     (radio {:value "2"} "Asset"))))
+                        (column-6
+                         (group-for :type
+                                    (lbl-4)
+                                    (column-6
+                                     (radio-inline {:value "1"
+                                                    :name "type1"} "Service")
+                                     (radio-inline {:value "2"
+                                                    :name "type1"} "Asset"))))))))))
                  (row
                   (column-9
                    (panel

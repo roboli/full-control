@@ -109,7 +109,7 @@
         `(let ~[r (:cursor *attrs*)]
            (~(symbol-fn tag) ~(assoc attrs
                                 :id (name field-key)
-                                :name (name field-key)
+                                :name (or (:name attrs) (name field-key))
                                 :checked `(= ~(:value attrs) (get ~r ~field-key))
                                 :on-change `(fn [v#]
                                               (update! ~r ~field-key

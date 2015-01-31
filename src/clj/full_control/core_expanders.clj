@@ -69,6 +69,7 @@
                                     (replace-tag 'dropdown 'group-dropdown)
                                     (replace-tag 'checkbox 'group-checkbox)
                                     (replace-tag 'radio 'group-radio)
+                                    (replace-tag 'radio-inline 'group-radio-inline)
                                     (replace-tag 'help 'group-help)
                                     (replace-col-tag-with 'group-column-)
                                     (replace-lbl-col-tag-with 'group-lbl-)

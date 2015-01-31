@@ -38,6 +38,7 @@
                                  group-dropdown
                                  group-checkbox
                                  group-radio
+                                 group-radio-inline
                                  group-help
                                  group-lbl-
                                  group-txt-
@@ -369,6 +370,9 @@
                                                          :attrs-parser parse-column-attrs})
 
    'group-radio         (partial process-field-radio {:symbol-fn (return `radio*)
+                                                      :attrs-parser parse-attrs})
+
+   'group-radio-inline  (partial process-field-radio {:symbol-fn (return `radio-inline*)
                                                       :attrs-parser parse-attrs})
 
    'group-help          (partial process-control {:symbol-fn (return `help*)
