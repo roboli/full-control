@@ -17,6 +17,30 @@
 (def ^:private replace-title-tag
   (partial replace-tag-with-regexp #"title[1-5]$" 'title))
 
+(defn- replace-lbl-col-tag-with [new-tag]
+  (fn [tag]
+    (replace-tag-with-regexp #"lbl-(?:\d|1[0-2])$" new-tag tag)))
+
+(defn- replace-txt-col-tag-with [new-tag]
+  (fn [tag]
+    (replace-tag-with-regexp #"txt-(?:\d|1[0-2])$" new-tag tag)))
+
+(defn- replace-txtarea-col-tag-with [new-tag]
+  (fn [tag]
+    (replace-tag-with-regexp #"txtarea-(?:\d|1[0-2])$" new-tag tag)))
+
+(defn- replace-dropdown-col-tag-with [new-tag]
+  (fn [tag]
+    (replace-tag-with-regexp #"dropdown-(?:\d|1[0-2])$" new-tag tag)))
+
+(defn- replace-checkbox-col-tag-with [new-tag]
+  (fn [tag]
+    (replace-tag-with-regexp #"checkbox-(?:\d|1[0-2])$" new-tag tag)))
+
+(defn- replace-help-col-tag-with [new-tag]
+  (fn [tag]
+    (replace-tag-with-regexp #"help-(?:\d|1[0-2])$" new-tag tag)))
+
 (defn- replace-tag-with-fns [fs tag]
   (some #(if-not (nil? %) %)
         ((apply juxt fs) tag)))
@@ -38,9 +62,9 @@
                                     (replace-tag 'radio 'group-radio)
                                     (replace-tag 'help 'group-help)
                                     (partial replace-tag-with-regexp #"column-(?:\d|1[0-2])$" 'group-column-)
-                                    (partial replace-tag-with-regexp #"lbl-(?:\d|1[0-2])$" 'group-lbl-)
-                                    (partial replace-tag-with-regexp #"txt-(?:\d|1[0-2])$" 'group-txt-)
-                                    (partial replace-tag-with-regexp #"txtarea-(?:\d|1[0-2])$" 'group-txtarea-)
-                                    (partial replace-tag-with-regexp #"dropdown-(?:\d|1[0-2])$" 'group-dropdown-)
-                                    (partial replace-tag-with-regexp #"checkbox-(?:\d|1[0-2])$" 'group-checkbox-)
-                                    (partial replace-tag-with-regexp #"help-(?:\d|1[0-2])$" 'group-help-)])
+                                    (replace-lbl-col-tag-with 'group-lbl-)
+                                    (replace-txt-col-tag-with 'group-txt-)
+                                    (replace-txtarea-col-tag-with 'group-txtarea-)
+                                    (replace-dropdown-col-tag-with 'group-dropdown-)
+                                    (replace-checkbox-col-tag-with 'group-checkbox-)
+                                    (replace-help-col-tag-with 'group-help-)])

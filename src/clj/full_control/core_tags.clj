@@ -128,8 +128,22 @@
    'row                (partial process-control {:symbol-fn (return `row*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
-                                                            :available #{'with-controls 'row 'column-}
-                                                            :alter-tag-fns [replace-col-tag])})
+                                                            :available #{'with-controls
+                                                                         'row
+                                                                         'column-
+                                                                         'lbl-
+                                                                         'txt-
+                                                                         'txtarea-
+                                                                         'dropdown-
+                                                                         'checkbox-
+                                                                         'help-}
+                                                            :alter-tag-fns [replace-col-tag
+                                                                            (replace-lbl-col-tag-with 'lbl-)
+                                                                            (replace-txt-col-tag-with 'txt-)
+                                                                            (replace-txtarea-col-tag-with 'txtarea-)
+                                                                            (replace-dropdown-col-tag-with 'dropdown-)
+                                                                            (replace-checkbox-col-tag-with 'checkbox-)
+                                                                            (replace-help-col-tag-with 'help-)])})
    
    'column-            (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs
@@ -139,6 +153,31 @@
                                                                                 form-tags)
                                                                         'row
                                                                         'group-for))})
+
+   'lbl-               (partial process-control {:symbol-fn symbol->qly-symbol
+                                                 :attrs-parser parse-column-attrs
+                                                 :expander identity})
+
+   'txt-               (partial process-control {:symbol-fn symbol->qly-symbol
+                                                 :attrs-parser parse-column-attrs
+                                                 :expander identity})
+
+   'txtarea-           (partial process-control {:symbol-fn symbol->qly-symbol
+                                                 :attrs-parser parse-column-attrs
+                                                 :expander identity})
+
+   'dropdown-          (partial process-control {:symbol-fn symbol->qly-symbol
+                                                 :attrs-parser parse-column-attrs
+                                                 :expander (expand-tags-with
+                                                            :available #{'option})})
+
+   'checkbox-          (partial process-control {:symbol-fn symbol->qly-symbol
+                                                 :attrs-parser parse-column-attrs
+                                                 :expander identity})
+
+   'help-              (partial process-control {:symbol-fn symbol->qly-symbol
+                                                 :attrs-parser parse-column-attrs
+                                                 :expander identity})
 
    ;; Navbar
    'navbar             (partial process-navbar {:attrs-parser parse-attrs
