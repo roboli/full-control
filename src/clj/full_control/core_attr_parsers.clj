@@ -44,3 +44,6 @@
 
 (defn- parse-inline-attrs [body]
   ((comp merge-inline default-empty parse-m) body))
+
+(defn- parse-column-field-attrs [body]
+  ((comp merge-size default-empty parse-m parse-field-key) body))

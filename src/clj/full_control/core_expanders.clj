@@ -61,7 +61,12 @@
                               (replace-txtarea-col-tag-with 'txtarea-)
                               (replace-dropdown-col-tag-with 'dropdown-)
                               (replace-checkbox-col-tag-with 'checkbox-)
-                              (replace-help-col-tag-with 'help-)])
+                              (replace-help-col-tag-with 'help-)
+                              (partial replace-tag-with-regexp #"lbl-(?:\d|1[0-2])-for$" 'lbl--for)
+                              (partial replace-tag-with-regexp #"txt-(?:\d|1[0-2])-for$" 'txt--for)
+                              (partial replace-tag-with-regexp #"txtarea-(?:\d|1[0-2])-for$" 'txtarea--for)
+                              (partial replace-tag-with-regexp #"dropdown-(?:\d|1[0-2])-for$" 'dropdown--for)
+                              (partial replace-tag-with-regexp #"checkbox-(?:\d|1[0-2])-for$" 'checkbox--for)])
 
 (def ^:private group-for-alter-fns [(replace-tag 'lbl 'group-lbl)
                                     (replace-tag 'txt 'group-txt)

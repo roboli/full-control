@@ -12,16 +12,29 @@
 (defn- symbol->qly-symbol [tag]
   (symbol (str "full-control.core/" (name tag) "*")))
 
+(defn- symbol-for->qly-symbol [tag]
+  (-> (name tag)
+      (str/split #"-")
+      drop-last
+      (#(str/join "-" %))
+      (#(str "full-control.core/" % "*"))
+      symbol))
+
 (def ^:private layout-tags '[navbar fixed-layout fluid-layout modal])
 
 (def ^:private row-tags '[with-controls
                           row
                           column-
                           lbl-
+                          lbl--for
                           txt-
+                          txt--for
                           txtarea-
+                          txtarea--for
                           dropdown-
+                          dropdown--for
                           checkbox-
+                          checkbox--for
                           help-])
 
 (def ^:private form-tags '[lbl-for
@@ -155,22 +168,43 @@
                                                  :attrs-parser parse-column-attrs
                                                  :expander identity})
 
+   'lbl--for           (partial process-field-label {:symbol-fn symbol-for->qly-symbol
+                                                     :attrs-parser parse-column-field-attrs
+                                                     :expander identity})
+
    'txt-               (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs
                                                  :expander identity})
 
+   'txt--for           (partial process-field-text {:symbol-fn symbol-for->qly-symbol
+                                                    :attrs-parser parse-column-field-attrs
+                                                    :expander identity})
+
    'txtarea-           (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs
                                                  :expander identity})
+
+   'txtarea--for       (partial process-field-text {:symbol-fn symbol-for->qly-symbol
+                                                    :attrs-parser parse-column-field-attrs
+                                                    :expander identity})
 
    'dropdown-          (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs
                                                  :expander (expand-tags-with
                                                             :available #{'option})})
 
+   'dropdown--for     (partial process-field-dropdown {:symbol-fn symbol-for->qly-symbol
+                                                       :attrs-parser parse-column-field-attrs
+                                                       :expander (expand-tags-with
+                                                                  :available #{'option})})
+
    'checkbox-          (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs
                                                  :expander identity})
+
+   'checkbox--for      (partial process-field-checkbox {:symbol-fn symbol-for->qly-symbol
+                                                        :attrs-parser parse-column-field-attrs
+                                                        :expander identity})
 
    'help-              (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs
