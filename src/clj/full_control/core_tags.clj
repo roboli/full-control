@@ -50,6 +50,7 @@
                                  group-txtarea
                                  group-dropdown
                                  group-checkbox
+                                 group-checkbox-inline
                                  group-radio
                                  group-radio-inline
                                  group-help
@@ -410,6 +411,9 @@
 
    'group-checkbox-     (partial process-field-checkbox {:symbol-fn symbol->qly-symbol
                                                          :attrs-parser parse-column-attrs})
+
+   'group-checkbox-inline (partial process-field-checkbox {:symbol-fn (return `checkbox-inline*)
+                                                           :attrs-parser parse-attrs})
 
    'group-radio         (partial process-field-radio {:symbol-fn (return `radio*)
                                                       :attrs-parser parse-attrs})

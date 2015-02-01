@@ -73,6 +73,7 @@
                                     (replace-tag 'txtarea 'group-txtarea)
                                     (replace-tag 'dropdown 'group-dropdown)
                                     (replace-tag 'checkbox 'group-checkbox)
+                                    (replace-tag 'checkbox-inline 'group-checkbox-inline)
                                     (replace-tag 'radio 'group-radio)
                                     (replace-tag 'radio-inline 'group-radio-inline)
                                     (replace-tag 'help 'group-help)
