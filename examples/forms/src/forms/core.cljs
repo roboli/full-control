@@ -148,14 +148,33 @@
                   (column-9
                    (panel
                     (header (title3 "Inline"))
-                    (form-inline
-                     (with-record (:item cursor)
-                       (group-for :description
-                                  (txt {:max-length 15
-                                        :placeholder "Name"}))
-                       (group-for :price
-                                  (txt {:max-length 10}))
-                       (group-for :comments
-                                  (txt))))))))))
+                    (row
+                     (column-12
+                      (form-inline
+                       (with-record (:item cursor)
+                         (group-for :description
+                                    (txt {:max-length 15
+                                          :placeholder "Name"}))
+                         (group-for :brand-id
+                                    (dropdown
+                                     (with-source [data (:brands cursor)]
+                                       (option {:value (:id data)} (:name data)))))
+                         (group-for :price
+                                    (txt {:max-length 10}))
+                         (group-for :comments
+                                    (txt))))))
+                    (row
+                     (column-12
+                      (form-inline
+                       (with-record (:item cursor)
+                         (group-for :non-taxable
+                                    (checkbox-inline "NT"))
+                         (group-for :allow-credit
+                                    (checkbox-inline "AC"))
+                         (group-for :allow-discounts
+                                    (checkbox-inline "AD"))
+                         (group-for :type
+                                    (radio-inline {:value "1"} "Service")
+                                    (radio-inline {:value "2"} "Asset"))))))))))))
 
 (fc/root page app-state {:target (. js/document (getElementById "app"))})
