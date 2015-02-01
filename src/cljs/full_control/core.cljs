@@ -72,6 +72,8 @@
 
 (def nbsp* (gstr/unescapeEntities "&nbsp;"))
 
+(defn space* [& _] nbsp*)
+
 ;; All om.dom/tags
 (gen-om-fns)
 

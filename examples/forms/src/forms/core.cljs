@@ -173,6 +173,8 @@
                                     (checkbox-inline "AC"))
                          (group-for :allow-discounts
                                     (checkbox-inline "AD"))
+                         (space)
+                         (space)
                          (group-for :type
                                     (radio-inline {:value "1"} "Service")
                                     (radio-inline {:value "2"} "Asset"))))))))))))

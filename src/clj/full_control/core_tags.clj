@@ -62,6 +62,7 @@
                                  group-help-])
 
 (def ^:private general-tags (concat '[with-controls
+                                      space
                                       btn
                                       lbl
                                       txt
@@ -97,6 +98,8 @@
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
                                                             :available layout-tags)})
+
+   'space              (fn [& _] (list `space*))
 
    'btn                (partial process-control {:symbol-fn (return `btn*)
                                                  :attrs-parser parse-attrs
@@ -332,7 +335,7 @@
    'form-inline        (partial process-form {:symbol-fn (return `form-inline*)
                                               :attrs-parser parse-inline-attrs
                                               :expander (expand-tags-with
-                                                         :available #{'group-for})})
+                                                         :available #{'group-for 'space})})
 
    'lbl-for            (partial process-field-label {:symbol-fn (return `label*)
                                                      :attrs-parser parse-field-key-attrs
