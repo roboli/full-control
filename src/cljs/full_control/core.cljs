@@ -395,10 +395,15 @@
                                   (str "form-group-" (get sizes (:size attrs)))))}
          body))
 
-(defn form-horizontal* [attrs & body]
+(defn frm* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply form* (assoc attrs :class-name "form-horizontal") body))
+  (form* (dissoc attrs :disabled)
+         (apply fieldset* {:disabled (:disabled attrs)} body)))
 
-(defn form-inline* [attrs & body]
+(defn frm-horizontal* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply form* (assoc attrs :class-name "form-inline") body))
+  (apply frm* (assoc attrs :class-name "form-horizontal") body))
+
+(defn frm-inline* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply frm* (assoc attrs :class-name "form-inline") body))

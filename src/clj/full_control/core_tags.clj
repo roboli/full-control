@@ -75,9 +75,9 @@
                                       help
                                       grid-view
                                       grid
-                                      form
-                                      form-horizontal
-                                      form-inline
+                                      frm
+                                      frm-horizontal
+                                      frm-inline
                                       panel
                                       navpanel] om-tags))
 
@@ -322,20 +322,20 @@
                                                             :available general-tags)})
 
    ;; Forms
-   'form               (partial process-form {:symbol-fn (return `form*)
-                                              :attrs-parser parse-attrs
-                                              :expander (expand-tags-with
-                                                         :available #{'row})})
+   'frm               (partial process-form {:symbol-fn (return `frm*)
+                                             :attrs-parser parse-attrs
+                                             :expander (expand-tags-with
+                                                        :available #{'row})})
 
-   'form-horizontal    (partial process-form {:symbol-fn (return `form-horizontal*)
-                                              :attrs-parser parse-attrs
-                                              :expander (expand-tags-with
-                                                         :available #{'row})})
+   'frm-horizontal    (partial process-form {:symbol-fn (return `frm-horizontal*)
+                                             :attrs-parser parse-attrs
+                                             :expander (expand-tags-with
+                                                        :available #{'row})})
 
-   'form-inline        (partial process-form {:symbol-fn (return `form-inline*)
-                                              :attrs-parser parse-inline-attrs
-                                              :expander (expand-tags-with
-                                                         :available #{'group-for 'space})})
+   'frm-inline        (partial process-form {:symbol-fn (return `frm-inline*)
+                                             :attrs-parser parse-inline-attrs
+                                             :expander (expand-tags-with
+                                                        :available #{'group-for 'space})})
 
    'lbl-for            (partial process-field-label {:symbol-fn (return `label*)
                                                      :attrs-parser parse-field-key-attrs

@@ -21,7 +21,7 @@
                  (column-9
                   (panel
                    (header (title3 "Normal"))
-                   (form
+                   (frm
                     (with-record (:item cursor)
                       (row
                        (column-6
@@ -81,7 +81,7 @@
                  (column-9
                   (panel
                    (header (title3 "Horizontal"))
-                   (form-horizontal
+                   (frm-horizontal
                     (with-record (:item cursor)
                       (row
                        (column-6
@@ -148,7 +148,7 @@
                    (header (title3 "Inline"))
                    (row
                     (column-12
-                     (form-inline
+                     (frm-inline
                       (with-record (:item cursor)
                         (group-for :description
                                    (txt {:max-length 15
@@ -163,7 +163,7 @@
                                    (txt))))))
                    (row
                     (column-12
-                     (form-inline
+                     (frm-inline
                       (with-record (:item cursor)
                         (group-for :non-taxable
                                    (checkbox-inline "NT"))
@@ -183,7 +183,7 @@
                  (column-8
                   (panel
                    (header (title3 "Form"))
-                   (form
+                   (frm
                     (with-record (:item cursor)
                       (row
                        (column-6
