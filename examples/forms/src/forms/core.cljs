@@ -13,7 +13,8 @@
                              :non-taxable false
                              :allow-credit false
                              :allow-discounts false
-                             :type "1"}}))
+                             :type "1"}
+                      :state {:disabled false}}))
 
 (deffixed-layout layouts [cursor owner opts]
   (render-state [_]
@@ -177,52 +178,56 @@
                                    (radio-inline {:value "1"} "Service")
                                    (radio-inline {:value "2"} "Asset")))))))))))
 
-(deffixed-layout states [cursor owner opts]
-  (render-state [_]
+(deffixed-layout state [cursor owner opts]
+  (render-state [st]
                 (row
                  (column-8
                   (panel
                    (header (title3 "Form"))
-                   (frm
-                    (with-record (:item cursor)
-                      (row
-                       (column-6
-                        (group-for :description
-                                   (lbl)
-                                   (txt {:max-length 15})
-                                   (help "*")))
-                       (column-6
-                        (group-for :price
-                                   (lbl)
-                                   (txt {:max-length 10})
-                                   (help "*"))))
-                      (row
-                       (column-6
-                        (group-for :brand-id
-                                   (lbl "Brand")
-                                   (dropdown
-                                    (with-source [data (:brands cursor)]
-                                      (option {:value (:id data)} (:name data))))
-                                   (help "*")))
-                       (column-6
-                        (group-for :comments
-                                   (lbl)
-                                   (txtarea)
-                                   (help "(optional)"))))
-                      (row
-                       (column-6
-                        (lbl "Extras")
-                        (checkbox-for :non-taxable)
-                        (checkbox-for :allow-credit)
-                        (checkbox-for :allow-discounts))
-                       (column-6
-                        (group-for :type
-                                   (lbl)
-                                   (radio {:value "1"} "Service")
-                                   (radio {:value "2"} "Asset"))))))))
+                   (frm {:disabled (get-in cursor [:state :disabled])}
+                        (with-record (:item cursor)
+                          (row
+                           (column-6
+                            (group-for :description
+                                       (lbl)
+                                       (txt {:max-length 15})
+                                       (help "*")))
+                           (column-6
+                            (group-for :price
+                                       (lbl)
+                                       (txt {:max-length 10})
+                                       (help "*"))))
+                          (row
+                           (column-6
+                            (group-for :brand-id
+                                       (lbl "Brand")
+                                       (dropdown
+                                        (with-source [data (:brands cursor)]
+                                          (option {:value (:id data)} (:name data))))
+                                       (help "*")))
+                           (column-6
+                            (group-for :comments
+                                       (lbl)
+                                       (txtarea)
+                                       (help "(optional)"))))
+                          (row
+                           (column-6
+                            (lbl "Extras")
+                            (checkbox-for :non-taxable)
+                            (checkbox-for :allow-credit)
+                            (checkbox-for :allow-discounts))
+                           (column-6
+                            (group-for :type
+                                       (lbl)
+                                       (radio {:value "1"} "Service")
+                                       (radio {:value "2"} "Asset"))))))))
                  (column-4
                   (panel
-                   (header (title3 "States")))))))
+                   (header (title3 "State"))
+                   (frm-horizontal
+                    (with-record (:state cursor)
+                      (row
+                       (checkbox-6-for :disabled)))))))))
 
 (defpage page [cursor owner opts]
   (init-state []
@@ -233,7 +238,7 @@
                         (link {:on-click #(fc/set-state! owner :section layouts)
                                :href "#"}
                               "Layouts")
-                        (link {:on-click #(fc/set-state! owner :section states)
+                        (link {:on-click #(fc/set-state! owner :section state)
                                :href "#"}
                               "State"))
                 (fc/build (:section st) cursor)))
