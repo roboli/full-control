@@ -68,10 +68,10 @@
 (defn- on-change-fn
   "Detect if record is cursor or local state, and returns appropiate
   function."
-  [r field-ks prop]
+  [rec field-ks prop]
   `(fn [v#]
-     (let [f# (if (cursor? ~r)
-                (partial update! ~r)
+     (let [f# (if (cursor? ~rec)
+                (partial update! ~rec)
                 (partial set-state! ~'owner))]
        (f# ~field-ks
            (.. v# ~'-target ~prop)))))
