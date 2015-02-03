@@ -61,6 +61,9 @@
   ([cursor korks v] (om/update! cursor korks v))
   ([cursor korks v tag] (om/update! cursor korks v tag)))
 
+(defn cursor? [x]
+  (om/cursor? x))
+
 ;;;
 ;;; General controls
 ;;;

@@ -179,12 +179,15 @@
                                    (radio-inline {:value "2"} "Asset")))))))))))
 
 (deffixed-layout state [cursor owner opts]
+  (init-state []
+              {:disabled false})
+  
   (render-state [st]
                 (row
                  (column-8
                   (panel
                    (header (title3 "Form"))
-                   (frm {:disabled (get-in cursor [:state :disabled])}
+                   (frm {:disabled (:disabled st)}
                         (with-record (:item cursor)
                           (row
                            (column-6
@@ -223,9 +226,9 @@
                                        (radio {:value "2"} "Asset"))))))))
                  (column-4
                   (panel
-                   (header (title3 "State"))
+                   (header (title3 "Local State"))
                    (frm-horizontal
-                    (with-record (:state cursor)
+                    (with-record st
                       (row
                        (checkbox-6-for :disabled)))))))))
 

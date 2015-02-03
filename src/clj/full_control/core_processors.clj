@@ -49,6 +49,24 @@
                                         ;; form-group to display correctly
                                         (interpose `nbsp*))))))
 
+(defn- process-field-label [{:keys [symbol-fn attrs-parser]} tag & body]
+  (let [[attrs body] (attrs-parser body)]
+    (binding [*attrs* (merge *attrs* attrs)]
+      (let [field-key (name (:field-key *attrs*))]
+        (list (symbol-fn tag) (assoc attrs :html-for field-key)
+              (if-not (empty? body) (first body) (str/capitalize field-key)))))))
+
+(defn- on-change-fn
+  "Detect if record is cursor or local state, and returns appropiate
+  function."
+  [r field-key prop]
+  `(fn [v#]
+     (let [f# (if (cursor? ~r)
+                (partial update! ~r)
+                (partial set-state! ~'owner))]
+       (f# ~field-key
+           (.. v# ~'-target ~prop)))))
+
 (defn- process-field-checkbox [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
@@ -58,17 +76,8 @@
            (~(symbol-fn tag) ~(assoc attrs
                                 :id (name field-key)
                                 :checked (list `get r field-key)
-                                :on-change `(fn [v#]
-                                              (update! ~r ~field-key
-                                                       (.. v# ~'-target ~'-checked))))
+                                :on-change (on-change-fn r field-key '-checked))
             ~(or (first body) (str/capitalize (name field-key)))))))))
-
-(defn- process-field-label [{:keys [symbol-fn attrs-parser]} tag & body]
-  (let [[attrs body] (attrs-parser body)]
-    (binding [*attrs* (merge *attrs* attrs)]
-      (let [field-key (name (:field-key *attrs*))]
-        (list (symbol-fn tag) (assoc attrs :html-for field-key)
-              (if-not (empty? body) (first body) (str/capitalize field-key)))))))
 
 (defn- process-field-text [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
@@ -82,9 +91,7 @@
                                                (or (:placeholder *attrs*)
                                                    (str/capitalize (name field-key))))
                                 :value (list `get r field-key)
-                                :on-change `(fn [v#]
-                                              (update! ~r ~field-key
-                                                       (.. v# ~'-target ~'-value))))))))))
+                                :on-change (on-change-fn r field-key '-value))))))))
 
 (defn- process-field-dropdown [{:keys [symbol-fn attrs-parser expander]} tag & body]
   (let [[attrs [[_ [nm coll] & body]]] (attrs-parser body)]
@@ -95,9 +102,7 @@
            (apply ~(symbol-fn tag) ~(assoc attrs
                                       :id (name field-key)
                                       :value (list `get r field-key)
-                                      :on-change `(fn [v#]
-                                                    (update! ~r ~field-key
-                                                             (.. v# ~'-target ~'-value))))
+                                      :on-change (on-change-fn r field-key '-value))
                   (for [~nm ~coll]
                     ~@(doall (map expander body)))))))))
 
@@ -111,7 +116,5 @@
                                 :id (name field-key)
                                 :name (or (:name attrs) (name field-key))
                                 :checked `(= ~(:value attrs) (get ~r ~field-key))
-                                :on-change `(fn [v#]
-                                              (update! ~r ~field-key
-                                                       (.. v# ~'-target ~'-value))))
+                                :on-change (on-change-fn r field-key '-value))
             ~(or (first body) (str/capitalize (name field-key)))))))))
