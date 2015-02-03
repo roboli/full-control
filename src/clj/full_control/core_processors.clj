@@ -40,8 +40,8 @@
                               (tr* {} ~@(doall (map expander body))))))))
 
 (defn- process-form [{:keys [symbol-fn attrs-parser expander]} tag & body]
-  (let [[attrs [[_ cursor & body]]] (attrs-parser body)]
-    (binding [*attrs* (merge *attrs* (assoc attrs :cursor cursor))]
+  (let [[attrs [[_ record & body]]] (attrs-parser body)]
+    (binding [*attrs* (merge *attrs* (assoc attrs :record record))]
       (list* (symbol-fn tag) attrs (->> body
                                         (map expander)
                                         doall
@@ -72,7 +72,7 @@
     (binding [*attrs* (merge *attrs* attrs)]
       (let [field-key (:field-key *attrs*)
             r (gensym "r")]
-        `(let ~[r (:cursor *attrs*)]
+        `(let ~[r (:record *attrs*)]
            (~(symbol-fn tag) ~(assoc attrs
                                 :id (name field-key)
                                 :checked (list `get r field-key)
@@ -84,7 +84,7 @@
     (binding [*attrs* (merge *attrs* attrs)]
       (let [field-key (:field-key *attrs*)
             r (gensym "r")]
-        `(let ~[r (:cursor *attrs*)]
+        `(let ~[r (:record *attrs*)]
            (~(symbol-fn tag) ~(assoc attrs
                                 :id (name field-key)
                                 :placeholder (if (:inline *attrs*)
@@ -98,7 +98,7 @@
     (binding [*attrs* (merge *attrs* attrs)]
       (let [field-key (:field-key *attrs*)
             r (gensym "r")]
-        `(let ~[r (:cursor *attrs*)]
+        `(let ~[r (:record *attrs*)]
            (apply ~(symbol-fn tag) ~(assoc attrs
                                       :id (name field-key)
                                       :value (list `get r field-key)
@@ -111,7 +111,7 @@
     (binding [*attrs* (merge *attrs* attrs)]
       (let [field-key (:field-key *attrs*)
             r (gensym "r")]
-        `(let ~[r (:cursor *attrs*)]
+        `(let ~[r (:record *attrs*)]
            (~(symbol-fn tag) ~(assoc attrs
                                 :id (name field-key)
                                 :name (or (:name attrs) (name field-key))
