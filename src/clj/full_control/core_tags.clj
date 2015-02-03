@@ -338,27 +338,27 @@
                                                         :available #{'group-for 'space})})
 
    'lbl-for            (partial process-field-label {:symbol-fn (return `label*)
-                                                     :attrs-parser parse-field-korks-attrs
+                                                     :attrs-parser parse-korks-attrs
                                                      :expander identity})
 
    'txt-for            (partial process-field-text {:symbol-fn (return `txt*)
-                                                    :attrs-parser parse-field-korks-attrs
+                                                    :attrs-parser parse-korks-attrs
                                                     :expander identity})
 
    'txtarea-for        (partial process-field-text {:symbol-fn (return `txtarea*)
-                                                    :attrs-parser parse-field-korks-attrs
+                                                    :attrs-parser parse-korks-attrs
                                                     :expander identity})
 
    'dropdown-for       (partial process-field-dropdown {:symbol-fn (return `dropdown*)
-                                                        :attrs-parser parse-field-korks-attrs
+                                                        :attrs-parser parse-korks-attrs
                                                         :expander (expand-tags-with
                                                                    :available #{'option})})
 
    'checkbox-for       (partial process-field-checkbox {:symbol-fn (return `checkbox*)
-                                                        :attrs-parser parse-field-korks-attrs})
+                                                        :attrs-parser parse-korks-attrs})
 
    'checkbox-inline-for (partial process-field-checkbox {:symbol-fn (return `checkbox-inline*)
-                                                         :attrs-parser parse-field-korks-attrs})
+                                                         :attrs-parser parse-korks-attrs})
 
    'group              (partial process-control {:symbol-fn (return `form-group*)
                                                  :attrs-parser parse-attrs
@@ -368,7 +368,7 @@
                                                             :alter-tag-fns row-alter-fns)})
 
    'group-for          (partial process-control {:symbol-fn (return `form-group*)
-                                                 :attrs-parser parse-field-korks-attrs
+                                                 :attrs-parser parse-korks-attrs
                                                  :expander (expand-tags-with
                                                             :available (concat general-tags
                                                                                form-group-tags)

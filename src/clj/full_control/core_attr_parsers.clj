@@ -27,8 +27,8 @@
 (defn- merge-inline [[m b]]
   [(assoc m :inline true) b])
 
-(defn- parse-field-korks [[m & b :as body]]
-  (if (or (keyword? m) (vector? m)) (cons {:field-korks m} b) body))
+(defn- parse-korks [[m & b :as body]]
+  (if (or (keyword? m) (vector? m)) (cons {:korks m} b) body))
 
 (defn- parse-attrs [body]
   ((comp default-empty parse-m) body))
@@ -39,11 +39,11 @@
 (defn- parse-column-attrs [body]
   ((comp merge-size default-empty parse-m) body))
 
-(defn- parse-field-korks-attrs [body]
-  ((comp default-empty parse-m parse-field-korks) body))
+(defn- parse-korks-attrs [body]
+  ((comp default-empty parse-m parse-korks) body))
 
 (defn- parse-inline-attrs [body]
   ((comp merge-inline default-empty parse-m) body))
 
 (defn- parse-column-field-attrs [body]
-  ((comp merge-size default-empty parse-m parse-field-korks) body))
+  ((comp merge-size default-empty parse-m parse-korks) body))

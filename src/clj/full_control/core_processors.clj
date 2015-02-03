@@ -61,7 +61,7 @@
 (defn- process-field-label [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      (let [field-key (name (ks->k (:field-korks *attrs*)))]
+      (let [field-key (name (ks->k (:korks *attrs*)))]
         (list (symbol-fn tag) (assoc attrs :html-for field-key)
               (if-not (empty? body) (first body) (str/capitalize field-key)))))))
 
@@ -79,7 +79,7 @@
 (defn- process-field-checkbox [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      (let [[field-k field-ks] (korks-vector (:field-korks *attrs*))
+      (let [[field-k field-ks] (korks-vector (:korks *attrs*))
             r (gensym "r")]
         `(let ~[r (:record *attrs*)]
            (~(symbol-fn tag) ~(assoc attrs
@@ -91,7 +91,7 @@
 (defn- process-field-text [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      (let [[field-k field-ks] (korks-vector (:field-korks *attrs*))
+      (let [[field-k field-ks] (korks-vector (:korks *attrs*))
             r (gensym "r")]
         `(let ~[r (:record *attrs*)]
            (~(symbol-fn tag) ~(assoc attrs
@@ -105,7 +105,7 @@
 (defn- process-field-dropdown [{:keys [symbol-fn attrs-parser expander]} tag & body]
   (let [[attrs [[_ [nm coll] & body]]] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      (let [[field-k field-ks] (korks-vector (:field-korks *attrs*))
+      (let [[field-k field-ks] (korks-vector (:korks *attrs*))
             r (gensym "r")]
         `(let ~[r (:record *attrs*)]
            (apply ~(symbol-fn tag) ~(assoc attrs
@@ -118,7 +118,7 @@
 (defn- process-field-radio [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      (let [[field-k field-ks] (korks-vector (:field-korks *attrs*))
+      (let [[field-k field-ks] (korks-vector (:korks *attrs*))
             r (gensym "r")]
         `(let ~[r (:record *attrs*)]
            (~(symbol-fn tag) ~(assoc attrs
