@@ -49,72 +49,81 @@
                                         ;; form-group to display correctly
                                         (interpose `nbsp*))))))
 
+(defn- ks->k [korks]
+  (if (keyword? korks) korks (last korks)))
+
+(defn- k->ks [k]
+  (if (vector? k) k [k]))
+
+(defn- korks-vector [korks]
+  [(ks->k korks) (k->ks korks)])
+
 (defn- process-field-label [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      (let [field-key (name (:field-key *attrs*))]
+      (let [field-key (name (ks->k (:field-korks *attrs*)))]
         (list (symbol-fn tag) (assoc attrs :html-for field-key)
               (if-not (empty? body) (first body) (str/capitalize field-key)))))))
 
 (defn- on-change-fn
   "Detect if record is cursor or local state, and returns appropiate
   function."
-  [r field-key prop]
+  [r field-ks prop]
   `(fn [v#]
      (let [f# (if (cursor? ~r)
                 (partial update! ~r)
                 (partial set-state! ~'owner))]
-       (f# ~field-key
+       (f# ~field-ks
            (.. v# ~'-target ~prop)))))
 
 (defn- process-field-checkbox [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      (let [field-key (:field-key *attrs*)
+      (let [[field-k field-ks] (korks-vector (:field-korks *attrs*))
             r (gensym "r")]
         `(let ~[r (:record *attrs*)]
            (~(symbol-fn tag) ~(assoc attrs
-                                :id (name field-key)
-                                :checked (list `get r field-key)
-                                :on-change (on-change-fn r field-key '-checked))
-            ~(or (first body) (str/capitalize (name field-key)))))))))
+                                :id (name field-k)
+                                :checked (list `get-in r field-ks)
+                                :on-change (on-change-fn r field-ks '-checked))
+            ~(or (first body) (str/capitalize (name field-k)))))))))
 
 (defn- process-field-text [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      (let [field-key (:field-key *attrs*)
+      (let [[field-k field-ks] (korks-vector (:field-korks *attrs*))
             r (gensym "r")]
         `(let ~[r (:record *attrs*)]
            (~(symbol-fn tag) ~(assoc attrs
-                                :id (name field-key)
+                                :id (name field-k)
                                 :placeholder (if (:inline *attrs*)
                                                (or (:placeholder *attrs*)
-                                                   (str/capitalize (name field-key))))
-                                :value (list `get r field-key)
-                                :on-change (on-change-fn r field-key '-value))))))))
+                                                   (str/capitalize (name field-k))))
+                                :value (list `get-in r field-ks)
+                                :on-change (on-change-fn r field-ks '-value))))))))
 
 (defn- process-field-dropdown [{:keys [symbol-fn attrs-parser expander]} tag & body]
   (let [[attrs [[_ [nm coll] & body]]] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      (let [field-key (:field-key *attrs*)
+      (let [[field-k field-ks] (korks-vector (:field-korks *attrs*))
             r (gensym "r")]
         `(let ~[r (:record *attrs*)]
            (apply ~(symbol-fn tag) ~(assoc attrs
-                                      :id (name field-key)
-                                      :value (list `get r field-key)
-                                      :on-change (on-change-fn r field-key '-value))
+                                      :id (name field-k)
+                                      :value (list `get-in r field-ks)
+                                      :on-change (on-change-fn r field-ks '-value))
                   (for [~nm ~coll]
                     ~@(doall (map expander body)))))))))
 
 (defn- process-field-radio [{:keys [symbol-fn attrs-parser]} tag & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      (let [field-key (:field-key *attrs*)
+      (let [[field-k field-ks] (korks-vector (:field-korks *attrs*))
             r (gensym "r")]
         `(let ~[r (:record *attrs*)]
            (~(symbol-fn tag) ~(assoc attrs
-                                :id (name field-key)
-                                :name (or (:name attrs) (name field-key))
-                                :checked `(= ~(:value attrs) (get ~r ~field-key))
-                                :on-change (on-change-fn r field-key '-value))
-            ~(or (first body) (str/capitalize (name field-key)))))))))
+                                :id (name field-k)
+                                :name (or (:name attrs) (name field-k))
+                                :checked `(= ~(:value attrs) (get-in ~r ~field-ks))
+                                :on-change (on-change-fn r field-ks '-value))
+            ~(or (first body) (str/capitalize (name field-k)))))))))

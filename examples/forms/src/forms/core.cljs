@@ -10,9 +10,9 @@
                              :price 44.5
                              :active true
                              :comments "Yellow color plastic."
-                             :non-taxable false
-                             :allow-credit false
-                             :allow-discounts false
+                             :extras {:non-taxable false
+                                      :allow-credit false
+                                      :allow-discounts false}
                              :type "1"}
                       :state {:disabled false}}))
 
@@ -55,15 +55,15 @@
                       (row
                        (column-6
                         (lbl "Extras")
-                        (checkbox-for :non-taxable)
-                        (checkbox-for :allow-credit)
-                        (checkbox-for :allow-discounts))
+                        (checkbox-for [:extras :non-taxable])
+                        (checkbox-for [:extras :allow-credit])
+                        (checkbox-for [:extras :allow-discounts]))
                        (column-6
                         (lbl "Extras Inline")
                         (br)
-                        (checkbox-inline-for :non-taxable)
-                        (checkbox-inline-for :allow-credit)
-                        (checkbox-inline-for :allow-discounts)))
+                        (checkbox-inline-for [:extras :non-taxable])
+                        (checkbox-inline-for [:extras :allow-credit])
+                        (checkbox-inline-for [:extras :allow-discounts])))
                       (row
                        (column-6
                         (group-for :type
@@ -118,16 +118,16 @@
                         (row
                          (lbl-4 "Extras")
                          (column-6
-                          (checkbox-for :non-taxable)
-                          (checkbox-for :allow-credit)
-                          (checkbox-for :allow-discounts))))
+                          (checkbox-for [:extras :non-taxable])
+                          (checkbox-for [:extras :allow-credit])
+                          (checkbox-for [:extras :allow-discounts]))))
                        (column-6
                         (row
                          (lbl-4 "Extras Inline")
                          (column-6
-                          (checkbox-inline-for :non-taxable "NT")
-                          (checkbox-inline-for :allow-credit "AC")
-                          (checkbox-inline-for :allow-discounts "AD")))))
+                          (checkbox-inline-for [:extras :non-taxable] "NT")
+                          (checkbox-inline-for [:extras :allow-credit] "AC")
+                          (checkbox-inline-for [:extras :allow-discounts] "AD")))))
                       (row
                        (column-6
                         (group-for :type
@@ -166,11 +166,11 @@
                     (column-12
                      (frm-inline
                       (with-record (:item cursor)
-                        (group-for :non-taxable
+                        (group-for [:extras :non-taxable]
                                    (checkbox-inline "NT"))
-                        (group-for :allow-credit
+                        (group-for [:extras :allow-credit]
                                    (checkbox-inline "AC"))
-                        (group-for :allow-discounts
+                        (group-for [:extras :allow-discounts]
                                    (checkbox-inline "AD"))
                         (space)
                         (space)
@@ -216,9 +216,9 @@
                           (row
                            (column-6
                             (lbl "Extras")
-                            (checkbox-for :non-taxable)
-                            (checkbox-for :allow-credit)
-                            (checkbox-for :allow-discounts))
+                            (checkbox-for [:extras :non-taxable])
+                            (checkbox-for [:extras :allow-credit])
+                            (checkbox-for [:extras :allow-discounts]))
                            (column-6
                             (group-for :type
                                        (lbl)
