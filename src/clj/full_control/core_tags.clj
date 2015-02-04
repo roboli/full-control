@@ -105,7 +105,7 @@
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
-   'lbl                (partial process-control {:symbol-fn (return `label*)
+   'lbl                (partial process-control {:symbol-fn (return `lbl*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
@@ -337,7 +337,7 @@
                                              :expander (expand-tags-with
                                                         :available #{'group-for 'space})})
 
-   'lbl-for            (partial process-field-label {:symbol-fn (return `label*)
+   'lbl-for            (partial process-field-label {:symbol-fn (return `lbl*)
                                                      :attrs-parser parse-korks-attrs
                                                      :expander identity})
 
@@ -381,7 +381,7 @@
                                                                                 form-group-tags)
                                                              :alter-tag-fns group-for-alter-fns)})       
 
-   'group-lbl           (partial process-field-label {:symbol-fn (return `label*)
+   'group-lbl           (partial process-field-label {:symbol-fn (return `lbl*)
                                                       :attrs-parser parse-attrs})
 
    'group-lbl-          (partial process-field-label {:symbol-fn symbol->qly-symbol
