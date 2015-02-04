@@ -180,7 +180,12 @@
 
 (deffixed-layout state [cursor owner opts]
   (init-state []
-              {:disabled false})
+              {:disabled false
+               :description {:val-st nil}
+               :price {:val-st nil}
+               :brand-id {:val-st nil}
+               :comments {:val-st nil}
+               :type {:val-st nil}})
   
   (render-state [st]
                 (row
@@ -191,46 +196,98 @@
                         (with-record (:item cursor)
                           (row
                            (column-6
-                            (group-for :description
+                            (group-for {:korks :description
+                                        :validation-state (keyword (get-in st [:description :val-st]))}
                                        (lbl)
                                        (txt {:max-length 15})
                                        (help "*")))
                            (column-6
-                            (group-for :price
+                            (group-for {:korks :price
+                                        :validation-state (keyword (get-in st [:price :val-st]))}
                                        (lbl)
                                        (txt {:max-length 10})
                                        (help "*"))))
                           (row
                            (column-6
-                            (group-for :brand-id
+                            (group-for {:korks :brand-id
+                                        :validation-state (keyword (get-in st [:brand-id :val-st]))}
                                        (lbl "Brand")
                                        (dropdown
                                         (with-source [data (:brands cursor)]
                                           (option {:value (:id data)} (:name data))))
                                        (help "*")))
                            (column-6
-                            (group-for :comments
+                            (group-for {:korks :comments
+                                        :validation-state (keyword (get-in st [:comments :val-st]))}
                                        (lbl)
                                        (txtarea)
                                        (help "(optional)"))))
                           (row
                            (column-6
-                            (lbl "Extras")
-                            (checkbox-for [:extras :non-taxable])
-                            (checkbox-for [:extras :allow-credit])
-                            (checkbox-for [:extras :allow-discounts]))
+                                     (lbl "Extras")
+                                     (checkbox-for [:extras :non-taxable])
+                                     (checkbox-for [:extras :allow-credit])
+                                     (checkbox-for [:extras :allow-discounts]))
                            (column-6
-                            (group-for :type
+                            (group-for {:korks :type
+                                        :validation-state (keyword (get-in st [:type :val-st]))}
                                        (lbl)
                                        (radio {:value "1"} "Service")
                                        (radio {:value "2"} "Asset"))))))))
                  (column-4
                   (panel
                    (header (title3 "Local State"))
-                   (frm-horizontal
-                    (with-record st
-                      (row
-                       (checkbox-6-for :disabled)))))))))
+                   (with-controls
+                     (let [val-sts [{:val nil :txt ""}
+                                    {:val :has-success :txt "Success"}
+                                    {:val :has-warning :txt "Warning"}
+                                    {:val :has-error :txt "Error"}]]
+                       (frm-horizontal
+                        (with-record st
+                          (row
+                           (lbl-4 {:size :sm} "Form")
+                           (checkbox-6-for {:korks :disabled
+                                            :size :sm}))
+                          (row
+                           (column-12
+                            (group-for {:korks [:description :val-st]
+                                        :size :sm}
+                                       (lbl-4 "Description")
+                                       (dropdown-6
+                                        (with-source [data val-sts]
+                                          (option {:value (:val data)} (:txt data)))))))
+                          (row
+                           (column-12
+                            (group-for {:korks [:price :val-st]
+                                        :size :sm}
+                                       (lbl-4 "Price")
+                                       (dropdown-6
+                                        (with-source [data val-sts]
+                                          (option {:value (:val data)} (:txt data)))))))
+                          (row
+                           (column-12
+                            (group-for {:korks [:brand-id :val-st]
+                                        :size :sm}
+                                       (lbl-4 "Brands")
+                                       (dropdown-6
+                                        (with-source [data val-sts]
+                                          (option {:value (:val data)} (:txt data)))))))
+                          (row
+                           (column-12
+                            (group-for {:korks [:comments :val-st]
+                                        :size :sm}
+                                       (lbl-4 "Comments")
+                                       (dropdown-6
+                                        (with-source [data val-sts]
+                                          (option {:value (:val data)} (:txt data)))))))
+                          (row
+                           (column-12
+                            (group-for {:korks [:type :val-st]
+                                        :size :sm}
+                                       (lbl-4 "Type")
+                                       (dropdown-6
+                                        (with-source [data val-sts]
+                                          (option {:value (:val data)} (:txt data))))))))))))))))
 
 (defpage page [cursor owner opts]
   (init-state []

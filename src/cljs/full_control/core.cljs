@@ -73,6 +73,10 @@
             :md "md"
             :lg "lg"})
 
+(def validation-states {:has-success "has-success"
+                        :has-warning "has-warning"
+                        :has-error "has-error"})
+
 (def nbsp* (gstr/unescapeEntities "&nbsp;"))
 
 (defn space* [& _] nbsp*)
@@ -393,9 +397,11 @@
 
 (defn form-group* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply div* {:class-name (str "form-group "
-                                (if (:size attrs)
-                                  (str "form-group-" (get sizes (:size attrs)))))}
+  (apply div* {:class-name (str/join " " ["form-group"
+                                          (if (:size attrs)
+                                            (str "form-group-" (get sizes (:size attrs))))
+                                          (if (:validation-state attrs)
+                                            (get validation-states (:validation-state attrs)))])}
          body))
 
 (defn frm* [attrs & body]
