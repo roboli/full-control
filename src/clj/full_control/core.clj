@@ -88,12 +88,12 @@
   with its :sizes and :cols attributes set to n. See cljs full-control.core/column*
   for further explanation."
   [n]
-  `(defn ~(symbol (str "column-" n "*")) [~'attrs & ~'body]
-     {:pre [(map? ~'attrs)]}
+  `(defn ~(symbol (str "column-" n "*")) [attrs# & body#]
+     {:pre [(map? attrs#)]}
      (apply column* (assoc
-                        (dissoc ~'attrs :size :cols)
-                      :sizes [{:size (:size ~'attrs) :cols ~n}])
-            ~'body)))
+                        (dissoc attrs# :size :cols)
+                      :sizes [{:size (:size attrs#) :cols ~n}])
+            body#)))
 
 (defmacro defcolumn
   "Defines a function or functions which returns a column control with its :cols
@@ -105,16 +105,16 @@
 (defmacro deflbl-col [start & [end]]
   (dofun
    (fn [n]
-     `(defn ~(symbol (str "lbl-" n "*")) [~'attrs & ~'body]
-        {:pre [(map? ~'attrs)]}
-        (apply lbl* (assoc ~'attrs :cols ~n) ~'body)))
+     `(defn ~(symbol (str "lbl-" n "*")) [attrs# & body#]
+        {:pre [(map? attrs#)]}
+        (apply lbl* (assoc attrs# :cols ~n) body#)))
    start end))
 
 (defn- column-control-defn [stag tag n]
-  `(defn ~(symbol (str stag n "*")) [~'attrs & ~'body]
-     {:pre [(map? ~'attrs)]}
-     (column* {:sizes [(assoc ~'attrs :cols ~n)]}
-              (apply ~tag ~'attrs ~'body))))
+  `(defn ~(symbol (str stag n "*")) [attrs# & body#]
+     {:pre [(map? attrs#)]}
+     (column* {:sizes [(assoc attrs# :cols ~n)]}
+              (apply ~tag attrs# body#))))
 
 (defmacro deftxt-col [start & [end]]
   (dofun
