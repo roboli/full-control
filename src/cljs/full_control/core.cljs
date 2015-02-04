@@ -174,12 +174,15 @@
                 ...]}"
   [attrs & body]
   {:pre [(map? attrs)]}
-  (apply div* {:class-name (str/join " " (map
-                                          #(str "col-"
-                                                (get sizes (:size %))
-                                                "-"
-                                                (:cols %))
-                                          (:sizes attrs)))} body))
+  (apply div* {:class-name (str/join " " (conj
+                                          (map
+                                           #(str "col-"
+                                                 (get sizes (:size %))
+                                                 "-"
+                                                 (:cols %))
+                                           (:sizes attrs))
+                                          (if (:validation-state attrs)
+                                            (get validation-states (:validation-state attrs)))))} body))
 
 ;; Defines 12 columns controls, column-1* column-2* ... column-12*.
 ;;

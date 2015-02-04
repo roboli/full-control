@@ -185,6 +185,7 @@
                :price {:val-st nil}
                :brand-id {:val-st nil}
                :comments {:val-st nil}
+               :extras {:val-st nil}
                :type {:val-st nil}})
   
   (render-state [st]
@@ -223,7 +224,7 @@
                                        (txtarea)
                                        (help "(optional)"))))
                           (row
-                           (column-6
+                           (column-6 {:validation-state (keyword (get-in st [:extras :val-st]))}
                                      (lbl "Extras")
                                      (checkbox-for [:extras :non-taxable])
                                      (checkbox-for [:extras :allow-credit])
@@ -277,6 +278,14 @@
                             (group-for {:korks [:comments :val-st]
                                         :size :sm}
                                        (lbl-4 "Comments")
+                                       (dropdown-6
+                                        (with-source [data val-sts]
+                                          (option {:value (:val data)} (:txt data)))))))
+                          (row
+                           (column-12
+                            (group-for {:korks [:extras :val-st]
+                                        :size :sm}
+                                       (lbl-4 "Extras")
                                        (dropdown-6
                                         (with-source [data val-sts]
                                           (option {:value (:val data)} (:txt data)))))))
