@@ -88,9 +88,9 @@
   "Attributes available in the attrs map are :class-name, :on-click."
   [attrs & body]
   {:pre [(map? attrs)]}
-  (apply dom/button #js {:type "button"
-                         :className (str "btn btn-default " (:class-name attrs))
-                         :onClick (:on-click attrs)} body))
+  (apply button* (assoc attrs
+                   :type "button"
+                   :class-name (str "btn btn-default " (:class-name attrs))) body))
 
 (defn lbl* [attrs & body]
   {:pre [(map? attrs)]}
@@ -335,7 +335,7 @@
 
 (defn grid* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply dom/table #js {:className "table"} body))
+  (apply table* (assoc attrs :class-name (str "table " (:class-name attrs))) body))
 
 (defn grid-view* [attrs & body]
   {:pre [(map? attrs)]}
