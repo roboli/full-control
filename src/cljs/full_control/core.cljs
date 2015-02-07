@@ -11,7 +11,7 @@
             [goog.string :as gstr]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-            [full-control.utils]))
+            [full-control.utils :as utils]))
 
 ;;;
 ;;; Page record and fns

@@ -65,7 +65,10 @@
     `(defn ~t [attrs# & body#]
        {:pre [(map? attrs#)]}
        (apply ~(symbol (str "om.dom/" tag))
-              (cljs.core/clj->js (full-control.utils/normalize-attrs attrs#))
+              (cljs.core/clj->js
+               (as-> attrs# $#
+                     (assoc $# :class-name (utils/general-css $# (:class-name $#)))
+                     (utils/normalize-attrs $#)))
               body#))))
 
 (defmacro gen-om-fns []

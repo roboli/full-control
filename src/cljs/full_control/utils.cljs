@@ -1,5 +1,10 @@
 (ns full-control.utils
-  (:require [camel-snake-kebab.core :refer [->camelCase]]))
+  (:require [clojure.string :as str]
+            [camel-snake-kebab.core :refer [->camelCase]]))
+
+;;;
+;;; Normalize attrs
+;;;
 
 (def kenab-attrs #{"data" "aria"})
 
@@ -10,3 +15,22 @@
                (conj %1 %2)))
           {}
           attrs))
+
+;;;
+;;; Generate class names
+;;;
+
+(def display {:show "show"
+              :invisible "invisible"
+              :hidden "hidden"})
+
+(defn- display-css [attrs & class-names]
+  (if (:display attrs)
+    (conj class-names (get display (:display attrs)))
+    class-names))
+
+(defn- general-css [attrs & class-names]
+  (->> class-names
+       (apply display-css attrs)
+       (filter (complement nil?))
+       (str/join " ")))
