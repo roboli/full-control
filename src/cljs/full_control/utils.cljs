@@ -24,13 +24,33 @@
               :invisible "invisible"
               :hidden "hidden"})
 
+(def sizes {:xs "xs"
+            :sm "sm"
+            :md "md"
+            :lg "lg"})
+
 (defn- display-css [attrs & class-names]
   (if (:display attrs)
     (conj class-names (get display (:display attrs)))
     class-names))
 
+(defn- col-size-css [attrs & class-names]
+  (if (:size attrs)
+    (conj class-names (str "col-"
+                           (get sizes (:size attrs))
+                           "-"
+                           (:cols attrs)))
+    class-names))
+
 (defn- general-css [attrs & class-names]
   (->> class-names
        (apply display-css attrs)
+       (filter (complement nil?))
+       (str/join " ")))
+
+(defn- column-css [attrs & class-names]
+  (->> class-names
+       (apply display-css attrs)
+       (apply col-size-css attrs)
        (filter (complement nil?))
        (str/join " ")))

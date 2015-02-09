@@ -68,11 +68,6 @@
 ;;; General controls
 ;;;
 
-(def sizes {:xs "xs"
-            :sm "sm"
-            :md "md"
-            :lg "lg"})
-
 (def validation-states {:has-success "has-success"
                         :has-warning "has-warning"
                         :has-error "has-error"})
@@ -95,12 +90,7 @@
 (defn lbl* [attrs & body]
   {:pre [(map? attrs)]}
   (apply label* (assoc attrs
-                  :class-name (str "control-label "
-                                   (if (:size attrs)
-                                     (str "col-"
-                                          (get sizes (:size attrs))
-                                          "-"
-                                          (:cols attrs)))))
+                  :class-name (utils/column-css attrs "control-label"))
          body))
 
 (defn txt* [attrs & body]
@@ -109,7 +99,7 @@
                   :type "text"
                   :class-name (str "form-control "
                                    (if (:size attrs)
-                                     (str "input-" (get sizes (:size attrs))))))
+                                     (str "input-" (get utils/sizes (:size attrs))))))
          body))
 
 (defn txtarea* [attrs & body]
@@ -176,10 +166,7 @@
   {:pre [(map? attrs)]}
   (apply div* {:class-name (str/join " " (conj
                                           (map
-                                           #(str "col-"
-                                                 (get sizes (:size %))
-                                                 "-"
-                                                 (:cols %))
+                                           utils/column-css
                                            (:sizes attrs))
                                           (if (:validation-state attrs)
                                             (get validation-states (:validation-state attrs)))))} body))
@@ -402,7 +389,7 @@
   {:pre [(map? attrs)]}
   (apply div* {:class-name (str/join " " ["form-group"
                                           (if (:size attrs)
-                                            (str "form-group-" (get sizes (:size attrs))))
+                                            (str "form-group-" (get utils/sizes (:size attrs))))
                                           (if (:validation-state attrs)
                                             (get validation-states (:validation-state attrs)))])}
          body))
