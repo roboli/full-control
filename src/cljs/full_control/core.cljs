@@ -97,16 +97,14 @@
   {:pre [(map? attrs)]}
   (apply input* (assoc attrs
                   :type "text"
-                  :class-name (str "form-control "
-                                   (if (:size attrs)
-                                     (str "input-" (get utils/sizes (:size attrs))))))
+                  :class-name (utils/input-css attrs "form-control"))
          body))
 
 (defn txtarea* [attrs & body]
-  (apply textarea* (assoc attrs :class-name "form-control") body))
+  (apply textarea* (assoc attrs :class-name (utils/input-css attrs "form-control")) body))
 
 (defn dropdown* [attrs & body]
-  (apply select* (assoc attrs :class-name "form-control") body))
+  (apply select* (assoc attrs :class-name (utils/input-css attrs "form-control")) body))
 
 (defn checkbox* [attrs & body]
   {:pre [(map? attrs)]}

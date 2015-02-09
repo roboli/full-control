@@ -42,6 +42,11 @@
                            (:cols attrs)))
     class-names))
 
+(defn input-size-css [attrs & class-names]
+  (if (:size attrs)
+    (conj class-names (str "input-" (get sizes (:size attrs))))
+    class-names))
+
 (defn general-css [attrs & class-names]
   (->> class-names
        (apply display-css attrs)
@@ -52,5 +57,12 @@
   (->> class-names
        (apply display-css attrs)
        (apply col-size-css attrs)
+       (filter (complement nil?))
+       (str/join " ")))
+
+(defn input-css [attrs & class-names]
+  (->> class-names
+       (apply display-css attrs)
+       (apply input-size-css attrs)
        (filter (complement nil?))
        (str/join " ")))
