@@ -383,11 +383,7 @@
 
 (defn form-group* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply div* {:class-name (str/join " " ["form-group"
-                                          (if (:size attrs)
-                                            (str "form-group-" (get utils/sizes (:size attrs))))
-                                          (if (:validation-state attrs)
-                                            (get utils/validation-states (:validation-state attrs)))])}
+  (apply div* {:class-name (utils/form-group-class-names attrs)}
          body))
 
 (defn frm* [attrs & body]
