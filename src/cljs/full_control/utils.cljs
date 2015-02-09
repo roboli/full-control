@@ -36,14 +36,15 @@
 (defn display-css [attrs]
   (if (:display attrs) (get display (:display attrs))))
 
+(defn size-css [s]
+  (fn [attrs]
+    (if (:size attrs)  (str s (get sizes (:size attrs))))))
+
 (defn col-size-css [attrs]
   (if (:size attrs) (str "col-"
                          (get sizes (:size attrs))
                          "-"
                          (:cols attrs))))
-
-(defn input-size-css [attrs]
-  (if (:size attrs)  (str "input-" (get sizes (:size attrs)))))
 
 (defn val-state-css [attrs]
   (if (:validation-state attrs)
@@ -71,7 +72,7 @@
 (defn input-class-names [attrs & class-names]
   (->> class-names
        (apply conj-class-names display-css attrs)
-       (apply conj-class-names input-size-css attrs)
+       (apply conj-class-names (size-css "input-") attrs)
        join-class-names))
 
 (defn validation-state-class-names [attrs & class-names]
