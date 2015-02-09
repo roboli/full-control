@@ -86,21 +86,25 @@
 (defn lbl* [attrs & body]
   {:pre [(map? attrs)]}
   (apply label* (assoc attrs
-                  :class-name (utils/column-css attrs "control-label"))
+                  :class-name (utils/column-class-names attrs "control-label"))
          body))
 
 (defn txt* [attrs & body]
   {:pre [(map? attrs)]}
   (apply input* (assoc attrs
                   :type "text"
-                  :class-name (utils/input-css attrs "form-control"))
+                  :class-name (utils/input-class-names attrs "form-control"))
          body))
 
 (defn txtarea* [attrs & body]
-  (apply textarea* (assoc attrs :class-name (utils/input-css attrs "form-control")) body))
+  (apply textarea* (assoc attrs
+                     :class-name (utils/input-class-names attrs "form-control"))
+         body))
 
 (defn dropdown* [attrs & body]
-  (apply select* (assoc attrs :class-name (utils/input-css attrs "form-control")) body))
+  (apply select* (assoc attrs
+                   :class-name (utils/input-class-names attrs "form-control"))
+         body))
 
 (defn checkbox* [attrs & body]
   {:pre [(map? attrs)]}
@@ -158,7 +162,7 @@
                 ...]}"
   [attrs & body]
   {:pre [(map? attrs)]}
-  (apply div* {:class-name (apply utils/validation-state-css
+  (apply div* {:class-name (apply utils/validation-state-class-names
                                   attrs
                                   (map utils/col-size-css (:sizes attrs)))}
          body))

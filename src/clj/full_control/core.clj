@@ -67,7 +67,7 @@
        (apply ~(symbol (str "om.dom/" tag))
               (cljs.core/clj->js
                (as-> attrs# $#
-                     (assoc $# :class-name (utils/general-css $# (:class-name $#)))
+                     (assoc $# :class-name (utils/general-class-names $# (:class-name $#)))
                      (utils/normalize-attrs $#)))
               body#))))
 

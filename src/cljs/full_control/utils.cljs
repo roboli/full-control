@@ -57,24 +57,24 @@
        (filter (complement nil?))
        (str/join " ")))
 
-(defn general-css [attrs & class-names]
+(defn general-class-names [attrs & class-names]
   (->> class-names
        (apply conj-class-names display-css attrs)
        join-class-names))
 
-(defn column-css [attrs & class-names]
+(defn column-class-names [attrs & class-names]
   (->> class-names
        (apply conj-class-names display-css attrs)
        (apply conj-class-names col-size-css attrs)
        join-class-names))
 
-(defn input-css [attrs & class-names]
+(defn input-class-names [attrs & class-names]
   (->> class-names
        (apply conj-class-names display-css attrs)
        (apply conj-class-names input-size-css attrs)
        join-class-names))
 
-(defn validation-state-css [attrs & class-names]
+(defn validation-state-class-names [attrs & class-names]
   (->> class-names
        (apply conj-class-names display-css attrs)
        (apply conj-class-names val-state-css attrs)
