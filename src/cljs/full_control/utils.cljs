@@ -53,7 +53,7 @@
 (defn conj-class-names [f attrs & class-names]
   (conj class-names (f attrs)))
 
-(defn join-class-names [class-names]
+(defn join-class-names [& class-names]
   (->> class-names
        (filter (complement nil?))
        (str/join " ")))
@@ -61,29 +61,29 @@
 (defn general-class-names [attrs & class-names]
   (->> class-names
        (apply conj-class-names display-css attrs)
-       join-class-names))
+       (apply join-class-names)))
 
 (defn column-class-names [attrs & class-names]
   (->> class-names
        (apply conj-class-names display-css attrs)
        (apply conj-class-names col-size-css attrs)
-       join-class-names))
+       (apply join-class-names)))
 
 (defn input-class-names [attrs & class-names]
   (->> class-names
        (apply conj-class-names display-css attrs)
        (apply conj-class-names (size-css "input-") attrs)
-       join-class-names))
+       (apply join-class-names)))
 
 (defn validation-state-class-names [attrs & class-names]
   (->> class-names
        (apply conj-class-names display-css attrs)
        (apply conj-class-names val-state-css attrs)
-       join-class-names))
+       (apply join-class-names)))
 
 (defn form-group-class-names [attrs & class-names]
   (->> (conj class-names "form-group")
        (apply conj-class-names display-css attrs)
        (apply conj-class-names (size-css "form-group-") attrs)
        (apply conj-class-names val-state-css attrs)
-       join-class-names))
+       (apply join-class-names)))
