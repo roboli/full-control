@@ -29,40 +29,37 @@
             :md "md"
             :lg "lg"})
 
-(defn display-css [attrs & class-names]
-  (if (:display attrs)
-    (conj class-names (get display (:display attrs)))
-    class-names))
+(defn display-css [attrs]
+  (if (:display attrs) (get display (:display attrs))))
 
-(defn col-size-css [attrs & class-names]
-  (if (:size attrs)
-    (conj class-names (str "col-"
-                           (get sizes (:size attrs))
-                           "-"
-                           (:cols attrs)))
-    class-names))
+(defn col-size-css [attrs]
+  (if (:size attrs) (str "col-"
+                         (get sizes (:size attrs))
+                         "-"
+                         (:cols attrs))))
 
-(defn input-size-css [attrs & class-names]
-  (if (:size attrs)
-    (conj class-names (str "input-" (get sizes (:size attrs))))
-    class-names))
+(defn input-size-css [attrs]
+  (if (:size attrs)  (str "input-" (get sizes (:size attrs)))))
+
+(defn conj-class-names [f attrs & class-names]
+  (conj class-names (f attrs)))
 
 (defn general-css [attrs & class-names]
   (->> class-names
-       (apply display-css attrs)
+       (apply conj-class-names display-css attrs)
        (filter (complement nil?))
        (str/join " ")))
 
 (defn column-css [attrs & class-names]
   (->> class-names
-       (apply display-css attrs)
-       (apply col-size-css attrs)
+       (apply conj-class-names display-css attrs)
+       (apply conj-class-names col-size-css attrs)
        (filter (complement nil?))
        (str/join " ")))
 
 (defn input-css [attrs & class-names]
   (->> class-names
-       (apply display-css attrs)
-       (apply input-size-css attrs)
+       (apply conj-class-names display-css attrs)
+       (apply conj-class-names input-size-css attrs)
        (filter (complement nil?))
        (str/join " ")))
