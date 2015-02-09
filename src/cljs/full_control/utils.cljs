@@ -44,22 +44,24 @@
 (defn conj-class-names [f attrs & class-names]
   (conj class-names (f attrs)))
 
+(defn join-class-names [class-names]
+  (->> class-names
+       (filter (complement nil?))
+       (str/join " ")))
+
 (defn general-css [attrs & class-names]
   (->> class-names
        (apply conj-class-names display-css attrs)
-       (filter (complement nil?))
-       (str/join " ")))
+       join-class-names))
 
 (defn column-css [attrs & class-names]
   (->> class-names
        (apply conj-class-names display-css attrs)
        (apply conj-class-names col-size-css attrs)
-       (filter (complement nil?))
-       (str/join " ")))
+       join-class-names))
 
 (defn input-css [attrs & class-names]
   (->> class-names
        (apply conj-class-names display-css attrs)
        (apply conj-class-names input-size-css attrs)
-       (filter (complement nil?))
-       (str/join " ")))
+       join-class-names))
