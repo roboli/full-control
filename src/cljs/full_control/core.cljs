@@ -68,10 +68,6 @@
 ;;; General controls
 ;;;
 
-(def validation-states {:has-success "has-success"
-                        :has-warning "has-warning"
-                        :has-error "has-error"})
-
 (def nbsp* (gstr/unescapeEntities "&nbsp;"))
 
 (defn space* [& _] nbsp*)
@@ -162,12 +158,10 @@
                 ...]}"
   [attrs & body]
   {:pre [(map? attrs)]}
-  (apply div* {:class-name (str/join " " (conj
-                                          (map
-                                           utils/column-css
-                                           (:sizes attrs))
-                                          (if (:validation-state attrs)
-                                            (get validation-states (:validation-state attrs)))))} body))
+  (apply div* {:class-name (apply utils/validation-state-css
+                                  attrs
+                                  (map utils/col-size-css (:sizes attrs)))}
+         body))
 
 ;; Defines 12 columns controls, column-1* column-2* ... column-12*.
 ;;
@@ -389,7 +383,7 @@
                                           (if (:size attrs)
                                             (str "form-group-" (get utils/sizes (:size attrs))))
                                           (if (:validation-state attrs)
-                                            (get validation-states (:validation-state attrs)))])}
+                                            (get utils/validation-states (:validation-state attrs)))])}
          body))
 
 (defn frm* [attrs & body]

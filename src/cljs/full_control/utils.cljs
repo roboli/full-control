@@ -29,6 +29,10 @@
             :md "md"
             :lg "lg"})
 
+(def validation-states {:has-success "has-success"
+                        :has-warning "has-warning"
+                        :has-error "has-error"})
+
 (defn display-css [attrs]
   (if (:display attrs) (get display (:display attrs))))
 
@@ -40,6 +44,10 @@
 
 (defn input-size-css [attrs]
   (if (:size attrs)  (str "input-" (get sizes (:size attrs)))))
+
+(defn val-state-css [attrs]
+  (if (:validation-state attrs)
+    (get validation-states (:validation-state attrs))))
 
 (defn conj-class-names [f attrs & class-names]
   (conj class-names (f attrs)))
@@ -64,4 +72,10 @@
   (->> class-names
        (apply conj-class-names display-css attrs)
        (apply conj-class-names input-size-css attrs)
+       join-class-names))
+
+(defn validation-state-css [attrs & class-names]
+  (->> class-names
+       (apply conj-class-names display-css attrs)
+       (apply conj-class-names val-state-css attrs)
        join-class-names))
