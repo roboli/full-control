@@ -15,6 +15,7 @@
                                                   column-class-names
                                                   input-class-names
                                                   validation-state-class-names
+                                                  float-class-names
                                                   col-size-css]]))
 
 ;;;
@@ -210,10 +211,6 @@
 ;;; navbar
 ;;;
 
-(def ^:private float-class
-  {:left "navbar-left"
-   :right "navbar-right"})
-
 (defn brand* [attrs & body]
   {:pre [(map? attrs)]}
   {:brand (assoc attrs :body body)})
@@ -270,8 +267,7 @@
   Attributes available for each links map are :href, :on-click, :body."
   [attrs]
   {:pre [(map? attrs)]}
-  (apply ul* {:class-name (str "nav navbar-nav "
-                               (get float-class (:float attrs)))}
+  (apply ul* {:class-name (float-class-names attrs "nav navbar-nav")}
          (for [lnk (:links attrs)]
            (li* {}
                 (apply a* (dissoc lnk :body) (:body lnk))))))
@@ -282,9 +278,8 @@
   [attrs & body]
   {:pre [(map? attrs)]}
   (apply btn* (assoc attrs
-                :class-name (str "navbar-btn "
-                                 (get float-class (:float attrs))
-                                 " " (:class-name attrs))) body))
+                :class-name (float-class-names attrs "navbar-btn"))
+         body))
 
 ;;;
 ;;; Panels

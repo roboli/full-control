@@ -49,6 +49,9 @@
                         :has-warning "has-warning"
                         :has-error "has-error"})
 
+(def float-class {:left "navbar-left"
+                  :right "navbar-right"})
+
 (defn display-css [attrs]
   (if (:display attrs) (get display (:display attrs))))
 
@@ -65,6 +68,10 @@
 (defn val-state-css [attrs]
   (if (:validation-state attrs)
     (get validation-states (:validation-state attrs))))
+
+(defn float-css [attrs]
+  (if (:float attrs)
+    (get float-class (:float attrs))))
 
 (defn conj-class-names [f attrs & class-names]
   (conj class-names (f attrs)))
@@ -98,4 +105,9 @@
   (->> (conj class-names "form-group")
        (apply conj-class-names (size-css "form-group-") attrs)
        (apply conj-class-names val-state-css attrs)
+       (apply join-class-names)))
+
+(defn float-class-names [attrs & class-names]
+  (->> class-names
+       (apply conj-class-names float-css attrs)
        (apply join-class-names)))
