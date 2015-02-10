@@ -17,6 +17,22 @@
           attrs))
 
 ;;;
+;;; Generate attrs
+;;;
+
+(declare join-class-names)
+
+(defn generate-attrs [attrs & {:keys [defaults depth] :or {defaults {}}}]
+  (let [attrs (if (empty? depth)
+                attrs
+                (get-in attrs (into [:children] (interpose :children depth))))]
+    (merge defaults (-> attrs
+                        (assoc
+                            :class-name (join-class-names (:class-name defaults)
+                                                          (:class-name attrs)))
+                        (dissoc :children)))))
+
+;;;
 ;;; Generate class names
 ;;;
 

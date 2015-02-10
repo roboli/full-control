@@ -11,7 +11,11 @@
             [goog.string :as gstr]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-            [full-control.utils :as utils]))
+            [full-control.utils :as utils :refer [generate-attrs
+                                                  column-class-names
+                                                  input-class-names
+                                                  validation-state-class-names
+                                                  col-size-css]]))
 
 ;;;
 ;;; Page record and fns
@@ -79,57 +83,76 @@
   "Attributes available in the attrs map are :class-name, :on-click."
   [attrs & body]
   {:pre [(map? attrs)]}
-  (apply button* (assoc attrs
-                   :type "button"
-                   :class-name (str "btn btn-default " (:class-name attrs))) body))
+  (apply button* (generate-attrs attrs
+                                 :defaults {:type "button"
+                                            :class-name "btn btn-default"})
+         body))
 
 (defn lbl* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply label* (assoc attrs
-                  :class-name (utils/column-class-names attrs "control-label"))
+  (apply label* (generate-attrs attrs
+                                :defaults {:class-name (column-class-names attrs
+                                                                           "control-label")})
          body))
 
 (defn txt* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply input* (assoc attrs
-                  :type "text"
-                  :class-name (utils/input-class-names attrs "form-control"))
+  (apply input* (generate-attrs attrs
+                                :defaults {:type "text"
+                                           :class-name (input-class-names attrs
+                                                                          "form-control")})
          body))
 
 (defn txtarea* [attrs & body]
-  (apply textarea* (assoc attrs
-                     :class-name (utils/input-class-names attrs "form-control"))
+  (apply textarea* (generate-attrs attrs
+                                   :defaults {:class-name (input-class-names attrs
+                                                                             "form-control")})
          body))
 
 (defn dropdown* [attrs & body]
-  (apply select* (assoc attrs
-                   :class-name (utils/input-class-names attrs "form-control"))
+  (apply select* (generate-attrs attrs
+                                 :defaults {:class-name (input-class-names attrs
+                                                                           "form-control")})
          body))
 
 (defn checkbox* [attrs & body]
   {:pre [(map? attrs)]}
-  (div* {:class-name "checkbox"}
-        (apply label* {}
-               (cons (input* (assoc attrs :type "checkbox"))
+  (div* (generate-attrs attrs
+                        :defaults {:class-name "checkbox"})
+        (apply label* (generate-attrs attrs
+                                      :depth [:label])
+               (cons (input* (generate-attrs attrs
+                                             :defaults {:type "checkbox"}
+                                             :depth [:label :input]))
                      body))))
 
 (defn checkbox-inline* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply label* {:class-name "checkbox-inline"}
-         (cons (input* (assoc attrs :type "checkbox"))
+  (apply label* (generate-attrs attrs
+                                :defaults {:class-name "checkbox-inline"})
+         (cons (input* (generate-attrs attrs
+                                       :defaults {:type "checkbox"}
+                                       :depth [:input]))
                body)))
 
 (defn radio* [attrs & body]
   {:pre [(map? attrs)]}
-  (div* {:class-name "radio"}
-        (apply label* {}
-               (cons (input* (assoc attrs :type "radio"))
+  (div* (generate-attrs attrs
+                        :defaults {:class-name "radio"})
+        (apply label* (generate-attrs attrs
+                                      :depth [:label])
+               (cons (input* (generate-attrs attrs
+                                             :defaults {:type "radio"}
+                                             :depth [:label :input]))
                      body))))
 
 (defn radio-inline* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply label* {:class-name "radio-inline"}
-         (cons (input* (assoc attrs :type "radio"))
+  (apply label* (generate-attrs attrs
+                                :defaults {:class-name "radio-inline"})
+         (cons (input* (generate-attrs attrs
+                                       :defaults {:type "radio"}
+                                       :depth [:input]))
                body)))
 
 (defn page* [attrs & body]
@@ -142,15 +165,21 @@
 
 (defn fixed-layout* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply div* {:class-name "container"} body))
+  (apply div* (generate-attrs attrs
+                              :defaults {:class-name "container"})
+         body))
 
 (defn fluid-layout* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply div* {:class-name "container-fluid"} body))
+  (apply div* (generate-attrs attrs
+                              :defaults {:class-name "container-fluid"})
+         body))
 
 (defn row* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply div* {:class-name "row"} body))
+  (apply div* (generate-attrs attrs
+                              :defaults {:class-name "row"})
+         body))
 
 (defn column*
   "Returns om.dom/div component with its :className set to
@@ -162,9 +191,10 @@
                 ...]}"
   [attrs & body]
   {:pre [(map? attrs)]}
-  (apply div* {:class-name (apply utils/validation-state-class-names
-                                  attrs
-                                  (map utils/col-size-css (:sizes attrs)))}
+  (apply div* (generate-attrs (dissoc attrs :sizes)
+                              :defaults {:class-name (apply validation-state-class-names
+                                                            attrs
+                                                            (map col-size-css (:sizes attrs)))})
          body))
 
 ;; Defines 12 columns controls, column-1* column-2* ... column-12*.
@@ -192,28 +222,41 @@
   "Retuns bootstrap's navbar. Attributes available in the attrs map are :class-name."
   [attrs & body]
   {:pre [(map? attrs)]}
-  (nav* {:class-name "navbar navbar-default navbar-static-top"
-         :role "navigation"}
-        (div* {:class-name "container-fluid"}
-              (div* {:class-name "navbar-header"}
-                    (button* {:type "button"
-                              :class-name "navbar-toggle collapsed"
-                              :data-toggle "collapse"
-                              :data-target "#navbar-collapse-items"}
-                             (span* {:class-name "icon-bar"})
-                             (span* {:class-name "icon-bar"})
-                             (span* {:class-name "icon-bar"}))
+  (nav* (generate-attrs attrs
+                        :defaults {:role "navigation"
+                                   :class-name "navbar navbar-default navbar-static-top"})
+        (div* (generate-attrs attrs
+                              :defaults {:class-name "container-fluid"}
+                              :depth [:div])
+              (div* (generate-attrs attrs
+                                    :defaults {:class-name "navbar-header"}
+                                    :depth [:div :div1])
+                    (button* (generate-attrs attrs
+                                             :defaults {:type "button"
+                                                        :data-toggle "collapse"
+                                                        :data-target "#navbar-collapse-items"
+                                                        :class-name "navbar-toggle collapsed"}
+                                             :depth [:div :div1 :button])
+                             (span* (generate-attrs attrs
+                                                    :defaults {:class-name "icon-bar"}
+                                                    :depth [:div :div1 :button :span1]))
+                             (span* (generate-attrs attrs
+                                                    :defaults {:class-name "icon-bar"}
+                                                    :depth [:div :div1 :button :span2]))
+                             (span* (generate-attrs attrs
+                                                    :defaults {:class-name "icon-bar"}
+                                                    :depth [:div :div1 :button :span3])))
                     (let [brand (->> body
                                      (filter :brand)
                                      first
                                      :brand)]
-                      (apply a* (assoc brand
-                                  :class-name (str "navbar-brand "
-                                                   (:class-name brand)))
+                      (apply a* (generate-attrs (dissoc brand :body)
+                                                :defaults {:class-name "navbar-brand"})
                              (:body brand))))
-              (apply div* {:id "navbar-collapse-items"
-                           :class-name (str "collapse navbar-collapse "
-                                            (:class-name attrs))}
+              (apply div* (generate-attrs attrs
+                                          :defaults {:id "navbar-collapse-items"
+                                                     :class-name "collapse navbar-collapse"}
+                                          :depth [:div :div2])
                      (remove :brand body)))))
 
 (defn links-group
