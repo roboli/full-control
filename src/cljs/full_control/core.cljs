@@ -257,7 +257,7 @@
                                    :display (:display attrs)}
                         :depth [:nav])
         (div* (generate-attrs attrs
-                              :defaults {:class-name "container-fluid"}
+                              :defaults {:class-name "container"}
                               :depth [:nav :div])
               (div* (generate-attrs attrs
                                     :defaults {:class-name "navbar-header"}
