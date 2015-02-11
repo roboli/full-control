@@ -446,6 +446,7 @@
   (div* (generate-attrs attrs
                         :defaults {:class-name "modal fade"
                                    :role "modal"
+                                   :id (:id attrs)
                                    :display (:display attrs)}
                         :depth [:div]) 
         (div* (generate-attrs attrs
