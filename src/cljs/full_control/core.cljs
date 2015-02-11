@@ -181,7 +181,7 @@
                                        :defaults {:type "radio"
                                                   :id (:id attrs)
                                                   :name (:name attrs)
-                                                  pp:value (:value attrs)
+                                                  :value (:value attrs)
                                                   :checked (:checked attrs)
                                                   :on-change (:on-change attrs)
                                                   :disabled (:disabled attrs)}
