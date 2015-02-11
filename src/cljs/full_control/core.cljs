@@ -121,41 +121,65 @@
 (defn checkbox* [attrs & body]
   {:pre [(map? attrs)]}
   (div* (generate-attrs attrs
-                        :defaults {:class-name "checkbox"})
+                        :defaults {:class-name "checkbox"
+                                   :display (:display attrs)}
+                        :depth [:div])
         (apply label* (generate-attrs attrs
-                                      :depth [:label])
+                                      :depth [:div :label])
                (cons (input* (generate-attrs attrs
-                                             :defaults {:type "checkbox"}
-                                             :depth [:label :input]))
+                                             :defaults {:type "checkbox"
+                                                        :id (:id attrs)
+                                                        :checked (:checked attrs)
+                                                        :on-change (:on-change attrs)}
+                                             :depth [:div :label :input]))
                      body))))
 
 (defn checkbox-inline* [attrs & body]
   {:pre [(map? attrs)]}
   (apply label* (generate-attrs attrs
-                                :defaults {:class-name "checkbox-inline"})
+                                :defaults {:class-name "checkbox-inline"
+                                           :display (:display attrs)}
+                                :depth [:label])
          (cons (input* (generate-attrs attrs
-                                       :defaults {:type "checkbox"}
-                                       :depth [:input]))
+                                       :defaults {:type "checkbox"
+                                                  :id (:id attrs)
+                                                  :checked (:checked attrs)
+                                                  :on-change (:on-change attrs)}
+                                       :depth [:label :input]))
                body)))
 
 (defn radio* [attrs & body]
   {:pre [(map? attrs)]}
   (div* (generate-attrs attrs
-                        :defaults {:class-name "radio"})
+                        :defaults {:class-name "radio"
+                                   :display (:display attrs)}
+                        :depth [:div])
         (apply label* (generate-attrs attrs
-                                      :depth [:label])
+                                      :depth [:div :label])
                (cons (input* (generate-attrs attrs
-                                             :defaults {:type "radio"}
-                                             :depth [:label :input]))
+                                             :defaults {:type "radio"
+                                                        :id (:id attrs)
+                                                        :name (:name attrs)
+                                                        :value (:value attrs)
+                                                        :checked (:checked attrs)
+                                                        :on-change (:on-change attrs)}
+                                             :depth [:div :label :input]))
                      body))))
 
 (defn radio-inline* [attrs & body]
   {:pre [(map? attrs)]}
   (apply label* (generate-attrs attrs
-                                :defaults {:class-name "radio-inline"})
+                                :defaults {:class-name "radio-inline"
+                                           :display (:display attrs)}
+                                :depth [:label])
          (cons (input* (generate-attrs attrs
-                                       :defaults {:type "radio"}
-                                       :depth [:input]))
+                                       :defaults {:type "radio"
+                                                  :id (:id attrs)
+                                                  :name (:name attrs)
+                                                  :value (:value attrs)
+                                                  :checked (:checked attrs)
+                                                  :on-change (:on-change attrs)}
+                                       :depth [:label :input]))
                body)))
 
 (defn page* [attrs & body]
