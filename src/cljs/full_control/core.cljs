@@ -247,28 +247,30 @@
   {:pre [(map? attrs)]}
   (nav* (generate-attrs attrs
                         :defaults {:role "navigation"
-                                   :class-name "navbar navbar-default navbar-static-top"})
+                                   :class-name "navbar navbar-default navbar-static-top"
+                                   :display (:display attrs)}
+                        :depth [:nav])
         (div* (generate-attrs attrs
                               :defaults {:class-name "container-fluid"}
-                              :depth [:div])
+                              :depth [:nav :div])
               (div* (generate-attrs attrs
                                     :defaults {:class-name "navbar-header"}
-                                    :depth [:div :div1])
+                                    :depth [:nav :div :div1])
                     (button* (generate-attrs attrs
                                              :defaults {:type "button"
                                                         :data-toggle "collapse"
                                                         :data-target "#navbar-collapse-items"
                                                         :class-name "navbar-toggle collapsed"}
-                                             :depth [:div :div1 :button])
+                                             :depth [:nav :div :div1 :button])
                              (span* (generate-attrs attrs
                                                     :defaults {:class-name "icon-bar"}
-                                                    :depth [:div :div1 :button :span1]))
+                                                    :depth [:nav :div :div1 :button :span1]))
                              (span* (generate-attrs attrs
                                                     :defaults {:class-name "icon-bar"}
-                                                    :depth [:div :div1 :button :span2]))
+                                                    :depth [:nav :div :div1 :button :span2]))
                              (span* (generate-attrs attrs
                                                     :defaults {:class-name "icon-bar"}
-                                                    :depth [:div :div1 :button :span3])))
+                                                    :depth [:nav :div :div1 :button :span3])))
                     (let [brand (->> body
                                      (filter :brand)
                                      first
@@ -279,7 +281,7 @@
               (apply div* (generate-attrs attrs
                                           :defaults {:id "navbar-collapse-items"
                                                      :class-name "collapse navbar-collapse"}
-                                          :depth [:div :div2])
+                                          :depth [:nav :div :div2])
                      (remove :brand body)))))
 
 (defn links-group
@@ -341,7 +343,9 @@
 (defn navpanel* [attrs & body]
   {:pre [(map? attrs)]}
   (div* (generate-attrs attrs
-                        :defaults {:class-name "panel panel-default"})
+                        :defaults {:class-name "panel panel-default"
+                                   :display (:display attrs)}
+                        :depth [:div])
         (let [header (->> body
                           (filter :header)
                           first
@@ -351,10 +355,10 @@
                  (:body header)))
         (div* (generate-attrs attrs
                               :defaults {:class-name "panel-body"}
-                              :depth [:div])
+                              :depth [:div :div])
               (apply div* (generate-attrs attrs
                                           :defaults {:class-name "list-group"}
-                                          :depth [:div :div])
+                                          :depth [:div :div :div])
                      (remove :header body)))))
 
 (defn navpanel-link* [attrs & body]
@@ -406,9 +410,12 @@
 (defn grid-view* [attrs & body]
   {:pre [(map? attrs)]}
   (table* (generate-attrs attrs
-                          :defaults {:class-name (table-class-names attrs)})
+                          :defaults {:class-name (table-class-names attrs)
+                                     :display (:display attrs)}
+                          :depth [:table])
           (apply tbody* (generate-attrs attrs
-                                        :depth [:tbody]) body)))
+                                        :depth [:table :tbody])
+                 body)))
 
 ;;;
 ;;; Modals
@@ -426,13 +433,15 @@
   {:pre [(map? attrs)]}
   (div* (generate-attrs attrs
                         :defaults {:class-name "modal fade"
-                                   :role "modal"}) 
+                                   :role "modal"
+                                   :display (:display attrs)}
+                        :depth [:div]) 
         (div* (generate-attrs attrs
                               :defaults {:class-name "modal-dialog"}
-                              :depth [:div]) 
+                              :depth [:div :div]) 
               (div* (generate-attrs attrs
                                     :defaults {:class-name "modal-content"}
-                                    :depth [:div :div])
+                                    :depth [:div :div :div])
                     (let [header (->> body
                                       (filter :header)
                                       first
@@ -442,7 +451,7 @@
                              (:body header)))
                     (apply div* (generate-attrs attrs
                                                 :defaults {:class-name "modal-body"}
-                                                :depth [:div :div :div])
+                                                :depth [:div :div :div :div])
                            (remove (some-fn :header :footer) body))
                     (let [footer (->> body
                                       (filter :footer)
@@ -494,4 +503,5 @@
 (defn frm-inline* [attrs & body]
   {:pre [(map? attrs)]}
   (apply frm* (generate-attrs attrs
-                              :defaults {:class-name "form-inline"})body))
+                              :defaults {:class-name "form-inline"})
+         body))
