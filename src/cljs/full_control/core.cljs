@@ -295,8 +295,7 @@
   Attributes available for each links map are :href, :on-click, :body."
   [attrs]
   {:pre [(map? attrs)]}
-  (apply ul* (generate-attrs attrs
-                             :defaults {:class-name (float-class-names attrs "nav navbar-nav")})
+  (apply ul* {:class-name (float-class-names attrs "nav navbar-nav")}
          (for [lnk (:links attrs)]
            (li* {}
                 (apply a* (dissoc lnk :body) (:body lnk))))))
