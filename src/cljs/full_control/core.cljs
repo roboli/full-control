@@ -12,11 +12,13 @@
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [full-control.utils :as utils :refer [generate-attrs
+                                                  col-size-css
                                                   column-class-names
                                                   input-class-names
                                                   validation-state-class-names
                                                   float-class-names
-                                                  col-size-css]]))
+                                                  table-class-names
+                                                  form-group-class-names]]))
 
 ;;;
 ;;; Page record and fns
@@ -296,12 +298,14 @@
 
 (defn panel* [attrs & body]
   {:pre [(map? attrs)]}
-  (div* {:class-name "panel panel-default"}
+  (div* (generate-attrs attrs
+                        :defaults {:class-name "panel panel-default"})
         (let [header (->> body
                           (filter :header)
                           first
                           :header)]
-          (apply div* {:class-name (str "panel-heading " (:class-name header))}
+          (apply div* (generate-attrs (dissoc header :body)
+                                      :defaults {:class-name "panel-heading"})
                  (:body header)))
         (if-not (and (= (count body) 1) (:stretch (first body)))
           (apply div* {:class-name "panel-body"} (remove (some-fn :header :stretch) body)))
@@ -312,43 +316,57 @@
 
 (defn navpanel* [attrs & body]
   {:pre [(map? attrs)]}
-  (div* {:class-name "panel panel-default"}
+  (div* (generate-attrs attrs
+                        :defaults {:class-name "panel panel-default"})
         (let [header (->> body
                           (filter :header)
                           first
                           :header)]
-          (apply div* {:class-name (str "panel-heading" (:class-name header))}
+          (apply div* (generate-attrs (dissoc header :body)
+                                      :defaults {:class-name "panel-heading"})
                  (:body header)))
-        (div* {:class-name "panel-body"}
-              (apply div* {:class-name "list-group"} (remove :header body)))))
+        (div* (generate-attrs attrs
+                              :defaults {:class-name "panel-body"}
+                              :depth [:div])
+              (apply div* (generate-attrs attrs
+                                          :defaults {:class-name "list-group"}
+                                          :depth [:div :div])
+                     (remove :header body)))))
 
 (defn navpanel-link* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply a* (assoc attrs :class-name "list-group-item") body))
+  (apply a* (generate-attrs attrs
+                            :defaults {:class-name "list-group-item"})
+         body))
 
 (defn title1* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply h1* (assoc attrs :class-name (str "panel-title " (:class-name attrs)))
+  (apply h1* (generate-attrs attrs
+                             :defaults {:class-name "panel-title"})
          body))
 
 (defn title2* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply h2* (assoc attrs :class-name (str "panel-title " (:class-name attrs)))
+  (apply h2* (generate-attrs attrs
+                             :defaults {:class-name "panel-title"})
          body))
 
 (defn title3* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply h3* (assoc attrs :class-name (str "panel-title " (:class-name attrs)))
+  (apply h3* (generate-attrs attrs
+                             :defaults {:class-name "panel-title"})
          body))
 
 (defn title4* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply h4* (assoc attrs :class-name (str "panel-title " (:class-name attrs)))
+  (apply h4* (generate-attrs attrs
+                             :defaults {:class-name "panel-title"})
          body))
 
 (defn title5* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply h5* (assoc attrs :class-name (str "panel-title " (:class-name attrs)))
+  (apply h5* (generate-attrs attrs
+                             :defaults {:class-name "panel-title"})
          body))
 
 ;;;
@@ -357,15 +375,16 @@
 
 (defn grid* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply table* (assoc attrs :class-name (str "table " (:class-name attrs))) body))
+  (apply table* (generate-attrs attrs
+                                :defaults {:class-name (table-class-names attrs)})
+         body))
 
 (defn grid-view* [attrs & body]
   {:pre [(map? attrs)]}
-  (table* (assoc attrs
-            :class-name (str/join " " ["table"
-                                       (if (:borders attrs) "table-bordered")
-                                       (if (:striped attrs) "table-striped")]))
-          (apply tbody* attrs body)))
+  (table* (generate-attrs attrs
+                          :defaults {:class-name (table-class-names attrs)})
+          (apply tbody* (generate-attrs attrs
+                                        :depth [:tbody]) body)))
 
 ;;;
 ;;; Modals
@@ -381,23 +400,32 @@
 
 (defn modal* [attrs & body]
   {:pre [(map? attrs)]}
-  (div* {:id (:id attrs)
-         :class-name "modal fade"
-         :role "modal"}
-        (div* {:class-name "modal-dialog"}
-              (div* {:class-name "modal-content"}
+  (div* (generate-attrs attrs
+                        :defaults {:class-name "modal fade"
+                                   :role "modal"}) 
+        (div* (generate-attrs attrs
+                              :defaults {:class-name "modal-dialog"}
+                              :depth [:div]) 
+              (div* (generate-attrs attrs
+                                    :defaults {:class-name "modal-content"}
+                                    :depth [:div :div])
                     (let [header (->> body
                                       (filter :header)
                                       first
                                       :header)]
-                      (apply div* {:class-name (str "modal-header " (:class-name header))}
+                      (apply div* (generate-attrs (dissoc header :body)
+                                                  :defaults {:class-name "modal-header"})
                              (:body header)))
-                    (apply div* {:class-name "modal-body"} (remove (some-fn :header :footer) body))
+                    (apply div* (generate-attrs attrs
+                                                :defaults {:class-name "modal-body"}
+                                                :depth [:div :div :div])
+                           (remove (some-fn :header :footer) body))
                     (let [footer (->> body
                                       (filter :footer)
                                       first
                                       :footer)]
-                      (apply div* {:class-name (str "modal-footer " (:class-name footer))}
+                      (apply div* (generate-attrs (dissoc footer :body)
+                                                  :defaults {:class-name "modal-footer"})
                              (:body footer)))))))
 
 ;;;
@@ -416,13 +444,16 @@
 
 (defn help* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply span* {:class-name "help-block"} body))
+  (apply span* (generate-attrs attrs
+                               :defaults {:class-name "help-block"})
+         body))
 
 (defhelp-col 1 12)
 
 (defn form-group* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply div* {:class-name (utils/form-group-class-names attrs)}
+  (apply div* (generate-attrs attrs
+                              :defaults {:class-name (form-group-class-names attrs)})
          body))
 
 (defn frm* [attrs & body]
@@ -432,8 +463,11 @@
 
 (defn frm-horizontal* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply frm* (assoc attrs :class-name "form-horizontal") body))
+  (apply frm* (generate-attrs attrs
+                              :defaults {:class-name "form-horizontal"})
+         body))
 
 (defn frm-inline* [attrs & body]
   {:pre [(map? attrs)]}
-  (apply frm* (assoc attrs :class-name "form-inline") body))
+  (apply frm* (generate-attrs attrs
+                              :defaults {:class-name "form-inline"})body))
