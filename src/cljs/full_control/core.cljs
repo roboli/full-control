@@ -324,7 +324,9 @@
 (defn panel* [attrs & body]
   {:pre [(map? attrs)]}
   (div* (generate-attrs attrs
-                        :defaults {:class-name "panel panel-default"})
+                        :defaults {:class-name "panel panel-default"
+                                   :display (:display attrs)}
+                        :depth [:div])
         (let [header (->> body
                           (filter :header)
                           first
@@ -333,7 +335,10 @@
                                       :defaults {:class-name "panel-heading"})
                  (:body header)))
         (if-not (and (= (count body) 1) (:stretch (first body)))
-          (apply div* {:class-name "panel-body"} (remove (some-fn :header :stretch) body)))
+          (apply div* (generate-attrs attrs
+                                      :defaults {:class-name "panel-body"}
+                                      :depth [:div :div])
+                 (remove (some-fn :header :stretch) body)))
         (let [stretch (->> body
                            (filter :stretch)
                            first
