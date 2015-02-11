@@ -505,7 +505,8 @@
 (defn frm* [attrs & body]
   {:pre [(map? attrs)]}
   (form* (generate-attrs attrs
-                         :defaults {:display (:display attrs)}
+                         :defaults {:display (:display attrs)
+                                    :class-name (:class-name attrs)}
                          :depth [:form])
          (apply fieldset* (generate-attrs attrs
                                           :defaults {:disabled (:disabled attrs)}
