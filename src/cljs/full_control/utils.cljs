@@ -73,6 +73,12 @@
   (if (:float attrs)
     (get float-class (:float attrs))))
 
+(defn table-borders-css [attrs]
+  (if (:borders attrs) "table-bordered"))
+
+(defn table-stripes-css [attrs]
+  (if (:striped attrs) "table-striped"))
+
 (defn conj-class-names [f attrs & class-names]
   (conj class-names (f attrs)))
 
@@ -110,4 +116,10 @@
 (defn float-class-names [attrs & class-names]
   (->> class-names
        (apply conj-class-names float-css attrs)
+       (apply join-class-names)))
+
+(defn table-class-names [attrs & class-names]
+  (->> (conj class-names "table")
+       (apply conj-class-names table-borders-css attrs)
+       (apply conj-class-names table-stripes-css attrs)
        (apply join-class-names)))
