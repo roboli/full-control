@@ -107,12 +107,14 @@
          body))
 
 (defn txtarea* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply textarea* (generate-attrs attrs
                                    :defaults {:class-name (input-class-names attrs
                                                                              "form-control")})
          body))
 
 (defn dropdown* [attrs & body]
+  {:pre [(map? attrs)]}
   (apply select* (generate-attrs attrs
                                  :defaults {:class-name (input-class-names attrs
                                                                            "form-control")})
@@ -179,7 +181,7 @@
                                        :defaults {:type "radio"
                                                   :id (:id attrs)
                                                   :name (:name attrs)
-                                                  :value (:value attrs)
+                                                  pp:value (:value attrs)
                                                   :checked (:checked attrs)
                                                   :on-change (:on-change attrs)
                                                   :disabled (:disabled attrs)}
