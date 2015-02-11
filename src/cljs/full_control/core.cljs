@@ -497,8 +497,12 @@
 
 (defn frm* [attrs & body]
   {:pre [(map? attrs)]}
-  (form* (dissoc attrs :disabled)
-         (apply fieldset* {:disabled (:disabled attrs)} body)))
+  (form* (generate-attrs attrs
+                         :defaults {:display (:display attrs)}
+                         :depth [:form])
+         (apply fieldset* (generate-attrs attrs
+                                          :defaults {:disabled (:disabled attrs)}
+                                          :depth [:form :fieldset]) body)))
 
 (defn frm-horizontal* [attrs & body]
   {:pre [(map? attrs)]}
