@@ -319,7 +319,7 @@
 
 (defn stretch* [attrs & body]
   {:pre [(map? attrs)]}
-  {:stretch body})
+  {:stretch (assoc attrs :body body)})
 
 (defn panel* [attrs & body]
   {:pre [(map? attrs)]}
@@ -334,10 +334,12 @@
                  (:body header)))
         (if-not (and (= (count body) 1) (:stretch (first body)))
           (apply div* {:class-name "panel-body"} (remove (some-fn :header :stretch) body)))
-        (apply div* {} (->> body
-                            (filter :stretch)
-                            first
-                            :stretch))))
+        (let [stretch (->> body
+                           (filter :stretch)
+                           first
+                           :stretch)]
+          (apply div* (generate-attrs (dissoc stretch :body))
+                 (:body stretch)))))
 
 (defn navpanel* [attrs & body]
   {:pre [(map? attrs)]}
