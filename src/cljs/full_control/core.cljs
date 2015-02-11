@@ -267,7 +267,8 @@
   Attributes available for each links map are :href, :on-click, :body."
   [attrs]
   {:pre [(map? attrs)]}
-  (apply ul* {:class-name (float-class-names attrs "nav navbar-nav")}
+  (apply ul* (generate-attrs attrs
+                             :defaults {:class-name (float-class-names attrs "nav navbar-nav")})
          (for [lnk (:links attrs)]
            (li* {}
                 (apply a* (dissoc lnk :body) (:body lnk))))))
@@ -277,8 +278,8 @@
   map same as the btn* control."
   [attrs & body]
   {:pre [(map? attrs)]}
-  (apply btn* (assoc attrs
-                :class-name (float-class-names attrs "navbar-btn"))
+  (apply btn* (generate-attrs attrs
+                              :defaults {:class-name (float-class-names attrs "navbar-btn")})
          body))
 
 ;;;
