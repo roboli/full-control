@@ -130,7 +130,8 @@
                                              :defaults {:type "checkbox"
                                                         :id (:id attrs)
                                                         :checked (:checked attrs)
-                                                        :on-change (:on-change attrs)}
+                                                        :on-change (:on-change attrs)
+                                                        :disabled (:disabled attrs)}
                                              :depth [:div :label :input]))
                      body))))
 
@@ -144,7 +145,8 @@
                                        :defaults {:type "checkbox"
                                                   :id (:id attrs)
                                                   :checked (:checked attrs)
-                                                  :on-change (:on-change attrs)}
+                                                  :on-change (:on-change attrs)
+                                                  :disabled (:disabled attrs)}
                                        :depth [:label :input]))
                body)))
 
@@ -162,7 +164,8 @@
                                                         :name (:name attrs)
                                                         :value (:value attrs)
                                                         :checked (:checked attrs)
-                                                        :on-change (:on-change attrs)}
+                                                        :on-change (:on-change attrs)
+                                                        :disabled (:disabled attrs)}
                                              :depth [:div :label :input]))
                      body))))
 
@@ -178,7 +181,8 @@
                                                   :name (:name attrs)
                                                   :value (:value attrs)
                                                   :checked (:checked attrs)
-                                                  :on-change (:on-change attrs)}
+                                                  :on-change (:on-change attrs)
+                                                  :disabled (:disabled attrs)}
                                        :depth [:label :input]))
                body)))
 
