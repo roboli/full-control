@@ -124,7 +124,9 @@
   {:pre [(map? attrs)]}
   (div* (generate-attrs attrs
                         :defaults {:class-name "checkbox"}
-                        :target-attrs [:class-name :display]
+                        :target-attrs [:class-name
+                                       :override-class
+                                       :display]
                         :depth [:div])
         (apply label* (generate-attrs attrs
                                       :depth [:div :label])
@@ -141,7 +143,9 @@
   {:pre [(map? attrs)]}
   (apply label* (generate-attrs attrs
                                 :defaults {:class-name "checkbox-inline"}
-                                :target-attrs [:class-name :display]
+                                :target-attrs [:class-name
+                                               :override-class
+                                               :display]
                                 :depth [:label])
          (cons (input* (generate-attrs attrs
                                        :defaults {:type "checkbox"}
@@ -156,7 +160,9 @@
   {:pre [(map? attrs)]}
   (div* (generate-attrs attrs
                         :defaults {:class-name "radio"}
-                        :target-attrs [:class-name :display]
+                        :target-attrs [:class-name
+                                       :override-class
+                                       :display]
                         :depth [:div])
         (apply label* (generate-attrs attrs
                                       :depth [:div :label])
@@ -175,7 +181,9 @@
   {:pre [(map? attrs)]}
   (apply label* (generate-attrs attrs
                                 :defaults {:class-name "radio-inline"}
-                                :target-attrs [:class-name :display]
+                                :target-attrs [:class-name
+                                               :override-class
+                                               :display]
                                 :depth [:label])
          (cons (input* (generate-attrs attrs
                                        :defaults {:type "radio"}
@@ -254,7 +262,9 @@
   (nav* (generate-attrs attrs
                         :defaults {:role "navigation"
                                    :class-name "navbar navbar-default navbar-static-top"}
-                        :target-attrs [:class-name :display]
+                        :target-attrs [:class-name
+                                       :override-class
+                                       :display]
                         :depth [:nav])
         (div* (generate-attrs attrs
                               :defaults {:class-name "container"}
@@ -331,7 +341,9 @@
   {:pre [(map? attrs)]}
   (div* (generate-attrs attrs
                         :defaults {:class-name "panel panel-default"}
-                        :target-attrs [:class-name :display]
+                        :target-attrs [:class-name
+                                       :override-class
+                                       :display]
                         :depth [:div])
         (let [header (->> body
                           (filter :header)
@@ -356,7 +368,9 @@
   {:pre [(map? attrs)]}
   (div* (generate-attrs attrs
                         :defaults {:class-name "panel panel-default"}
-                        :target-attrs [:class-name :display]
+                        :target-attrs [:class-name
+                                       :override-class
+                                       :display]
                         :depth [:div])
         (let [header (->> body
                           (filter :header)
@@ -423,7 +437,9 @@
   {:pre [(map? attrs)]}
   (table* (generate-attrs attrs
                           :defaults {:class-name (table-class-names attrs)}
-                          :target-attrs [:class-name :display]
+                          :target-attrs [:class-name
+                                         :override-class
+                                         :display]
                           :depth [:table])
           (apply tbody* (generate-attrs attrs
                                         :depth [:table :tbody])
@@ -506,7 +522,9 @@
 (defn frm* [attrs & body]
   {:pre [(map? attrs)]}
   (form* (generate-attrs attrs
-                         :target-attrs [:class-name :display]
+                         :target-attrs [:class-name
+                                        :override-class
+                                        :display]
                          :depth [:form])
          (apply fieldset* (generate-attrs attrs
                                           :target-attrs [:disabled]

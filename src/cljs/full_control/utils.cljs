@@ -31,8 +31,10 @@
         m (merge (select-keys attrs target-attrs) m)]
     (merge defaults (-> m
                         (assoc
-                            :class-name (join-class-names (:class-name defaults)
-                                                          (:class-name m)))
+                            :class-name (if (:override-class m)
+                                          (:class-name m)
+                                          (join-class-names (:class-name defaults)
+                                                            (:class-name m))))
                         (dissoc :children)))))
 
 ;;;
