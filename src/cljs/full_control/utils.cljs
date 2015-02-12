@@ -22,14 +22,17 @@
 
 (declare join-class-names)
 
-(defn generate-attrs [attrs & {:keys [defaults depth] :or {defaults {}}}]
-  (let [attrs (if (empty? depth)
-                attrs
-                (get-in attrs (into [:children] (interpose :children depth))))]
-    (merge defaults (-> attrs
+(defn generate-attrs [attrs & {:keys [defaults depth target-attrs]
+                               :or {defaults {}
+                                    target-attrs []}}]
+  (let [m (if (empty? depth)
+            attrs
+            (get-in attrs (into [:children] (interpose :children depth))))
+        m (merge (select-keys attrs target-attrs) m)]
+    (merge defaults (-> m
                         (assoc
                             :class-name (join-class-names (:class-name defaults)
-                                                          (:class-name attrs)))
+                                                          (:class-name m)))
                         (dissoc :children)))))
 
 ;;;

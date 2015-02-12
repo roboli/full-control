@@ -123,68 +123,68 @@
 (defn checkbox* [attrs & body]
   {:pre [(map? attrs)]}
   (div* (generate-attrs attrs
-                        :defaults {:class-name "checkbox"
-                                   :display (:display attrs)}
+                        :defaults {:class-name "checkbox"}
+                        :target-attrs [:class-name :display]
                         :depth [:div])
         (apply label* (generate-attrs attrs
                                       :depth [:div :label])
                (cons (input* (generate-attrs attrs
-                                             :defaults {:type "checkbox"
-                                                        :id (:id attrs)
-                                                        :checked (:checked attrs)
-                                                        :on-change (:on-change attrs)
-                                                        :disabled (:disabled attrs)}
+                                             :defaults {:type "checkbox"}
+                                             :target-attrs [:id
+                                                            :checked
+                                                            :on-change
+                                                            :disabled]
                                              :depth [:div :label :input]))
                      body))))
 
 (defn checkbox-inline* [attrs & body]
   {:pre [(map? attrs)]}
   (apply label* (generate-attrs attrs
-                                :defaults {:class-name "checkbox-inline"
-                                           :display (:display attrs)}
+                                :defaults {:class-name "checkbox-inline"}
+                                :target-attrs [:class-name :display]
                                 :depth [:label])
          (cons (input* (generate-attrs attrs
-                                       :defaults {:type "checkbox"
-                                                  :id (:id attrs)
-                                                  :checked (:checked attrs)
-                                                  :on-change (:on-change attrs)
-                                                  :disabled (:disabled attrs)}
+                                       :defaults {:type "checkbox"}
+                                       :target-attrs [:id
+                                                      :checked
+                                                      :on-change
+                                                      :disabled]
                                        :depth [:label :input]))
                body)))
 
 (defn radio* [attrs & body]
   {:pre [(map? attrs)]}
   (div* (generate-attrs attrs
-                        :defaults {:class-name "radio"
-                                   :display (:display attrs)}
+                        :defaults {:class-name "radio"}
+                        :target-attrs [:class-name :display]
                         :depth [:div])
         (apply label* (generate-attrs attrs
                                       :depth [:div :label])
                (cons (input* (generate-attrs attrs
-                                             :defaults {:type "radio"
-                                                        :id (:id attrs)
-                                                        :name (:name attrs)
-                                                        :value (:value attrs)
-                                                        :checked (:checked attrs)
-                                                        :on-change (:on-change attrs)
-                                                        :disabled (:disabled attrs)}
+                                             :defaults {:type "radio"}
+                                             :target-attrs [:id
+                                                            :name
+                                                            :value
+                                                            :checked
+                                                            :on-change
+                                                            :disabled]
                                              :depth [:div :label :input]))
                      body))))
 
 (defn radio-inline* [attrs & body]
   {:pre [(map? attrs)]}
   (apply label* (generate-attrs attrs
-                                :defaults {:class-name "radio-inline"
-                                           :display (:display attrs)}
+                                :defaults {:class-name "radio-inline"}
+                                :target-attrs [:class-name :display]
                                 :depth [:label])
          (cons (input* (generate-attrs attrs
-                                       :defaults {:type "radio"
-                                                  :id (:id attrs)
-                                                  :name (:name attrs)
-                                                  :value (:value attrs)
-                                                  :checked (:checked attrs)
-                                                  :on-change (:on-change attrs)
-                                                  :disabled (:disabled attrs)}
+                                       :defaults {:type "radio"}
+                                       :target-attrs [:id
+                                                      :name
+                                                      :value
+                                                      :checked
+                                                      :on-change
+                                                      :disabled]
                                        :depth [:label :input]))
                body)))
 
@@ -253,8 +253,8 @@
   {:pre [(map? attrs)]}
   (nav* (generate-attrs attrs
                         :defaults {:role "navigation"
-                                   :class-name "navbar navbar-default navbar-static-top"
-                                   :display (:display attrs)}
+                                   :class-name "navbar navbar-default navbar-static-top"}
+                        :target-attrs [:class-name :display]
                         :depth [:nav])
         (div* (generate-attrs attrs
                               :defaults {:class-name "container"}
@@ -330,8 +330,8 @@
 (defn panel* [attrs & body]
   {:pre [(map? attrs)]}
   (div* (generate-attrs attrs
-                        :defaults {:class-name "panel panel-default"
-                                   :display (:display attrs)}
+                        :defaults {:class-name "panel panel-default"}
+                        :target-attrs [:class-name :display]
                         :depth [:div])
         (let [header (->> body
                           (filter :header)
@@ -355,8 +355,8 @@
 (defn navpanel* [attrs & body]
   {:pre [(map? attrs)]}
   (div* (generate-attrs attrs
-                        :defaults {:class-name "panel panel-default"
-                                   :display (:display attrs)}
+                        :defaults {:class-name "panel panel-default"}
+                        :target-attrs [:class-name :display]
                         :depth [:div])
         (let [header (->> body
                           (filter :header)
@@ -422,8 +422,8 @@
 (defn grid-view* [attrs & body]
   {:pre [(map? attrs)]}
   (table* (generate-attrs attrs
-                          :defaults {:class-name (table-class-names attrs)
-                                     :display (:display attrs)}
+                          :defaults {:class-name (table-class-names attrs)}
+                          :target-attrs [:class-name :display]
                           :depth [:table])
           (apply tbody* (generate-attrs attrs
                                         :depth [:table :tbody])
@@ -445,9 +445,10 @@
   {:pre [(map? attrs)]}
   (div* (generate-attrs attrs
                         :defaults {:class-name "modal fade"
-                                   :role "modal"
-                                   :id (:id attrs)
-                                   :display (:display attrs)}
+                                   :role "modal"}
+                        :target-attrs [:id
+                                       :class-name
+                                       :display]
                         :depth [:div]) 
         (div* (generate-attrs attrs
                               :defaults {:class-name "modal-dialog"}
@@ -505,11 +506,10 @@
 (defn frm* [attrs & body]
   {:pre [(map? attrs)]}
   (form* (generate-attrs attrs
-                         :defaults {:display (:display attrs)
-                                    :class-name (:class-name attrs)}
+                         :target-attrs [:class-name :display]
                          :depth [:form])
          (apply fieldset* (generate-attrs attrs
-                                          :defaults {:disabled (:disabled attrs)}
+                                          :target-attrs [:disabled]
                                           :depth [:form :fieldset]) body)))
 
 (defn frm-horizontal* [attrs & body]
