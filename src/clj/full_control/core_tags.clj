@@ -101,6 +101,16 @@
 
    'space              (fn [& _] (list `space*))
 
+   'div                (partial process-control {:symbol-fn (return `div*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-tags-with
+                                                            :available general-tags)})
+
+   'span               (partial process-control {:symbol-fn (return `span*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-tags-with
+                                                            :available general-tags)})
+
    'btn                (partial process-control {:symbol-fn (return `btn*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
