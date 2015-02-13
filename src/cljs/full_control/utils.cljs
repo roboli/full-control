@@ -54,6 +54,13 @@
                         :has-warning "has-warning"
                         :has-error "has-error"})
 
+(def navbar-type {:static-top "navbar-static-top"
+                  :fixed-top "navbar-fixed-top"
+                  :fixed-bottom "navbar-fixed-bottom"})
+
+(def container-type {:fixed "container"
+                     :fluid "container-fluid"})
+
 (def float-class {:left "navbar-left"
                   :right "navbar-right"})
 
@@ -83,6 +90,15 @@
 
 (defn table-stripes-css [attrs]
   (if (:striped attrs) "table-striped"))
+
+(defn navbar-type-css [attrs]
+  (if (:navbar-type attrs)
+    (get navbar-type (:navbar-type attrs))))
+
+(defn container-type-css [attrs]
+  (if (:container-type attrs)
+    (get container-type (:container-type attrs))
+    (:fluid container-type)))
 
 (defn conj-class-names [f attrs & class-names]
   (conj class-names (f attrs)))
@@ -127,4 +143,14 @@
   (->> (conj class-names "table")
        (apply conj-class-names table-borders-css attrs)
        (apply conj-class-names table-stripes-css attrs)
+       (apply join-class-names)))
+
+(defn navbar-class-names [attrs & class-names]
+  (->> (conj class-names "navbar navbar-default")
+       (apply conj-class-names navbar-type-css attrs)
+       (apply join-class-names)))
+
+(defn container-class-names [attrs & class-names]
+  (->> class-names
+       (apply conj-class-names container-type-css attrs)
        (apply join-class-names)))

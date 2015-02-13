@@ -18,7 +18,9 @@
                                                   validation-state-class-names
                                                   float-class-names
                                                   table-class-names
-                                                  form-group-class-names]]))
+                                                  form-group-class-names
+                                                  navbar-class-names
+                                                  container-class-names]]))
 
 ;;;
 ;;; Page record and fns
@@ -261,13 +263,13 @@
   {:pre [(map? attrs)]}
   (nav* (generate-attrs attrs
                         :defaults {:role "navigation"
-                                   :class-name "navbar navbar-default navbar-static-top"}
+                                   :class-name (navbar-class-names attrs)}
                         :target-attrs [:class-name
                                        :override-class
                                        :display]
                         :depth [:nav])
         (div* (generate-attrs attrs
-                              :defaults {:class-name "container"}
+                              :defaults {:class-name (container-class-names attrs)}
                               :depth [:nav :div])
               (div* (generate-attrs attrs
                                     :defaults {:class-name "navbar-header"}
