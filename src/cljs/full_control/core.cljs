@@ -328,6 +328,44 @@
          body))
 
 ;;;
+;;; Tabs
+;;;
+
+(defn nav-tabs* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply div* {:role "tabpanel"} body))
+
+(defn tab-links-group
+  "Returns a series of om.dom/li components inside a om.dom/ul. Basically it
+  constructs a menu list from the attrs map parameter. attrs must be in the form of
+
+  e.g. {:links [{:href '#/link1' :body ['link1']}
+                {:href '#/link2' :body ['link2' ...] ...}
+                ...]}
+
+  Attributes available for each links map are :href, :on-click, :body."
+  [attrs]
+  {:pre [(map? attrs)]}
+  (apply ul* {:class-name (float-class-names attrs "nav nav-tabs")
+              :role "tablist"}
+         (for [lnk (:links attrs)]
+           (li* (assoc (:li lnk)
+                  :role "presentation")
+                (apply a* (assoc (dissoc (:a lnk) :body)
+                            :role "tab"
+                            :data-toggle "tab")
+                       (get-in lnk [:a :body]))))))
+
+(defn contents-group [attrs]
+  {:pre [(map? attrs)]}
+  (apply div* {:class-name "tab-content"}
+         (for [ctt (:contents attrs)]
+           (apply div* (assoc (dissoc ctt :body)
+                         :class-name (str "tab-pane " (:class-name ctt))
+                         :role "tabpanel")
+                  (:body ctt)))))
+
+;;;
 ;;; Panels
 ;;;
 

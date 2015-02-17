@@ -79,7 +79,8 @@
                                       frm-horizontal
                                       frm-inline
                                       panel
-                                      navpanel] om-tags))
+                                      navpanel
+                                      nav-tabs] om-tags))
 
 (def ^:private om-tags-fns
   (reduce #(assoc %1
@@ -276,6 +277,12 @@
    'link               (partial process-control {:symbol-fn (return `navpanel-link*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
+
+   ;; Tabs
+   'nav-tabs           (partial process-tabs {:attrs-parser parse-attrs
+                                              :expander (expand-tags-with
+                                                         :available (concat general-tags
+                                                                            row-tags))})
 
    ;; Tables
    'grid-view          (partial process-grid-view {:attrs-parser parse-attrs

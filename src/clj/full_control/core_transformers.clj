@@ -40,3 +40,42 @@
                              %)))]
       (concat left right))
     body))
+
+
+;;;
+;;; nav-tabs transformers
+;;;
+
+(defn- parse-tabs [body expander]
+  (let [tabs (keep
+              (fn [x]
+                (if (= (first x) 'nav-tab)
+                  [(second x) (first (filter #(= (first %) 'tab) (drop 2 x)))]))
+              body)]
+    (list `tab-links-group
+          {:links (mapv (fn [[m b]]
+                          (let [attrs (if (:active m)
+                                        {:li {:class-name "active"}})]
+                            (assoc attrs
+                              :a {:href (str "#" (:id m))
+                                  :body (->> (rest b)
+                                             (mapv expander)
+                                             doall)})))
+                        tabs)})))
+
+(defn- parse-panes [body expander]
+  (let [panes (keep
+               (fn [x]
+                 (if (= (first x) 'nav-tab)
+                   [(second x) (first (filter #(= (first %) 'tab-pane) (drop 2 x)))]))
+               body)]
+    (list `contents-group
+          {:contents (mapv (fn [[m b]]
+                             (let [attrs (if (:active m)
+                                           {:class-name "active"})]
+                               (assoc attrs
+                                 :id (:id m)
+                                 :body (->> (rest b)
+                                            (mapv expander)
+                                            doall))))
+                           panes)})))
