@@ -32,3 +32,11 @@
           (.modal #js {:backdrop "static"}))
       (-> ($ (str "#" id))
           (.modal "hide")))))
+
+(defn tab-activate [tag id]
+  {topic-key tag :tab-id id})
+
+(defn nav-tabs-activate [id]
+  (fn [data]
+    (-> ($ (str "#" id " a[href='#" (:tab-id data) "']"))
+        (.tab "show"))))
