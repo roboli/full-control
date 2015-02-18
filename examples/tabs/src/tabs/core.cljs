@@ -49,14 +49,15 @@
                 (header "Form")
                 (row
                  (column-6
-                  (group
-                   (lbl-1 "Tab")
-                   (dropdown-5 {:on-change #(e/emit (get-in st [:tabs-chs :ch])
-                                                    (e/tab-activate :tabs (.. % -target -value)))
-                                :defaultValue "tab-2"}
-                               (option {:value "tab-1"} "Texts")
-                               (option {:value "tab-2"} "Checkboxes")
-                               (option {:value "tab-3"} "Dropdown")))))
+                  (form {:class-name "form-horizontal"}
+                        (group
+                         (lbl-1 "Tab")
+                         (dropdown-5 {:on-change #(e/emit (get-in st [:tabs-chs :ch])
+                                                          (e/tab-activate :tabs (.. % -target -value)))
+                                      :defaultValue "tab-2"}
+                                     (option {:value "tab-1"} "Texts")
+                                     (option {:value "tab-2"} "Checkboxes")
+                                     (option {:value "tab-3"} "Dropdown"))))))
                 (br)
                 (frm
                  (with-record (:item cursor)

@@ -107,6 +107,12 @@
                                                  :expander (expand-tags-with
                                                             :available general-tags)})
 
+   'form               (partial process-control {:symbol-fn (return `form*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-tags-with
+                                                            :available (conj general-tags
+                                                                             'group))})
+
    'span               (partial process-control {:symbol-fn (return `span*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
