@@ -115,6 +115,82 @@
                                                          (option {:value (:id data)} (:name data))))
                                                       (help "*")))))))))))))
 
+(defpanel form-state [cursor owner]
+  (init-state []
+              {:tab-id "tab-2"})
+
+  (render-state [st]
+                (header "Form")
+                (frm-horizontal
+                 (with-record st
+                   (row
+                    (column-6
+                     (group-for :tab-id
+                                (lbl-1 "Tab")
+                                (dropdown-5
+                                 (with-source [data [{:id "tab-1" :name "Texts"}
+                                                     {:id "tab-2" :name "Checkboxes"}
+                                                     {:id "tab-3" :name "Dropdown"}]]
+                                   (option {:value (:id data)} (:name data)))))))))
+                (br)
+                (frm
+                 (with-record (:item cursor)
+                   (row
+                    (column-12
+                     (nav-tabs {:id "form-tabs"}
+                               (nav-tab {:id "tab-1"
+                                         :active (= "tab-1" (:tab-id st))}
+                                        (tab "Texts")
+                                        (tab-pane
+                                         (br)
+                                         (row
+                                          (column-6
+                                           (group-for :description
+                                                      (lbl)
+                                                      (txt {:max-length 15})
+                                                      (help "*")))
+                                          (column-6
+                                           (group-for :price
+                                                      (lbl)
+                                                      (txt {:max-length 10})
+                                                      (help "*"))))
+                                         (row
+                                          (column-6
+                                           (group-for :comments
+                                                      (lbl)
+                                                      (txtarea)
+                                                      (help "(optional)"))))))
+                               (nav-tab {:id "tab-2"
+                                         :active (= "tab-2" (:tab-id st))}
+                                        (tab "Checkboxes")
+                                        (tab-pane
+                                         (br)
+                                         (row
+                                          (column-6
+                                           (lbl "Extras")
+                                           (checkbox-for [:extras :non-taxable])
+                                           (checkbox-for [:extras :allow-credit])
+                                           (checkbox-for [:extras :allow-discounts]))
+                                          (column-6
+                                           (lbl "Extras Inline")
+                                           (br)
+                                           (checkbox-inline-for [:extras :non-taxable])
+                                           (checkbox-inline-for [:extras :allow-credit])
+                                           (checkbox-inline-for [:extras :allow-discounts])))))
+                               (nav-tab {:id "tab-3"
+                                         :active (= "tab-3" (:tab-id st))}
+                                        (tab "Dropdown")
+                                        (tab-pane
+                                         (br)
+                                         (row
+                                          (column-6
+                                           (group-for :brand-id
+                                                      (lbl "Brand")
+                                                      (dropdown
+                                                       (with-source [data (:brands cursor)]
+                                                         (option {:value (:id data)} (:name data))))
+                                                      (help "*")))))))))))))
+
 (defpage page [cursor owner opts]
   (init-state []
               {:section tabs})
@@ -126,7 +202,10 @@
                               "Tabs")
                         (link {:on-click #(fc/set-state! owner :section form)
                                :href "#"}
-                              "Form"))
+                              "Form")
+                        (link {:on-click #(fc/set-state! owner :section form-state)
+                               :href "#"}
+                              "Form-State"))
                 (fixed-layout
                  (row
                   (column-12
