@@ -29,7 +29,7 @@
 (defn- process-tabs [{:keys [attrs-parser expander]} _ & body]
   (let [[attrs body] (attrs-parser body)]
     (binding [*attrs* (merge *attrs* attrs)]
-      (list* `nav-tabs* attrs (list (parse-tabs body expander)
+      (list* `nav-tabs* attrs (list (parse-tabs attrs body expander)
                                     (parse-panes body expander))))))
 
 (defn- process-grid-view [{:keys [attrs-parser expander]} _ & body]

@@ -46,14 +46,15 @@
 ;;; nav-tabs transformers
 ;;;
 
-(defn- parse-tabs [body expander]
+(defn- parse-tabs [attrs body expander]
   (let [tabs (keep
               (fn [x]
                 (if (= (first x) 'nav-tab)
                   [(second x) (first (filter #(= (first %) 'tab) (drop 2 x)))]))
               body)]
     (list `tab-links-group
-          {:links (mapv (fn [[m b]]
+          {:id (:id attrs)
+           :links (mapv (fn [[m b]]
                           (let [attrs (if (:active m)
                                         {:li {:class-name "active"}})]
                             (assoc attrs
