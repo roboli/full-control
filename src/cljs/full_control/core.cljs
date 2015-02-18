@@ -341,13 +341,15 @@
 
   e.g. {:links [{:href '#/link1' :body ['link1']}
                 {:href '#/link2' :body ['link2' ...] ...}
-                ...]}
+                ...]
+        :id 'tab-1'}
 
   Attributes available for each links map are :href, :on-click, :body."
   [attrs]
   {:pre [(map? attrs)]}
   (apply ul* {:class-name (float-class-names attrs "nav nav-tabs")
-              :role "tablist"}
+              :role "tablist"
+              :id (:id attrs)}
          (for [lnk (:links attrs)]
            (li* (assoc (:li lnk)
                   :role "presentation")
