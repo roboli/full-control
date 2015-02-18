@@ -36,7 +36,7 @@
                           (tab-pane
                            (p "Last Tab 3..."))))))
 
-(defpanel form [cursor owner]
+(defpanel form-events [cursor owner]
   (init-state []
               {:tabs-chs (e/init-chans)})
 
@@ -46,7 +46,10 @@
                         (e/nav-tabs-activate "form-tabs")))
   
   (render-state [st]
-                (header "Form")
+                (header "Events")
+                (row
+                 (column-12
+                  (p "Activating tabs using events.")))
                 (row
                  (column-6
                   (form {:class-name "form-horizontal"}
@@ -120,7 +123,10 @@
               {:tab-id "tab-2"})
 
   (render-state [st]
-                (header "Form")
+                (header "State")
+                (row
+                 (column-12
+                  (p "Activating tabs using state.")))
                 (frm-horizontal
                  (with-record st
                    (row
@@ -200,12 +206,12 @@
                         (link {:on-click #(fc/set-state! owner :section tabs)
                                :href "#"}
                               "Tabs")
-                        (link {:on-click #(fc/set-state! owner :section form)
+                        (link {:on-click #(fc/set-state! owner :section form-events)
                                :href "#"}
-                              "Form")
+                              "Events")
                         (link {:on-click #(fc/set-state! owner :section form-state)
                                :href "#"}
-                              "Form-State"))
+                              "State"))
                 (fixed-layout
                  (row
                   (column-12
