@@ -55,8 +55,8 @@
     (list `tab-links-group
           {:id (:id attrs)
            :links (mapv (fn [[m b]]
-                          (let [attrs (if (:active m)
-                                        {:li {:class-name "active"}})]
+                          (let [attrs (if (find m :active)
+                                        {:li {:class-name `(if ~(:active m) "active" "")}})]
                             (assoc attrs
                               :a {:href (str "#" (:id m))
                                   :body (->> (rest b)
@@ -72,8 +72,8 @@
                body)]
     (list `contents-group
           {:contents (mapv (fn [[m b]]
-                             (let [attrs (if (:active m)
-                                           {:class-name "active"})]
+                             (let [attrs (if (find m :active)
+                                           {:class-name `(if ~(:active m) "active" "")})]
                                (assoc attrs
                                  :id (:id m)
                                  :body (->> (rest b)
