@@ -15,12 +15,12 @@
                   (p "Please click a button: ")
                   (footer (btn {:on-click (fn [_]
                                             (e/emit (:ch opts)
-                                                    (e/modal-hide :modal-msg)
+                                                    (e/modal-hidden :modal-msg)
                                                     #(fc/update! cursor :msg "It's okay!")))}
                                "Ok")
                           (btn {:on-click (fn [_]
                                             (e/emit (:ch opts)
-                                                    (e/modal-hide :modal-msg)
+                                                    (e/modal-hidden :modal-msg)
                                                     #(fc/update! cursor :msg "Not okay...")))}
                                "Cancel")))))
 
@@ -44,7 +44,7 @@
                        (header (title3 "My Modal"))
                        (p "Hello Modal!")
                        (footer (btn {:on-click #(e/emit (get-in st [:modal-chs :ch])
-                                                        (e/modal-hide :modal))}
+                                                        (e/modal-hidden :modal))}
                                     "Close")))
                 ;; component modal
                 (fc/build msg-modal cursor {:opts {:ch (get-in st [:modal-msg-chs :ch])}})
@@ -57,13 +57,13 @@
                     (row
                      (column-6
                       (btn {:on-click #(e/emit (get-in st [:modal-chs :ch])
-                                               (e/modal-show :modal))}
+                                               (e/modal-shown :modal))}
                            "Open-1"))
                      (column-6
                       (row
                        (column-6
                         (btn {:on-click #(e/emit (get-in st [:modal-msg-chs :ch])
-                                                 (e/modal-show :modal-msg))}
+                                                 (e/modal-shown :modal-msg))}
                              "Open-2"))
                        (column-6
                         (p (str "Response: " (:msg cursor)))))))))))))

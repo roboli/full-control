@@ -41,9 +41,9 @@
               {:tabs-chs (e/init-chans)})
 
   (will-mount []
-              (e/listen :tabs
+              (e/listen :tab-activate
                         (fc/get-state owner [:tabs-chs :pub])
-                        (e/nav-tabs-activate "form-tabs")))
+                        (e/nav-tab-activate "form-tabs")))
   
   (render-state [st]
                 (header "Events")
@@ -56,7 +56,8 @@
                         (group
                          (lbl-1 "Tab")
                          (dropdown-5 {:on-change #(e/emit (get-in st [:tabs-chs :ch])
-                                                          (e/tab-activate :tabs (.. % -target -value)))
+                                                          (e/nav-tab-activated :tab-activate
+                                                                               (.. % -target -value)))
                                       :defaultValue "tab-2"}
                                      (option {:value "tab-1"} "Texts")
                                      (option {:value "tab-2"} "Checkboxes")
@@ -126,17 +127,17 @@
   (will-mount []
               (e/listen :tab-show
                         (fc/get-state owner [:tabs-chs :pub])
-                        (e/tab-on-event #(fc/set-state! owner :tab-id %2)))
-              (e/tab-on-emit :on-show :tab-show 
-                             (fc/get-state owner [:tabs-chs :ch])
-                             "form-tabs")
+                        (e/nav-tab-handler #(fc/set-state! owner :tab-id %2)))
+              (e/nav-tab-on-event :on-show :tab-show 
+                                  (fc/get-state owner [:tabs-chs :ch])
+                                  "form-tabs")
 
               (e/listen :tab-hidden
                         (fc/get-state owner [:tabs-chs :pub])
-                        (e/tab-on-event #(.log js/console (str "hidden: " %2))))
-              (e/tab-on-emit :on-hidden :tab-hidden
-                             (fc/get-state owner [:tabs-chs :ch])
-                             "form-tabs"))
+                        (e/nav-tab-handler #(.log js/console (str "hidden: " %2))))
+              (e/nav-tab-on-event :on-hidden :tab-hidden
+                                  (fc/get-state owner [:tabs-chs :ch])
+                                  "form-tabs"))
 
   (render-state [st]
                 (header "State")
