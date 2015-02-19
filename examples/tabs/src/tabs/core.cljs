@@ -120,7 +120,23 @@
 
 (defpanel form-state [cursor owner]
   (init-state []
-              {:tab-id "tab-2"})
+              {:tab-id "tab-2"
+               :tabs-chs (e/init-chans)})
+
+  (will-mount []
+              (e/listen :tab-show
+                        (fc/get-state owner [:tabs-chs :pub])
+                        (e/tab-on-event #(fc/set-state! owner :tab-id %2)))
+              (e/tab-on-emit :on-show :tab-show 
+                             (fc/get-state owner [:tabs-chs :ch])
+                             "form-tabs")
+
+              (e/listen :tab-hidden
+                        (fc/get-state owner [:tabs-chs :pub])
+                        (e/tab-on-event #(.log js/console (str "hidden: " %2))))
+              (e/tab-on-emit :on-hidden :tab-hidden
+                             (fc/get-state owner [:tabs-chs :ch])
+                             "form-tabs"))
 
   (render-state [st]
                 (header "State")

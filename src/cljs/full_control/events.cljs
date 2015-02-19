@@ -40,3 +40,28 @@
   (fn [data]
     (-> ($ (str "#" id " a[href='#" (:tab-id data) "']"))
         (.tab "show"))))
+
+(defn tab-on-event [f]
+  (fn [data]
+    (f (:e data) (:target data) (:relate-target data))))
+
+(def tab-events {:on-show "show.bs.tab"
+                 :on-shown "shown.bs.tab"
+                 :on-hide "hide.bs.tab"
+                 :on-hidden "hidden.bs.tab"})
+
+(defn tab-on-emit [event tag ch id]
+  (-> ($ js/document)
+      (.on (get tab-events event)
+           (str "#" id " a[data-toggle='tab']")
+           (fn [e]
+             (put! ch {topic-key tag
+                       :e e
+                       :target (-> (. e -target)
+                                   $
+                                   (.attr "href")
+                                   (subs 1))
+                       :relate-target (-> (. e -relatedTarget)
+                                          $
+                                          (.attr "href")
+                                          (subs 1))})))))
