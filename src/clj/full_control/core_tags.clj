@@ -20,7 +20,7 @@
       (#(str "full-control.core/" % "*"))
       symbol))
 
-(def ^:private layout-tags '[navbar fixed-layout fluid-layout modal])
+(def ^:private layout-tags '[navbar fixed-layout fluid-layout])
 
 (def ^:private row-tags '[with-controls
                           row
@@ -75,6 +75,7 @@
                                       help
                                       grid-view
                                       grid
+                                      modal
                                       frm
                                       frm-horizontal
                                       frm-inline
