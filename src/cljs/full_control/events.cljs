@@ -23,6 +23,22 @@
 (defn modal-shown [tag]
   {topic-key tag :show true})
 
+(defn modal-on-event [event tag ch id]
+  (let [modal-events {:on-show "show.bs.modal"
+                      :on-shown "shown.bs.modal"
+                      :on-hide "hide.bs.modal"
+                      :on-hidden "hidden.bs.modal"
+                      :on-loaded "loaded.bs.modal"}]
+    (-> ($ js/document)
+        (.on (get modal-events event)
+             (str "#" id)
+             (fn [e]
+               (put! ch {topic-key tag
+                         :e e
+                         :relate-target (-> (. e -relatedTarget)
+                                            $
+                                            (.attr "id"))}))))))
+
 (defn nav-tab-activated [tag id]
   {topic-key tag :tab-id id})
 
@@ -63,6 +79,10 @@
           (.modal #js {:backdrop "static"}))
       (-> ($ (str "#" id))
           (.modal "hide")))))
+
+(defn modal-handler [f]
+  (fn [data]
+    (f (:e data) (:relate-target data))))
 
 (defn nav-tab-activate [id]
   (fn [data]
