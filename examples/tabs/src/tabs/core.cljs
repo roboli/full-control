@@ -14,34 +14,12 @@
                                       :allow-credit false
                                       :allow-discounts false}}}))
 
-(defpanel tabs [cursor owner]
+(defpanel tabs-methods [cursor owner]
   (render-state [st]
-                (header "Tabs")
-                (nav-tabs
-                 (nav-tab {:id "tab-1"}
-                          (tab "Tab 1")
-                          (tab-pane
-                           (row
-                            (column-6
-                             (p "Tab 1 content goes here..."))
-                            (column-6
-                             (p "More here!")))))
-                 (nav-tab {:id "tab-2"
-                           :active true}
-                          (tab "Tab 2")
-                          (tab-pane
-                           (p "Tab 2 goes here...")))
-                 (nav-tab {:id "tab-3"}
-                          (tab "Tab 3")
-                          (tab-pane
-                           (p "Last Tab 3..."))))))
-
-(defpanel form-events [cursor owner]
-  (render-state [st]
-                (header "Events")
+                (header "Methods")
                 (row
                  (column-12
-                  (p "Activating tabs using events.")))
+                  (p "Activating tabs using methods.")))
                 (row
                  (column-6
                   (form {:class-name "form-horizontal"}
@@ -110,31 +88,53 @@
                                                          (option {:value (:id data)} (:name data))))
                                                       (help "*")))))))))))))
 
-(defpanel form-state [cursor owner]
+(defpanel tabs-events [cursor owner]
   (init-state []
               {:tab-id "tab-2"
-               :tabs-chs (e/init-chans)})
+               :tabs-chs (e/init-chans)
+               :event ""})
 
   (will-mount []
               (e/listen :tab-show
                         (fc/get-state owner [:tabs-chs :pub])
-                        (e/nav-tab-handler #(fc/set-state! owner :tab-id %2)))
+                        (e/nav-tab-handler (fn [_ id _]
+                                             (fc/update-state! owner :event #(str % " Show-" id))
+                                             (fc/set-state! owner :tab-id id))))
               (e/nav-tab-on-event :on-show :tab-show 
+                                  (fc/get-state owner [:tabs-chs :ch])
+                                  "form-tabs")
+
+              (e/listen :tab-shown
+                        (fc/get-state owner [:tabs-chs :pub])
+                        (e/nav-tab-handler (fn [_ id _]
+                                             (fc/update-state! owner :event #(str % " Shown-" id))
+                                             (fc/set-state! owner :tab-id id))))
+              (e/nav-tab-on-event :on-shown :tab-shown 
+                                  (fc/get-state owner [:tabs-chs :ch])
+                                  "form-tabs")
+
+              (e/listen :tab-hide
+                        (fc/get-state owner [:tabs-chs :pub])
+                        (e/nav-tab-handler (fn [_ id _]
+                                             (fc/update-state! owner :event #(str % " Hide-" id))
+                                             (fc/set-state! owner :tab-id id))))
+              (e/nav-tab-on-event :on-hide :tab-hide 
                                   (fc/get-state owner [:tabs-chs :ch])
                                   "form-tabs")
 
               (e/listen :tab-hidden
                         (fc/get-state owner [:tabs-chs :pub])
-                        (e/nav-tab-handler #(.log js/console (str "hidden: " %2))))
+                        (e/nav-tab-handler (fn [_ id _]
+                                             (fc/update-state! owner :event #(str % " Hidden-" id)))))
               (e/nav-tab-on-event :on-hidden :tab-hidden
                                   (fc/get-state owner [:tabs-chs :ch])
                                   "form-tabs"))
 
   (render-state [st]
-                (header "State")
+                (header "Events")
                 (row
                  (column-12
-                  (p "Activating tabs using state.")))
+                  (p "Activating tabs using state. And keeping track through events when clicking on tabs.")))
                 (frm-horizontal
                  (with-record st
                    (row
@@ -145,7 +145,9 @@
                                  (with-source [data [{:id "tab-1" :name "Texts"}
                                                      {:id "tab-2" :name "Checkboxes"}
                                                      {:id "tab-3" :name "Dropdown"}]]
-                                   (option {:value (:id data)} (:name data)))))))))
+                                   (option {:value (:id data)} (:name data))))))
+                    (column-6
+                     (p (:event st))))))
                 (br)
                 (frm
                  (with-record (:item cursor)
@@ -207,19 +209,16 @@
 
 (defpage page [cursor owner opts]
   (init-state []
-              {:section tabs})
+              {:section tabs-methods})
   
   (render-state [st]
                 (navbar (brand "Tabs")
-                        (link {:on-click #(fc/set-state! owner :section tabs)
+                        (link {:on-click #(fc/set-state! owner :section tabs-methods)
                                :href "#"}
-                              "Tabs")
-                        (link {:on-click #(fc/set-state! owner :section form-events)
+                              "Methods")
+                        (link {:on-click #(fc/set-state! owner :section tabs-events)
                                :href "#"}
-                              "Events")
-                        (link {:on-click #(fc/set-state! owner :section form-state)
-                               :href "#"}
-                              "State"))
+                              "Events"))
                 (fixed-layout
                  (row
                   (column-12
