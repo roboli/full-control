@@ -37,14 +37,6 @@
                            (p "Last Tab 3..."))))))
 
 (defpanel form-events [cursor owner]
-  (init-state []
-              {:tabs-chs (e/init-chans)})
-
-  (will-mount []
-              (e/listen :tab-activate
-                        (fc/get-state owner [:tabs-chs :pub])
-                        (e/nav-tab-activate "form-tabs")))
-  
   (render-state [st]
                 (header "Events")
                 (row
@@ -55,9 +47,8 @@
                   (form {:class-name "form-horizontal"}
                         (group
                          (lbl-1 "Tab")
-                         (dropdown-5 {:on-change #(e/emit (get-in st [:tabs-chs :ch])
-                                                          (e/nav-tab-activated :tab-activate
-                                                                               (.. % -target -value)))
+                         (dropdown-5 {:on-change #(e/nav-tab-activate "form-tabs"
+                                                                      (.. % -target -value))
                                       :defaultValue "tab-2"}
                                      (option {:value "tab-1"} "Texts")
                                      (option {:value "tab-2"} "Checkboxes")

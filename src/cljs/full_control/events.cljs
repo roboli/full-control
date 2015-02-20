@@ -13,16 +13,6 @@
 ;;; Events
 ;;;
 
-(defn emit [ch m & [f]]
-  (put! ch m)
-  (if f (f)))
-
-(defn modal-hidden [tag]
-  {topic-key tag :show false})
-
-(defn modal-shown [tag]
-  {topic-key tag :show true})
-
 (defn modal-on-event [event tag ch id]
   (let [modal-events {:on-show "show.bs.modal"
                       :on-shown "shown.bs.modal"
@@ -38,9 +28,6 @@
                          :relate-target (-> (. e -relatedTarget)
                                             $
                                             (.attr "id"))}))))))
-
-(defn nav-tab-activated [tag id]
-  {topic-key tag :tab-id id})
 
 (defn nav-tab-on-event [event tag ch id]
   (let [tab-events {:on-show "show.bs.tab"
@@ -72,23 +59,25 @@
     (go (while true
           (f (<! c))))))
 
-(defn modal-display [id]
-  (fn [data]
-    (if (:show data)
-      (-> ($ (str "#" id))
-          (.modal #js {:backdrop "static"}))
-      (-> ($ (str "#" id))
-          (.modal "hide")))))
-
 (defn modal-handler [f]
   (fn [data]
     (f (:e data) (:relate-target data))))
 
-(defn nav-tab-activate [id]
-  (fn [data]
-    (-> ($ (str "#" id " a[href='#" (:tab-id data) "']"))
-        (.tab "show"))))
-
 (defn nav-tab-handler [f]
   (fn [data]
     (f (:e data) (:target data) (:relate-target data))))
+
+;;;
+;;; Methods
+;;;
+
+(defn modal-display [action id]
+  (if (= action :show)
+    (-> ($ (str "#" id))
+        (.modal #js {:backdrop "static"}))
+    (-> ($ (str "#" id))
+        (.modal "hide"))))
+
+(defn nav-tab-activate [id tab-id]
+  (-> ($ (str "#" id " a[href='#" tab-id "']"))
+      (.tab "show")))
