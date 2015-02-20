@@ -1,4 +1,4 @@
-(ns full-control.events
+(ns full-control.behaviors
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [cljs.core.async :refer [chan put! pub sub]]
             [jayq.core :refer [$]]))

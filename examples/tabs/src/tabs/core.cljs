@@ -1,6 +1,6 @@
 (ns tabs.core
   (:require [full-control.core :as fc :refer-macros [defpage defpanel]]
-            [full-control.events :as e]))
+            [full-control.behaviors :as b]))
 
 (enable-console-print!)
 
@@ -25,7 +25,7 @@
                   (form {:class-name "form-horizontal"}
                         (group
                          (lbl-1 "Tab")
-                         (dropdown-5 {:on-change #(e/nav-tab-activate "form-tabs"
+                         (dropdown-5 {:on-change #(b/nav-tab-activate "form-tabs"
                                                                       (.. % -target -value))
                                       :defaultValue "tab-2"}
                                      (option {:value "tab-1"} "Texts")
@@ -91,42 +91,42 @@
 (defpanel tabs-events [cursor owner]
   (init-state []
               {:tab-id "tab-2"
-               :tabs-chs (e/init-chans)
+               :tabs-chs (b/init-chans)
                :event ""})
 
   (will-mount []
-              (e/listen :tab-show
+              (b/listen :tab-show
                         (fc/get-state owner [:tabs-chs :pub])
-                        (e/nav-tab-handler (fn [_ id _]
+                        (b/nav-tab-handler (fn [_ id _]
                                              (fc/update-state! owner :event #(str % " Show-" id))
                                              (fc/set-state! owner :tab-id id))))
-              (e/nav-tab-on-event :on-show :tab-show 
+              (b/nav-tab-on-event :on-show :tab-show 
                                   (fc/get-state owner [:tabs-chs :ch])
                                   "form-tabs")
 
-              (e/listen :tab-shown
+              (b/listen :tab-shown
                         (fc/get-state owner [:tabs-chs :pub])
-                        (e/nav-tab-handler (fn [_ id _]
+                        (b/nav-tab-handler (fn [_ id _]
                                              (fc/update-state! owner :event #(str % " Shown-" id))
                                              (fc/set-state! owner :tab-id id))))
-              (e/nav-tab-on-event :on-shown :tab-shown 
+              (b/nav-tab-on-event :on-shown :tab-shown 
                                   (fc/get-state owner [:tabs-chs :ch])
                                   "form-tabs")
 
-              (e/listen :tab-hide
+              (b/listen :tab-hide
                         (fc/get-state owner [:tabs-chs :pub])
-                        (e/nav-tab-handler (fn [_ id _]
+                        (b/nav-tab-handler (fn [_ id _]
                                              (fc/update-state! owner :event #(str % " Hide-" id))
                                              (fc/set-state! owner :tab-id id))))
-              (e/nav-tab-on-event :on-hide :tab-hide 
+              (b/nav-tab-on-event :on-hide :tab-hide 
                                   (fc/get-state owner [:tabs-chs :ch])
                                   "form-tabs")
 
-              (e/listen :tab-hidden
+              (b/listen :tab-hidden
                         (fc/get-state owner [:tabs-chs :pub])
-                        (e/nav-tab-handler (fn [_ id _]
+                        (b/nav-tab-handler (fn [_ id _]
                                              (fc/update-state! owner :event #(str % " Hidden-" id)))))
-              (e/nav-tab-on-event :on-hidden :tab-hidden
+              (b/nav-tab-on-event :on-hidden :tab-hidden
                                   (fc/get-state owner [:tabs-chs :ch])
                                   "form-tabs"))
 

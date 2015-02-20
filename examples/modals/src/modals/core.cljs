@@ -2,7 +2,7 @@
   (:require [full-control.core :as fc :refer-macros [defpage
                                                      defpanel
                                                      defmodal]]
-            [full-control.events :as e]))
+            [full-control.behaviors :as b]))
 
 (enable-console-print!)
 
@@ -14,50 +14,50 @@
                   (header (title3 "Msg Modal"))
                   (p "Please click a button: ")
                   (footer (btn {:on-click (fn [_]
-                                            (e/modal-display :hide "msg-modal")
+                                            (b/modal-display :hide "msg-modal")
                                             (fc/update! cursor :msg "It's okay!"))}
                                "Ok")
                           (btn {:on-click (fn [_]
-                                            (e/modal-display :hide "msg-modal")
+                                            (b/modal-display :hide "msg-modal")
                                             (fc/update! cursor :msg "Not okay..."))}
                                "Cancel")))))
 
 (defpanel modal-events [cursor owner]
   (init-state []
-              {:modal-chs (e/init-chans)
+              {:modal-chs (b/init-chans)
                :event ""})
 
   (will-mount []
-              (e/listen :show
+              (b/listen :show
                         (fc/get-state owner [:modal-chs :pub])
-                        (e/modal-handler (fn [& _]
+                        (b/modal-handler (fn [& _]
                                            (fc/update-state! owner :event #(str % " Show")))))
-              (e/modal-on-event :on-show :show
+              (b/modal-on-event :on-show :show
                                 (fc/get-state owner [:modal-chs :ch])
                                 "my-modal")
 
               
-              (e/listen :shown
+              (b/listen :shown
                         (fc/get-state owner [:modal-chs :pub])
-                        (e/modal-handler (fn [& _]
+                        (b/modal-handler (fn [& _]
                                            (fc/update-state! owner :event #(str % " Shown")))))
-              (e/modal-on-event :on-shown :shown
+              (b/modal-on-event :on-shown :shown
                                 (fc/get-state owner [:modal-chs :ch])
                                 "my-modal")
 
-              (e/listen :hide
+              (b/listen :hide
                         (fc/get-state owner [:modal-chs :pub])
-                        (e/modal-handler (fn [& _]
+                        (b/modal-handler (fn [& _]
                                            (fc/update-state! owner :event #(str % " Hide")))))
-              (e/modal-on-event :on-hide :hide
+              (b/modal-on-event :on-hide :hide
                                 (fc/get-state owner [:modal-chs :ch])
                                 "my-modal")
               
-              (e/listen :hidden
+              (b/listen :hidden
                         (fc/get-state owner [:modal-chs :pub])
-                        (e/modal-handler (fn [& _]
+                        (b/modal-handler (fn [& _]
                                            (fc/update-state! owner :event #(str % " Hidden")))))
-              (e/modal-on-event :on-hidden :hidden
+              (b/modal-on-event :on-hidden :hidden
                                 (fc/get-state owner [:modal-chs :ch])
                                 "my-modal"))
 
@@ -65,12 +65,12 @@
                 (modal {:id "my-modal"}
                        (header (title3 "My Modal"))
                        (p "Hello Modal!")
-                       (footer (btn {:on-click #(e/modal-display :hide "my-modal")}
+                       (footer (btn {:on-click #(b/modal-display :hide "my-modal")}
                                     "Close")))
                 (header (title3 "Events"))
                 (row
                  (column-2
-                  (btn {:on-click #(e/modal-display :show "my-modal")}
+                  (btn {:on-click #(b/modal-display :show "my-modal")}
                        "Open"))
                  (column-10
                   (p (:event st))))))
@@ -81,19 +81,19 @@
                 (modal {:id "my-modal"}
                        (header (title3 "My Modal"))
                        (p "Hello Modal!")
-                       (footer (btn {:on-click #(e/modal-display :hide "my-modal")}
+                       (footer (btn {:on-click #(b/modal-display :hide "my-modal")}
                                     "Close")))
                 ;; component modal
                 (fc/build msg-modal cursor {:opts {:ch (get-in st [:modal-msg-chs :ch])}})
                 (header (title3 "Methods"))
                 (row
                  (column-6
-                  (btn {:on-click #(e/modal-display :show "my-modal")}
+                  (btn {:on-click #(b/modal-display :show "my-modal")}
                        "Open-1"))
                  (column-6
                   (row
                    (column-6
-                    (btn {:on-click #(e/modal-display :show "msg-modal")}
+                    (btn {:on-click #(b/modal-display :show "msg-modal")}
                          "Open-2"))
                    (column-6
                     (p (str "Response: " (:msg cursor)))))))))
