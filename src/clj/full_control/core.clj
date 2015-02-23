@@ -32,6 +32,7 @@
               (vector? args))]}
   (let [[_ ibody :as init-state] (parse-protocol-fns 'init-state body) 
         [_ wbody :as will-mount] (parse-protocol-fns 'will-mount body)
+        [_ dbody :as did-mount] (parse-protocol-fns 'did-mount body)
         [rparams rbody :as render-state] (parse-protocol-fns 'render-state body)]
     (if render-state
       `(defn ~name ~args
@@ -42,6 +43,9 @@
            :will-mount-fn (apply (fn ~args
                                    (fn [] ~@(or wbody [])))
                                  ~args)
+           :did-mount-fn (apply (fn ~args
+                                  (fn [] ~@(or dbody [])))
+                                ~args)
            :render-state-fn (apply (fn ~args
                                      (fn ~rparams ~(binding [*tags-fns* tags-fns]
                                                      (apply (tag *tags-fns*) tag rbody))))

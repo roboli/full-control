@@ -38,6 +38,10 @@
   (will-mount [_]
     ((:will-mount-fn m)))
 
+  om/IDidMount
+  (did-mount [_]
+    ((:did-mount-fn m)))
+
   om/IRenderState
   (render-state [_ state]
     ((:render-state-fn m) state)))
