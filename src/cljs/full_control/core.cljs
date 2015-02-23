@@ -202,6 +202,14 @@
                                        :depth [:label :input]))
                body)))
 
+(defn datepicker* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply input* (generate-attrs attrs
+                                :defaults {:type "date"
+                                           :class-name (input-class-names attrs
+                                                                          "form-control")})
+         body))
+
 (defn page* [attrs & body]
   {:pre [(map? attrs)]}
   (apply div* attrs body))

@@ -81,3 +81,10 @@
 (defn nav-tab-activate [id tab-id]
   (-> ($ (str "#" id " a[href='#" tab-id "']"))
       (.tab "show")))
+
+(defn make-jquery-datepicker [id]
+  (let [input (.createElement js/document "input")]
+    (.setAttribute input "type" "date")
+    (if (= (.-type input) "text")
+      (-> ($ (str "#" id))
+          (.datepicker #js {})))))

@@ -54,6 +54,13 @@
                          :compiler {:output-dir "examples/tabs/out"
                                     :output-to "examples/tabs/out/app.js"
                                     :source-map "examples/tabs/out/app.js.map"
+                                    :optimizations :none}}
+
+                        {:id "random"
+                         :source-paths ["src/cljs" "examples/random/src"]
+                         :compiler {:output-dir "examples/random/out"
+                                    :output-to "examples/random/out/app.js"
+                                    :source-map "examples/random/out/app.js.map"
                                     :optimizations :none}}]}
 
   :clean-targets ["examples/one-page/out"
@@ -61,4 +68,5 @@
                   "examples/grids-tables/out"
                   "examples/modals/out"
                   "examples/forms/out"
-                  "examples/tabs/out"])
+                  "examples/tabs/out"
+                  "examples/random/out"])

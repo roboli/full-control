@@ -72,6 +72,7 @@
                                       checkbox-inline
                                       radio
                                       radio-inline
+                                      datepicker
                                       help
                                       grid-view
                                       grid
@@ -153,6 +154,10 @@
                                                  :expander identity})
 
    'radio-inline       (partial process-control {:symbol-fn (return `radio-inline*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander identity})
+
+   'datepicker         (partial process-control {:symbol-fn (return `datepicker*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
