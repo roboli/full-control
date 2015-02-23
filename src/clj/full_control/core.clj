@@ -147,3 +147,8 @@
   (dofun
    (partial column-control-defn "checkbox-" 'checkbox*)
    start end))
+
+(defmacro defdatepicker-col [start & [end]]
+  (dofun
+   (partial column-control-defn "datepicker-" 'datepicker*)
+   start end))

@@ -35,6 +35,7 @@
                           dropdown--for
                           checkbox-
                           checkbox--for
+                          datepicker-
                           help-])
 
 (def ^:private form-tags '[lbl-for
@@ -233,6 +234,10 @@
    'checkbox--for      (partial process-field-checkbox {:symbol-fn symbol-for->qly-symbol
                                                         :attrs-parser parse-column-field-attrs
                                                         :expander identity})
+
+   'datepicker-        (partial process-control {:symbol-fn symbol->qly-symbol
+                                                 :attrs-parser parse-column-attrs
+                                                 :expander identity})
 
    'help-              (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs

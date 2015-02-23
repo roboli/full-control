@@ -6,6 +6,7 @@
                                               deftxtarea-col
                                               defdropdown-col
                                               defcheckbox-col
+                                              defdatepicker-col
                                               defhelp-col]])
   (:require [clojure.string :as str]
             [goog.string :as gstr]
@@ -558,6 +559,8 @@
 (defdropdown-col 1 12)
 
 (defcheckbox-col 1 12)
+
+(defdatepicker-col 1 12)
 
 (defn help* [attrs & body]
   {:pre [(map? attrs)]}

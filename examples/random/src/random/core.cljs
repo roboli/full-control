@@ -6,27 +6,6 @@
 
 (def app-state (atom {}))
 
-#_(defpage page [cursor owner opts]
-  (did-mount []
-             (b/make-jquery-datepicker "dtpk"))
-  
-  (render-state [st]
-                (navbar (brand "Random")
-                        (link "DatePicker"))
-                (fixed-layout
-                 (row
-                  (column-12
-                   (panel
-                    (header "DatePicker")
-                    (row
-                     (column-6
-                      (form {:class-name "form-horizontal"}
-                            (group
-                             (lbl-2 "Enter")
-                             (column-6
-                              (fc/datepicker* {:id "dtpk"
-                                               :value "2015-10-24"}))))))))))))
-
 (defpage page [cursor owner opts]
   (did-mount []
              (b/make-jquery-datepicker "dtpk"))
@@ -44,8 +23,7 @@
                       (form {:class-name "form-horizontal"}
                             (group
                              (lbl-2 "Enter")
-                             (column-6
-                              (datepicker {:id "dtpk"
-                                           :value "2015-10-25"}))))))))))))
+                             (datepicker-6 {:id "dtpk"
+                                            :value "2015-10-25"})))))))))))
 
 (fc/root page app-state {:target (. js/document (getElementById "app"))})

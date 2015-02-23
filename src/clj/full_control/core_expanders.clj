@@ -38,6 +38,10 @@
   (fn [tag]
     (replace-tag-with-regexp #"checkbox-(?:\d|1[0-2])$" new-tag tag)))
 
+(defn- replace-datepicker-col-tag-with [new-tag]
+  (fn [tag]
+    (replace-tag-with-regexp #"datepicker-(?:\d|1[0-2])$" new-tag tag)))
+
 (defn- replace-help-col-tag-with [new-tag]
   (fn [tag]
     (replace-tag-with-regexp #"help-(?:\d|1[0-2])$" new-tag tag)))
@@ -61,6 +65,7 @@
                               (replace-txtarea-col-tag-with 'txtarea-)
                               (replace-dropdown-col-tag-with 'dropdown-)
                               (replace-checkbox-col-tag-with 'checkbox-)
+                              (replace-datepicker-col-tag-with 'datepicker-)
                               (replace-help-col-tag-with 'help-)
                               (partial replace-tag-with-regexp #"lbl-(?:\d|1[0-2])-for$" 'lbl--for)
                               (partial replace-tag-with-regexp #"txt-(?:\d|1[0-2])-for$" 'txt--for)
