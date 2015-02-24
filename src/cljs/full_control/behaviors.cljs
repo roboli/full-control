@@ -82,9 +82,10 @@
   (-> ($ (str "#" id " a[href='#" tab-id "']"))
       (.tab "show")))
 
-(defn make-jquery-datepicker [id]
+(defn make-jquery-datepicker [id & {:keys [date-format on-select]}]
   (let [input (.createElement js/document "input")]
     (.setAttribute input "type" "date")
     (if (= (.-type input) "text")
       (-> ($ (str "#" id))
-          (.datepicker #js {})))))
+          (.datepicker #js {:dateFormat date-format
+                            :onSelect on-select})))))
