@@ -54,6 +54,7 @@
                                  group-checkbox-inline
                                  group-radio
                                  group-radio-inline
+                                 group-datepicker
                                  group-help
                                  group-lbl-
                                  group-txt-
@@ -457,6 +458,9 @@
 
    'group-radio-inline  (partial process-field-radio {:symbol-fn (return `radio-inline*)
                                                       :attrs-parser parse-attrs})
+
+   'group-datepicker    (partial process-field-text {:symbol-fn (return `datepicker*)
+                                                     :attrs-parser parse-attrs})
 
    'group-help          (partial process-control {:symbol-fn (return `help*)
                                                   :attrs-parser parse-attrs

@@ -81,6 +81,7 @@
                                     (replace-tag 'checkbox-inline 'group-checkbox-inline)
                                     (replace-tag 'radio 'group-radio)
                                     (replace-tag 'radio-inline 'group-radio-inline)
+                                    (replace-tag 'datepicker 'group-datepicker)
                                     (replace-tag 'help 'group-help)
                                     (replace-col-tag-with 'group-column-)
                                     (replace-lbl-col-tag-with 'group-lbl-)
