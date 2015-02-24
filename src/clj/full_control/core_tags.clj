@@ -61,6 +61,7 @@
                                  group-txtarea-
                                  group-dropdown-
                                  group-checkbox-
+                                 group-datepicker-
                                  group-help-])
 
 (def ^:private general-tags (concat '[with-controls
@@ -461,6 +462,9 @@
 
    'group-datepicker    (partial process-field-text {:symbol-fn (return `datepicker*)
                                                      :attrs-parser parse-attrs})
+
+   'group-datepicker-   (partial process-field-text {:symbol-fn symbol->qly-symbol
+                                                     :attrs-parser parse-column-attrs})
 
    'group-help          (partial process-control {:symbol-fn (return `help*)
                                                   :attrs-parser parse-attrs

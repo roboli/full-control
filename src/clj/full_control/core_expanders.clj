@@ -89,4 +89,5 @@
                                     (replace-txtarea-col-tag-with 'group-txtarea-)
                                     (replace-dropdown-col-tag-with 'group-dropdown-)
                                     (replace-checkbox-col-tag-with 'group-checkbox-)
+                                    (replace-datepicker-col-tag-with 'group-datepicker-)
                                     (replace-help-col-tag-with 'group-help-)])
