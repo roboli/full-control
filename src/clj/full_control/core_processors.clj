@@ -101,7 +101,7 @@
             r (gensym "r")]
         `(let ~[r (:record *attrs*)]
            (~(symbol-fn tag) ~(assoc attrs
-                                :id (name field-k)
+                                :id (or (:id attrs) (name field-k))
                                 :placeholder (if (:inline *attrs*)
                                                (or (:placeholder *attrs*)
                                                    (str/capitalize (name field-k))))
@@ -115,7 +115,7 @@
             r (gensym "r")]
         `(let ~[r (:record *attrs*)]
            (apply ~(symbol-fn tag) ~(assoc attrs
-                                      :id (name field-k)
+                                      :id (or (:id attrs) (name field-k))
                                       :value (list `get-in r field-ks)
                                       :on-change (on-change-fn r field-ks '-value))
                   (for [~nm ~coll]
@@ -128,7 +128,7 @@
             r (gensym "r")]
         `(let ~[r (:record *attrs*)]
            (~(symbol-fn tag) ~(assoc attrs
-                                :id (name field-k)
+                                :id (or (:id attrs) (name field-k))
                                 :name (or (:name attrs) (name field-k))
                                 :checked `(= ~(:value attrs) (get-in ~r ~field-ks))
                                 :on-change (on-change-fn r field-ks '-value))
