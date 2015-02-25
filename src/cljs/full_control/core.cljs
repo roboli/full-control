@@ -21,7 +21,9 @@
                                                   table-class-names
                                                   form-group-class-names
                                                   navbar-class-names
-                                                  container-class-names]]))
+                                                  container-class-names]])
+  (:import goog.i18n.DateTimeFormat
+           goog.i18n.DateTimeParse))
 
 ;;;
 ;;; Page record and fns
@@ -202,6 +204,30 @@
                                                       :disabled]
                                        :depth [:label :input]))
                body)))
+
+;;;
+;;; Date and Time
+;;;
+
+(def value-date-format "yyyy-MM-dd")
+
+(def jquery-date-format "mm/dd/yy")
+
+(defn date->string [fmt obj]
+  (.format (DateTimeFormat. fmt) obj))
+
+(defn string->date [fmt s]
+  (let [date (js/Date.)]
+    (if (and (not (str/blank? s))
+             (= (count s) (count fmt))
+             (> (.strictParse (DateTimeParse. fmt) s date) 0))
+      date
+      s)))
+
+(defn native-datepicker? [id]
+  (let [input (.createElement js/document "input")]
+    (.setAttribute input "type" "date")
+    (not= (.-type input) "text")))
 
 (defn datepicker* [attrs & body]
   {:pre [(map? attrs)]}

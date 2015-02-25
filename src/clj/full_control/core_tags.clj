@@ -460,11 +460,11 @@
    'group-radio-inline  (partial process-field-radio {:symbol-fn (return `radio-inline*)
                                                       :attrs-parser parse-attrs})
 
-   'group-datepicker    (partial process-field-text {:symbol-fn (return `datepicker*)
-                                                     :attrs-parser parse-attrs})
+   'group-datepicker    (partial process-field-datepicker {:symbol-fn (return `datepicker*)
+                                                           :attrs-parser parse-attrs})
 
-   'group-datepicker-   (partial process-field-text {:symbol-fn symbol->qly-symbol
-                                                     :attrs-parser parse-column-attrs})
+   'group-datepicker-   (partial process-field-datepicker {:symbol-fn symbol->qly-symbol
+                                                           :attrs-parser parse-column-attrs})
 
    'group-help          (partial process-control {:symbol-fn (return `help*)
                                                   :attrs-parser parse-attrs

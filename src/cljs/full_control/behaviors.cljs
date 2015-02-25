@@ -1,7 +1,8 @@
 (ns full-control.behaviors
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [cljs.core.async :refer [chan put! pub sub]]
-            [jayq.core :refer [$]]))
+            [jayq.core :refer [$]]
+            [full-control.core :refer [native-datepicker?]]))
 
 (def ^:private topic-key :event)
 
@@ -82,10 +83,8 @@
   (-> ($ (str "#" id " a[href='#" tab-id "']"))
       (.tab "show")))
 
-(defn make-jquery-datepicker [id & {:keys [date-format on-select]}]
-  (let [input (.createElement js/document "input")]
-    (.setAttribute input "type" "date")
-    (if (= (.-type input) "text")
-      (-> ($ (str "#" id))
-          (.datepicker #js {:dateFormat date-format
-                            :onSelect on-select})))))
+(defn jquery-datepicker [id & {:keys [date-format on-select]}]
+  (if (not (native-datepicker? id))
+    (-> ($ (str "#" id))
+        (.datepicker #js {:dateFormat date-format
+                          :onSelect on-select}))))

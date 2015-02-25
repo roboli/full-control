@@ -133,3 +133,29 @@
                                 :checked `(= ~(:value attrs) (get-in ~r ~field-ks))
                                 :on-change (on-change-fn r field-ks '-value))
             ~(or (first body) (str/capitalize (name field-k)))))))))
+
+(defn- process-field-datepicker [{:keys [symbol-fn attrs-parser]} tag & body]
+  (let [[attrs body] (attrs-parser body)]
+    (binding [*attrs* (merge *attrs* attrs)]
+      (let [[field-k field-ks] (korks-vector (:korks *attrs*))
+            r (gensym "r")]
+        `(let ~[r (:record *attrs*)]
+           (~(symbol-fn tag) ~(assoc attrs
+                                :id (or (:id attrs) (name field-k))
+                                :placeholder (if (:inline *attrs*)
+                                               (or (:placeholder *attrs*)
+                                                   (str/capitalize (name field-k))))
+                                :value `(let [v# (get-in ~r ~field-ks)]
+                                          (if (instance? js/Date v#)
+                                            (date->string (if (native-datepicker? ~(or (:id attrs) (name field-k)))
+                                                            value-date-format
+                                                            (or ~(:format attrs) jquery-date-format))
+                                                          v#)
+                                            v#))
+                                :on-change `(fn [v#]
+                                              (let [f# (if (cursor? ~r)
+                                                         (partial transact! ~r)
+                                                         (partial update-state! ~'owner))]
+                                                (f# ~field-ks
+                                                    (fn [_#] (string->date (or ~(:format attrs) jquery-date-format)
+                                                                          (.. v# ~'-target ~'-value)))))))))))))
