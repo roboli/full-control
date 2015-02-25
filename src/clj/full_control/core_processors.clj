@@ -157,5 +157,8 @@
                                                          (partial transact! ~r)
                                                          (partial update-state! ~'owner))]
                                                 (f# ~field-ks
-                                                    (fn [_#] (string->date (or ~(:format attrs) jquery-date-format)
-                                                                          (.. v# ~'-target ~'-value)))))))))))))
+                                                    (fn [_#]
+                                                      (string->date (if (native-datepicker? ~(or (:id attrs) (name field-k)))
+                                                                      value-date-format
+                                                                      (or ~(:format attrs) jquery-date-format))
+                                                                    (.. v# ~'-target ~'-value)))))))))))))
