@@ -83,7 +83,8 @@
   (-> ($ (str "#" id " a[href='#" tab-id "']"))
       (.tab "show")))
 
-(defn jquery-datepicker [id & {:keys [date-format on-select]}]
+(defn jquery-datepicker [id & {:keys [date-format on-select]
+                               :or {date-format "mm/dd/yy"}}]
   (if (not (native-datepicker? id))
     (-> ($ (str "#" id))
         (.datepicker #js {:dateFormat date-format
