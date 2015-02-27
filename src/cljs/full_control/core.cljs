@@ -211,7 +211,7 @@
 
 (def value-date-format "yyyy-MM-dd")
 
-(def jquery-date-format "mm/dd/yy")
+(def jquery-date-format "MM/dd/yyyy")
 
 (defn date->string [fmt obj]
   (.format (DateTimeFormat. fmt) obj))
