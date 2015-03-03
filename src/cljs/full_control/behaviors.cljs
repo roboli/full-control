@@ -89,3 +89,13 @@
     (-> ($ (str "#" id))
         (.datepicker #js {:dateFormat date-format
                           :onSelect on-select}))))
+
+(defn jquery-autocomplete [id data select-fn body-fn]
+  (-> ($ (str "#" id))
+      (.autocomplete #js {:source (clj->js data)
+                          :select select-fn})
+      (.autocomplete "instance")
+      (#(set! (.-_renderItem %) (fn [ul item]
+                                  (-> ($ "<li>")
+                                      (.append (body-fn item))
+                                      (.appendTo ul)))))))

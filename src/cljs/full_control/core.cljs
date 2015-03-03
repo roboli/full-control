@@ -80,6 +80,9 @@
 (defn cursor? [x]
   (om/cursor? x))
 
+(defn render-to-str [c]
+  (dom/render-to-str c))
+
 ;;;
 ;;; General controls
 ;;;
@@ -234,6 +237,17 @@
   (apply input* (generate-attrs attrs
                                 :defaults {:type "date"
                                            :class-name (input-class-names attrs
+                                                                          "form-control")})
+         body))
+
+;;;
+;;; Autocomplete
+;;;
+
+(defn autocomplete* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply input* (generate-attrs attrs
+                                :defaults {:class-name (input-class-names attrs
                                                                           "form-control")})
          body))
 
