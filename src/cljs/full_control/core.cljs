@@ -240,17 +240,6 @@
                                                                           "form-control")})
          body))
 
-;;;
-;;; Autocomplete
-;;;
-
-(defn autocomplete* [attrs & body]
-  {:pre [(map? attrs)]}
-  (apply input* (generate-attrs attrs
-                                :defaults {:class-name (input-class-names attrs
-                                                                          "form-control")})
-         body))
-
 (defn page* [attrs & body]
   {:pre [(map? attrs)]}
   (apply div* attrs body))
