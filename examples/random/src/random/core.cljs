@@ -4,7 +4,14 @@
 
 (enable-console-print!)
 
-(def app-state (atom {:document {:date #inst "2015-10-30"}}))
+(def app-state (atom {:document {:date #inst "2015-10-30"
+                                 :city nil}
+                      :cities [{:id 1 :name "Guatemala City"}
+                               {:id 2 :name "San Jose"}
+                               {:id 3 :name "San Salvador"}
+                               {:id 4 :name "Panama City"}
+                               {:id 5 :name "Tegucigalpa"}
+                               {:id 6 :name "Managua"}]}))
 
 (defpanel date-panel [cursor owner]
   (did-mount []
@@ -29,6 +36,27 @@
                  (column-6
                   (p (str (get-in cursor [:document :date])))))))
 
+(defpanel autocomplete-panel [cursor owner]
+  (did-mount []
+             (b/jquery-autocomplete "city"
+                                    (mapv #(assoc % :value (:name %)) (:cities cursor))
+                                    (fn [_ ui]
+                                      (fc/update! cursor [:document :city] (.. ui -item -id)))
+                                    (fn [item]
+                                      (str
+                                       (fc/render-to-str (fc/a* {} (. item -name)))))))
+  
+  (render-state [st]
+                (header "Autocomplete")
+                (row
+                 (column-6
+                  (form {:class-name "form-horizontal"}
+                        (group
+                         (lbl-2 "Search")
+                         (txt-6 {:id "city"}))))
+                 (column-6
+                  (p (str "Id: " (get-in cursor [:document :city])))))))
+
 (defpage page [cursor owner opts]
   (render-state [st]
                 (navbar (brand "Random")
@@ -36,6 +64,9 @@
                 (fixed-layout
                  (row
                   (column-12
-                   (fc/build date-panel cursor))))))
+                   (fc/build date-panel cursor)))
+                 (row
+                  (column-12
+                   (fc/build autocomplete-panel cursor))))))
 
 (fc/root page app-state {:target (. js/document (getElementById "app"))})
