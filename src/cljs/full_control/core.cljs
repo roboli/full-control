@@ -627,3 +627,82 @@
   (apply frm* (generate-attrs attrs
                               :defaults {:class-name "form-inline"})
          body))
+
+;;;
+;;; Pager
+;;;
+
+(defn pager* [{:keys [source pager-size] :as attrs} & _]
+  {:pre [(map? attrs)]}
+  (let [{:keys [page total-pages page-size]} source
+        bof (= page 1)
+        eof (= page total-pages)
+        first-page (if (<= page pager-size)
+                     1 (if (= (mod page pager-size) 0)
+                         (- page (- pager-size 1))
+                         (+ (* (Math/floor (/ page pager-size)) pager-size) 1)))
+        last-page (let [last-page (* (Math/ceil (/ page pager-size)) pager-size)]
+                    (if (< last-page total-pages) last-page total-pages))
+        f (if (cursor? source)
+            (partial update! source)
+            (partial set-state! source))]
+    (apply ul* {:class-name "pagination pagination-sm"}
+           (concat
+            (conj
+             (for [p (range first-page (+ last-page 1))]
+               (li* {:class-name (if (= page p) "active")}
+                    (a* {:href "#"
+                         :on-click (fn [_]
+                                     (if-not (= page p) (f :page p)))}
+                        p)))
+             (if (> page pager-size)
+               (li* nil
+                    (a* {:href "#"
+                         :on-click (fn [_] (f :page (dec first-page)))}
+                        "...")))
+             (li* {:class-name (if bof "disabled")}
+                  (a* {:href "#"
+                       :on-click (fn [_]
+                                   (if-not bof (f :page (dec page))))}
+                      "\u2039"))
+             (li* {:class-name (if bof "disabled")}
+                  (a* {:href "#"
+                       :on-click (fn [_]
+                                   (if-not bof (f :page 1)))}
+                      "\u00ab")))
+            (list
+             (if (< last-page total-pages)
+               (li* nil
+                    (a* {:href "#"
+                         :on-click (fn [_] (f :page (inc last-page)))}
+                        "...")))
+             (li* {:class-name (if eof "disabled")}
+                  (a* {:href "#"
+                       :on-click (fn [_]
+                                   (if-not eof (f :page (inc page))))}
+                      "\u203a"))
+             (li* {:class-name (if eof "disabled")}
+                  (a* {:href "#"
+                       :on-click (fn [_]
+                                   (.log js/console "Yess!")
+                                   (if-not eof (f :page total-pages)))}
+                      "\u00bb"))
+             (li* {:class-name "dropdown"
+                   :style {:position "absolute"}}
+                  (a* {:href "#"
+                       :data-toggle "dropdown"
+                       :on-click (fn [e]
+                                   (.preventDefault e))}
+                      (str page-size " " (or (:per-page-label attrs) "per page") " ")
+                      (span* {:class-name "caret"}))
+                  (apply ul* {:class-name "dropdown-menu"
+                              :role "menu"}
+                         (for [size (:page-sizes attrs)]
+                           (li* {:role "presentation"
+                                 :class-name (if (= size page-size) "active")}
+                                (a* {:href "#"
+                                     :role "menuitem"
+                                     :on-click (fn [_]
+                                                 (f :page page)
+                                                 (f :page-size size))}
+                                    (str size " " (or (:per-page-label attrs) "per page"))))))))))))

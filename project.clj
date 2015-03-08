@@ -61,6 +61,13 @@
                          :compiler {:output-dir "examples/random/out"
                                     :output-to "examples/random/out/app.js"
                                     :source-map "examples/random/out/app.js.map"
+                                    :optimizations :none}}
+
+                        {:id "pagers"
+                         :source-paths ["src/cljs" "examples/pagers/src"]
+                         :compiler {:output-dir "examples/pagers/out"
+                                    :output-to "examples/pagers/out/app.js"
+                                    :source-map "examples/pagers/out/app.js.map"
                                     :optimizations :none}}]}
 
   :clean-targets ["examples/one-page/out"
@@ -69,4 +76,5 @@
                   "examples/modals/out"
                   "examples/forms/out"
                   "examples/tabs/out"
-                  "examples/random/out"])
+                  "examples/random/out"
+                  "examples/pagers/out"])
