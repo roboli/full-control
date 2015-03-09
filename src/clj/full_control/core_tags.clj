@@ -85,7 +85,8 @@
                                       frm-inline
                                       panel
                                       navpanel
-                                      nav-tabs] om-tags))
+                                      nav-tabs
+                                      pager] om-tags))
 
 (def ^:private om-tags-fns
   (reduce #(assoc %1
@@ -165,6 +166,10 @@
                                                  :expander identity})
 
    'help               (partial process-control {:symbol-fn (return `help*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander identity})
+
+   'pager              (partial process-control {:symbol-fn (return `pager*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 

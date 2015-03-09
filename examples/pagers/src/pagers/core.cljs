@@ -41,18 +41,18 @@
                                                          (:cities cursor))))]
                                      (td (:id data))
                                      (td (:name data)))))
-                           (fc/pager* {:source (:pagination cursor)
-                                       :pager-size 2
-                                       :page-sizes [5 10 15]
-                                       :on-page-changed #(fc/update! cursor [:pagination :page] %)
-                                       :on-page-size-changed (fn [v]
-                                                               (let [pagination (:pagination @cursor)
-                                                                     total-pages (Math/ceil (/ (:total-records pagination) v))
-                                                                     page (:page pagination)]
-                                                                 (fc/update! cursor [:pagination :page-size] v)
-                                                                 (fc/update! cursor [:pagination :total-pages] total-pages)
-                                                                 (fc/update! cursor
-                                                                             [:pagination :page]
-                                                                             (if (> page total-pages) total-pages page))))}))))))))
+                           (pager {:source (:pagination cursor)
+                                   :pager-size 2
+                                   :page-sizes [5 10 15]
+                                   :on-page-changed #(fc/update! cursor [:pagination :page] %)
+                                   :on-page-size-changed (fn [v]
+                                                           (let [pagination (:pagination @cursor)
+                                                                 total-pages (Math/ceil (/ (:total-records pagination) v))
+                                                                 page (:page pagination)]
+                                                             (fc/update! cursor [:pagination :page-size] v)
+                                                             (fc/update! cursor [:pagination :total-pages] total-pages)
+                                                             (fc/update! cursor
+                                                                         [:pagination :page]
+                                                                         (if (> page total-pages) total-pages page))))}))))))))
 
 (fc/root page app-state {:target (. js/document (getElementById "app"))})
