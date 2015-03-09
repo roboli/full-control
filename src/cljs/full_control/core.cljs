@@ -681,7 +681,6 @@
              (li* {:class-name (if eof "disabled")}
                   (a* {:href "#"
                        :on-click (fn [_]
-                                   (.log js/console "Yess!")
                                    (if-not eof (on-page-changed total-pages)))}
                       "\u00bb"))
              (li* {:class-name "dropdown"
