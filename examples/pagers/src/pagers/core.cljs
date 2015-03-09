@@ -17,8 +17,8 @@
                                {:id 12 :name "Lima"}
                                {:id 13 :name "Sucre"}]
                       :pagination {:page 1
-                                   :page-size 5
-                                   :total-pages 3
+                                   :page-size 10
+                                   :total-pages 2
                                    :total-records 13}}))
 
 (defpage page [cursor owner opts]
@@ -41,8 +41,18 @@
                                                          (:cities cursor))))]
                                      (td (:id data))
                                      (td (:name data)))))
-                           #_(fc/pager* {:source (:pagination cursor)
+                           (fc/pager* {:source (:pagination cursor)
                                        :pager-size 2
-                                       :page-sizes [5 10 15]}))))))))
+                                       :page-sizes [5 10 15]
+                                       :on-page-changed #(fc/update! cursor [:pagination :page] %)
+                                       :on-page-size-changed (fn [v]
+                                                               (let [pagination (:pagination @cursor)
+                                                                     total-pages (Math/ceil (/ (:total-records pagination) v))
+                                                                     page (:page pagination)]
+                                                                 (fc/update! cursor [:pagination :page-size] v)
+                                                                 (fc/update! cursor [:pagination :total-pages] total-pages)
+                                                                 (fc/update! cursor
+                                                                             [:pagination :page]
+                                                                             (if (> page total-pages) total-pages page))))}))))))))
 
 (fc/root page app-state {:target (. js/document (getElementById "app"))})
