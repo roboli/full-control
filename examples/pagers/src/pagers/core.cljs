@@ -41,6 +41,8 @@
                                                          (:cities cursor))))]
                                      (td (:id data))
                                      (td (:name data)))))
+                           (space)
+                           (space)
                            (pager {:page (get-in cursor [:pagination :page])
                                    :page-size (get-in cursor [:pagination :page-size])
                                    :total-pages (get-in cursor [:pagination :total-pages])
