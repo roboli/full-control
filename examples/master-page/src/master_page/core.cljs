@@ -50,5 +50,4 @@
                    (fc/build navpanel cursor {:opts {:menu {:one "One"
                                                             :two "Two"}}}))))))
 
-(fc/root page app-state {:target (. js/document (getElementById "app"))
-                         :state {:texto "Hey you, hey me..."}})
+(fc/root page app-state {:target (. js/document (getElementById "app"))})
