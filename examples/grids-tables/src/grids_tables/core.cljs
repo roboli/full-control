@@ -3,18 +3,18 @@
 
 (enable-console-print!)
 
-(def app-state (atom {:data [{:description "iPod"
-                              :price 150
-                              :uom "unit"
-                              :image-url "ipod.jpeg"}
-                             {:description "iMac"
-                              :price 999
-                              :uom "unit"
-                              :image-url "imac.jpeg"}
-                             {:description "iPhone"
-                              :price 550
-                              :uom "unit"
-                              :image-url "iphone.jpeg"}]}))
+(def app-state (atom {:items [{:description "iPod"
+                               :price 150
+                               :uom "unit"
+                               :image-url "ipod.jpeg"}
+                              {:description "iMac"
+                               :price 999
+                               :uom "unit"
+                               :image-url "imac.jpeg"}
+                              {:description "iPhone"
+                               :price 550
+                               :uom "unit"
+                               :image-url "iphone.jpeg"}]}))
 
 (defpage page [cursor owner opts]
   (render-state [st]
@@ -26,7 +26,7 @@
                     (p "Some data here...")
                     (stretch
                      (grid-view
-                      (with-source [data (:data cursor)]
+                      (with-source [data (:items cursor)]
                         (row
                          (column-12
                           (h3 (:description data))))
@@ -55,7 +55,7 @@
                        (th "U/M")
                        (th "Image"))
                       (tbody
-                       (with-source [data (:data cursor)]
+                       (with-source [data (:items cursor)]
                          (td (:description data))
                          (td (:price data))
                          (td (:uom data))
