@@ -5,8 +5,7 @@
 ;;;
 
 (defn- parse-links
-  "Group and transform all continuous 'link symbols in a navbar control into a
-  links-group control."
+  "Group and transform all continuous 'link symbols into a links-group control."
   [body]
   (->> body
        (partition-by #(= (first %) 'link))
@@ -23,7 +22,7 @@
 
 (defn- apply-spacers
   "Float controls to the right side of the spacer. It inserts or updates the
-  :float item with :right value in the attributes map of each control."
+  :float attribute with the :right value in the attrs map of each control."
   [body]
   (if-let [idx (first (keep-indexed #(if (= (first %2) 'spacer) %1) body))]
     (let [[left right] (split-at idx body)

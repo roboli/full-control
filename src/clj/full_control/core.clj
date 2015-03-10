@@ -53,7 +53,7 @@
       (throw (RuntimeException. "No render-state form provided")))))
 
 (defn- gen-fc-mcr
-  "Create macro where control can created with defcontrol macro."
+  "Creates a 'defcontrolname' macro to create control as a component."
   [tag]
   `(defmacro ~(symbol (str "def" (name tag))) [name# args# & body#]
      (component '~tag name# args# body#)))
@@ -62,9 +62,12 @@
   (cons `do
         (map gen-fc-mcr (keys tags-fns))))
 
+;; Generate macros for all controls
 (gen-fc-mcrs)
 
-(defn gen-om-fn [tag]
+(defn gen-om-fn
+  "Creates wrapper function 'controlname*' for a Om/dom tag"
+  [tag]
   (let [t (symbol (str (name tag) "*"))]
     `(defn ~t [attrs# & body#]
        {:pre [(map? attrs#)]}
@@ -91,9 +94,9 @@
     (f start)))
 
 (defn- column-defn
-  "Returns form which defines a function that calls the column* control function
-  with its :sizes and :cols attributes set to n. See cljs full-control.core/column*
-  for further explanation."
+  "Returns function 'column-n*' which calls the 'column*' function with its :sizes
+  and :cols attributes set to n. See cljs full-control.core/column* for further
+  explanation."
   [n]
   `(defn ~(symbol (str "column-" n "*")) [attrs# & body#]
      {:pre [(map? attrs#)]}
@@ -104,8 +107,8 @@
 
 (defmacro defcolumn
   "Defines a function or functions which returns a column control with its :cols
-  attribute set to n which is a number with a value between the start and end
-  parameters. See column-defn function."
+  attribute set to n which is a number between the start and end parameters. See
+  column-defn function."
   [start & [end]]
   (dofun column-defn start end))
 

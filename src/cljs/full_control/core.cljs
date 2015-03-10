@@ -31,7 +31,7 @@
 
 ;; Implements the om.core/IRenderState protocol. Expects m as its constructor
 ;; parameter. m must be a map with functions as values which returns the body
-;; to be used in the protocol's functions.
+;; to be used as the protocol's function.
 (defrecord Component [m]
   om/IInitState
   (init-state [_]
@@ -48,6 +48,10 @@
   om/IRenderState
   (render-state [_ state]
     ((:render-state-fn m) state)))
+
+;;;
+;;; Om wrappers
+;;;
 
 (defn root [f value options]
   (om/root f value options))
@@ -83,6 +87,9 @@
 (defn render-to-str [c]
   (dom/render-to-str c))
 
+;; All om.dom/tags
+(gen-om-fns)
+
 ;;;
 ;;; General controls
 ;;;
@@ -91,12 +98,7 @@
 
 (defn space* [& _] nbsp*)
 
-;; All om.dom/tags
-(gen-om-fns)
-
-(defn btn*
-  "Attributes available in the attrs map are :class-name, :on-click."
-  [attrs & body]
+(defn btn* [attrs & body]
   {:pre [(map? attrs)]}
   (apply button* (generate-attrs attrs
                                  :defaults {:type "button"
@@ -209,7 +211,7 @@
                body)))
 
 ;;;
-;;; Date and Time
+;;; Date
 ;;;
 
 (def value-date-format "yyyy-MM-dd")
@@ -267,9 +269,8 @@
          body))
 
 (defn column*
-  "Returns om.dom/div component with its :className set to
-  'size-n size-n ...' where size and n are values in the attrs map.
-  attrs must be in the form of
+  "Returns om.dom/div tag with its :className set to 'col-size-n col-size-n ...'
+  where size and n are values in the attrs map. attrs must be in the form of
 
   e.g. {:sizes [{:size :sm :cols 6}
                 {:size :md :cols 3}
@@ -286,9 +287,9 @@
 ;;
 ;; e.g. (defn column-7* [attrs & body] ...)
 ;;
-;; Each column maps with bootstrap's grid system columns class names. Attribute
+;; Each column maps bootstrap's grid columns class names. Attributes
 ;; available in the attrs map is :size which it can be a value from the
-;; sizes map. See defcolumn macro in full-control.core clj namespace.
+;; utils/sizes map. See defcolumn macro in full-control.core clj namespace.
 (defcolumn 1 12)
 
 ;;;
@@ -299,9 +300,7 @@
   {:pre [(map? attrs)]}
   {:brand (assoc attrs :body body)})
 
-(defn navbar*
-  "Retuns bootstrap's navbar. Attributes available in the attrs map are :class-name."
-  [attrs & body]
+(defn navbar* [attrs & body]
   {:pre [(map? attrs)]}
   (nav* (generate-attrs attrs
                         :defaults {:role "navigation"
@@ -345,14 +344,12 @@
                      (remove :brand body)))))
 
 (defn links-group
-  "Returns a series of om.dom/li components inside a om.dom/ul. Basically it
-  constructs a menu list from the attrs map parameter. attrs must be in the form of
+  "Returns a series of om.dom/li inside a om.dom/ul. Basically it constructs a
+  menu list from the attrs map parameter. attrs must be in the form of
 
   e.g. {:links [{:href '#/link1' :body ['link1']}
                 {:href '#/link2' :body ['link2' ...] ...}
-                ...]}
-
-  Attributes available for each links map are :href, :on-click, :body."
+                ...]}"
   [attrs]
   {:pre [(map? attrs)]}
   (apply ul* {:class-name (float-class-names attrs "nav navbar-nav")}
@@ -361,8 +358,7 @@
                 (apply a* (dissoc lnk :body) (:body lnk))))))
 
 (defn navbar-btn*
-  "Button to render inside the navbar control. Attributes available in the attrs
-  map same as the btn* control."
+  "Button to render inside the navbar control."
   [attrs & body]
   {:pre [(map? attrs)]}
   (apply btn* (generate-attrs attrs
@@ -378,15 +374,13 @@
   (apply div* {:role "tabpanel"} body))
 
 (defn tab-links-group
-  "Returns a series of om.dom/li components inside a om.dom/ul. Basically it
-  constructs a menu list from the attrs map parameter. attrs must be in the form of
+  "Returns a series of om.dom/li inside a om.dom/ul. Basically it constructs a
+  menu list from the attrs map parameter. attrs must be in the form of
 
   e.g. {:links [{:href '#/link1' :body ['link1']}
                 {:href '#/link2' :body ['link2' ...] ...}
                 ...]
-        :id 'tab-1'}
-
-  Attributes available for each links map are :href, :on-click, :body."
+        :id 'tab-1'}"
   [attrs]
   {:pre [(map? attrs)]}
   (apply ul* {:class-name (float-class-names attrs "nav nav-tabs")
