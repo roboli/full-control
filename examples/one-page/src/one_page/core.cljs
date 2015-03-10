@@ -3,10 +3,9 @@
 
 (enable-console-print!)
 
-(def app-state (atom {:menu-h "MyMenuH"
-                      :panel-title "MyPanel"
-                      :panel-text "Hello panel!"
-                      :menu-v "MyMenuV"}))
+(def app-state (atom {:menu-h "Navbar"
+                      :panel-title "Panel"
+                      :menu-v "Navpanel"}))
 
 (defpage page [cursor owner opts]
   (render-state [st]
@@ -22,15 +21,13 @@
                  (row
                   (column-9
                    (panel (header (title3 (:panel-title cursor)))
-                          (p (:panel-text cursor))
-                          (stretch
-                           (h4 "This is it!!"))))
+                          (p (:text st))))
                   (with-controls
                     (fc/column-3* {:size :md}
-                                  (navpanel (header (title1 "Mnu"))
+                                  (navpanel (header (title1 (:menu-v cursor)))
                                             (link {:href "#"
                                                    :on-click (fn [_] (js/alert "Uno!"))} "Uno")
                                             (link "Dos"))))))))
 
 (fc/root page app-state {:target (. js/document (getElementById "app"))
-                         :state {:texto "Hey you, hey me..."}})
+                         :state {:text "Hello panel!"}})
