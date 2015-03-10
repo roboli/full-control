@@ -19,7 +19,7 @@
                 (header "Methods")
                 (row
                  (column-12
-                  (p "Activating tabs using methods.")))
+                  (p "Activate tabs using methods.")))
                 (row
                  (column-6
                   (form {:class-name "form-horizontal"}
@@ -134,7 +134,7 @@
                 (header "Events")
                 (row
                  (column-12
-                  (p "Activating tabs using state. And keeping track through events when clicking on tabs.")))
+                  (p "Activate tabs using state. And keep track through events when clicking on tabs.")))
                 (frm-horizontal
                  (with-record st
                    (row
