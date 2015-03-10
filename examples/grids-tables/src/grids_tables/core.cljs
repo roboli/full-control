@@ -29,17 +29,17 @@
                       (source [data (:data cursor)]
                               (row
                                (column-12
-                                (h4 (:description data))))
+                                (h3 (:description data))))
                               (row
                                (column-8
                                 (row
                                  (column-4
-                                  (p "Price"))
+                                  (label "Price:"))
                                  (column-8
                                   (p (:price data))))
                                 (row
                                  (column-4
-                                  (p "UOM"))
+                                  (label "U/M:"))
                                  (column-8
                                   (p (:uom data)))))
                                (column-4
@@ -52,7 +52,7 @@
                       (thead
                        (th "Description")
                        (th "Price")
-                       (th "UOM")
+                       (th "U/M")
                        (th "Image"))
                       (tbody
                        (source [data (:data cursor)]
