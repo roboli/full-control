@@ -632,10 +632,10 @@
 ;;; Pager
 ;;;
 
-(defn pager* [{:keys [source pager-size on-page-changed] :as attrs} & _]
+(defn pager* [{:keys [page page-size total-pages
+                      pager-size on-page-changed] :as attrs} & _]
   {:pre [(map? attrs)]}
-  (let [{:keys [page total-pages page-size]} source
-        bof (= page 1)
+  (let [bof (= page 1)
         eof (= page total-pages)
         first-page (if (<= page pager-size)
                      1 (if (= (mod page pager-size) 0)

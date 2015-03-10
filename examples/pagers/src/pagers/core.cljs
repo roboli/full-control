@@ -41,7 +41,9 @@
                                                          (:cities cursor))))]
                                      (td (:id data))
                                      (td (:name data)))))
-                           (pager {:source (:pagination cursor)
+                           (pager {:page (get-in cursor [:pagination :page])
+                                   :page-size (get-in cursor [:pagination :page-size])
+                                   :total-pages (get-in cursor [:pagination :total-pages])
                                    :pager-size 2
                                    :page-sizes [5 10 15]
                                    :on-page-changed #(fc/update! cursor [:pagination :page] %)
