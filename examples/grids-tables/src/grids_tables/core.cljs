@@ -26,24 +26,24 @@
                     (p "Some data here...")
                     (stretch
                      (grid-view
-                      (source [data (:data cursor)]
-                              (row
-                               (column-12
-                                (h3 (:description data))))
-                              (row
-                               (column-8
-                                (row
-                                 (column-4
-                                  (label "Price:"))
-                                 (column-8
-                                  (p (:price data))))
-                                (row
-                                 (column-4
-                                  (label "U/M:"))
-                                 (column-8
-                                  (p (:uom data)))))
-                               (column-4
-                                (p (:image-url data))))))))
+                      (with-source [data (:data cursor)]
+                        (row
+                         (column-12
+                          (h3 (:description data))))
+                        (row
+                         (column-8
+                          (row
+                           (column-4
+                            (label "Price:"))
+                           (column-8
+                            (p (:price data))))
+                          (row
+                           (column-4
+                            (label "U/M:"))
+                           (column-8
+                            (p (:uom data)))))
+                         (column-4
+                          (p (:image-url data))))))))
                    (panel
                     (header (title1 "Grid"))
                     (p "More data here...")
@@ -55,10 +55,10 @@
                        (th "U/M")
                        (th "Image"))
                       (tbody
-                       (source [data (:data cursor)]
-                               (td (:description data))
-                               (td (:price data))
-                               (td (:uom data))
-                               (td (:image-url data))))))))))))
+                       (with-source [data (:data cursor)]
+                         (td (:description data))
+                         (td (:price data))
+                         (td (:uom data))
+                         (td (:image-url data))))))))))))
 
 (fc/root page app-state {:target (. js/document (getElementById "app"))})
