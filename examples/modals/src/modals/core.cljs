@@ -22,6 +22,29 @@
                                             (fc/update! cursor :msg "Not okay..."))}
                                "Cancel")))))
 
+(defpanel modal-methods [cursor owner]
+  (render-state [st]
+                ;; inline modal
+                (modal {:id "my-modal"}
+                       (header (title3 "My Modal"))
+                       (p "Hello Modal!")
+                       (footer (btn {:on-click #(b/modal-display :hide "my-modal")}
+                                    "Close")))
+                ;; component modal
+                (fc/build msg-modal cursor {:opts {:ch (get-in st [:modal-msg-chs :ch])}})
+                (header (title3 "Methods"))
+                (row
+                 (column-6
+                  (btn {:on-click #(b/modal-display :show "my-modal")}
+                       "Open-1"))
+                 (column-6
+                  (row
+                   (column-6
+                    (btn {:on-click #(b/modal-display :show "msg-modal")}
+                         "Open-2"))
+                   (column-6
+                    (p (str "Response: " (:msg cursor)))))))))
+
 (defpanel modal-events [cursor owner]
   (init-state []
               {:modal-chs (b/init-chans)
@@ -74,29 +97,6 @@
                        "Open"))
                  (column-10
                   (p (:event st))))))
-
-(defpanel modal-methods [cursor owner]
-  (render-state [st]
-                ;; inline modal
-                (modal {:id "my-modal"}
-                       (header (title3 "My Modal"))
-                       (p "Hello Modal!")
-                       (footer (btn {:on-click #(b/modal-display :hide "my-modal")}
-                                    "Close")))
-                ;; component modal
-                (fc/build msg-modal cursor {:opts {:ch (get-in st [:modal-msg-chs :ch])}})
-                (header (title3 "Methods"))
-                (row
-                 (column-6
-                  (btn {:on-click #(b/modal-display :show "my-modal")}
-                       "Open-1"))
-                 (column-6
-                  (row
-                   (column-6
-                    (btn {:on-click #(b/modal-display :show "msg-modal")}
-                         "Open-2"))
-                   (column-6
-                    (p (str "Response: " (:msg cursor)))))))))
 
 (defpage page [cursor owner]
   (init-state []
