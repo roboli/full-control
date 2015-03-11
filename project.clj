@@ -1,6 +1,6 @@
 (defproject full-control "0.1.0-SNAPSHOT"
-  :description "Description temporarily unavailable."
-  :url "unavailable"
+  :description "A clojurescript Web UI DSL based on Om and Bootstrap."
+  :url "http://github.com/roboli/full-control"
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2371"]
