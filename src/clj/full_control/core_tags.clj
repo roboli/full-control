@@ -111,7 +111,9 @@
    'div                (partial process-control {:symbol-fn (return `div*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
-                                                            :available general-tags)})
+                                                            :available (conj row-tags
+                                                                             general-tags)
+                                                            :alter-tag-fns row-alter-fns)})
 
    'form               (partial process-control {:symbol-fn (return `form*)
                                                  :attrs-parser parse-attrs
