@@ -643,46 +643,54 @@
              (for [p (range first-page (+ last-page 1))]
                (li* {:class-name (if (= page p) "active")}
                     (a* {:href "#"
-                         :on-click (fn [_]
+                         :on-click (fn [e]
+                                     (.preventDefault e)
                                      (if-not (= page p) (on-page-changed p)))}
                         p)))
              (if (> page pager-size)
                (li* {}
                     (a* {:href "#"
-                         :on-click (fn [_] (on-page-changed (dec first-page)))}
+                         :on-click (fn [e]
+                                     (.preventDefault e)
+                                     (on-page-changed (dec first-page)))}
                         "...")))
              (li* {:class-name (if bof "disabled")}
                   (a* {:href "#"
-                       :on-click (fn [_]
+                       :on-click (fn [e]
+                                   (.preventDefault e)
                                    (if-not bof (on-page-changed (dec page))))}
                       "\u2039"))
              (li* {:class-name (if bof "disabled")}
                   (a* {:href "#"
-                       :on-click (fn [_]
+                       :on-click (fn [e]
+                                   (.preventDefault e)
                                    (if-not bof (on-page-changed 1)))}
                       "\u00ab")))
             (list
              (if (< last-page total-pages)
                (li* {}
                     (a* {:href "#"
-                         :on-click (fn [_] (on-page-changed (inc last-page)))}
+                         :on-click (fn [e]
+                                     (.preventDefault e)
+                                     (on-page-changed (inc last-page)))}
                         "...")))
              (li* {:class-name (if eof "disabled")}
                   (a* {:href "#"
-                       :on-click (fn [_]
+                       :on-click (fn [e]
+                                   (.preventDefault e)
                                    (if-not eof (on-page-changed (inc page))))}
                       "\u203a"))
              (li* {:class-name (if eof "disabled")}
                   (a* {:href "#"
-                       :on-click (fn [_]
+                       :on-click (fn [e]
+                                   (.preventDefault e)
                                    (if-not eof (on-page-changed total-pages)))}
                       "\u00bb"))
              (li* {:class-name "dropdown"
                    :style {:position "absolute"}}
                   (a* {:href "#"
                        :data-toggle "dropdown"
-                       :on-click (fn [e]
-                                   (.preventDefault e))}
+                       :on-click (fn [e] (.preventDefault e))}
                       (str page-size " " (or (:per-page-label attrs) "per page") " ")
                       (span* {:class-name "caret"}))
                   (apply ul* {:class-name "dropdown-menu"
@@ -692,6 +700,7 @@
                                  :class-name (if (= size page-size) "active")}
                                 (a* {:href "#"
                                      :role "menuitem"
-                                     :on-click (fn [_]
+                                     :on-click (fn [e]
+                                                 (.preventDefault e)
                                                  ((:on-page-size-changed attrs) size))}
                                     (str size " " (or (:per-page-label attrs) "per page"))))))))))))
