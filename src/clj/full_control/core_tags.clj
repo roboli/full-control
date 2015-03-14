@@ -126,6 +126,11 @@
                                                  :expander (expand-tags-with
                                                             :available general-tags)})
 
+   'p                  (partial process-control {:symbol-fn (return `p*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-tags-with
+                                                            :available general-tags)})
+
    'btn                (partial process-control {:symbol-fn (return `btn*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
