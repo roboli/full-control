@@ -45,7 +45,7 @@ Remember the old days of desktop development? Sure, they were hell of ugly inter
 ...
 ```
 
-If you have don't understand what this code is doing, then I'll return to my cave and work harder. Otherwise I say mission accomplished!
+If don't understand what this code is doing, then I'll return to my cave and work harder. Otherwise I say, mission accomplished!
 
 ### Contributing
 
