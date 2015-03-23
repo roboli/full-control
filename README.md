@@ -52,3 +52,7 @@ If you don't understand what this code is doing, then I'll return to my cave and
 Now, the main goal of this repository was to understand and overcome the problem at hand. It was developed to see how a DSL would look like in order to be useful. And it works, but it has limitations and it is not for production. So, if it happens that you share this same ideas and you believe that it would be a great contribution to our community, please contact me. Lets build it together!
 
 TODO: Explain examples.
+
+### License
+
+Distributed under the Eclipse Public License, the same as Clojure.
