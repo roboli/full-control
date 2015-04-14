@@ -210,6 +210,12 @@
                                        :depth [:label :input]))
                body)))
 
+(defn jumbotron* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply div* (generate-attrs attrs
+                              :defaults {:class-name "jumbotron"})
+         body))
+
 ;;;
 ;;; Date
 ;;;

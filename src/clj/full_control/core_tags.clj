@@ -86,7 +86,8 @@
                                       panel
                                       navpanel
                                       nav-tabs
-                                      pager] om-tags))
+                                      pager
+                                      jumbotron] om-tags))
 
 (def ^:private om-tags-fns
   (reduce #(assoc %1
@@ -179,6 +180,11 @@
    'pager              (partial process-control {:symbol-fn (return `pager*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
+
+   'jumbotron          (partial process-control {:symbol-fn (return `jumbotron*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-tags-with
+                                                            :available general-tags)})
 
    ;; Layout
    'fixed-layout       (partial process-control {:symbol-fn (return `fixed-layout*)
