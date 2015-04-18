@@ -3,7 +3,7 @@ full-control
 
 A clojurescript Web UI DSL based on Om and Bootstrap.
 
-Take full control of your front end (user interfaces) development writing your code cleaner and faster.
+Take full control of your front end development writing your code cleaner and faster.
 
 ### Installation
 
