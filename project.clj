@@ -14,6 +14,13 @@
   :source-paths ["src/clj" "src/cljs"]
 
   :cljsbuild  {:builds [; examples
+                        {:id "my-example"
+                         :source-paths ["src/cljs" "examples/my-example/src"]
+                         :compiler {:output-dir "examples/my-example/out"
+                                    :output-to "examples/my-example/out/app.js"
+                                    :source-map "examples/my-example/out/app.js.map"
+                                    :optimizations :none}}
+                        
                         {:id "one-page"
                          :source-paths ["src/cljs" "examples/one-page/src"]
                          :compiler {:output-dir "examples/one-page/out"
