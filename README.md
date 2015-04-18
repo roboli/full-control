@@ -33,7 +33,7 @@ Let's build a home page with a navigation bar and a jumbotron:
                   (column-12
                    (jumbotron
                     (h1 "Welcome!")
-                    (p "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut nisi id turpis interdum cursus.")))))))
+                    (p "Lorem ipsum dolor sit amet, consectetur adipiscing elit.")))))))
 
 (fc/root
  home
