@@ -3,7 +3,7 @@ full-control
 
 A clojurescript Web UI DSL based on Om and Bootstrap.
 
-Gain full control of your front end (user interfaces) development writing your code cleaner and faster.
+Take full control of your front end (user interfaces) development writing your code cleaner and faster.
 
 ### Installation
 
@@ -18,7 +18,7 @@ Currently only a snapshot is available, include it in your `project.clj` depende
 
 Let's build a home page with a navigation bar and a jumbotron:
 
-```
+```clojure
 (ns my-example.core
   (:require [full-control.core :as fc :refer-macros [defpage]]))
 
@@ -47,7 +47,7 @@ You can see it working with this little [demo](http://www.roboli.space/full-cont
 
 ### Contributing
 
-Contributions are welcome! Suggestions/questions use the [issues page](https://github.com/roboli/full-control/issues) or contact me at robertooliveros@mac..
+Contributions are welcome! Suggestions/questions use the [issues page](https://github.com/roboli/full-control/issues) or contact me at robertooliveros@mac.com.
 
 ### License
 
