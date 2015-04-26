@@ -18,7 +18,9 @@
                          :source-paths ["src/cljs" "examples/my-example/src"]
                          :compiler {:output-dir "examples/my-example/out"
                                     :output-to "examples/my-example/out/app.js"
-                                    :source-map "examples/my-example/out/app.js.map"
+                                    :source-map true
+                                    :asset-path "out"
+                                    :main my_example.core
                                     :optimizations :none}}
                         
                         {:id "one-page"
@@ -93,7 +95,8 @@
                                     :main pagers.core
                                     :optimizations :none}}]}
 
-  :clean-targets ["examples/one-page/out"
+  :clean-targets ["examples/my-example/out"
+                  "examples/one-page/out"
                   "examples/master-page/out"
                   "examples/grids-tables/out"
                   "examples/modals/out"
