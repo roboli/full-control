@@ -13,6 +13,7 @@ Currently only a snapshot is available, include it in your `project.clj` depende
 [full-control "0.1.0-SNAPSHOT"]
 
 ```
+Please read Om's [build configuration](https://github.com/omcljs/om#build-configuration) for further instructions.
 
 ### Example
 
