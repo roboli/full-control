@@ -1,7 +1,7 @@
 full-control
 ============
 
-A clojurescript Web UI DSL based on Om and Bootstrap.
+A clojurescript Web UI DSL based on [Om](https://github.com/omcljs/om) and [Bootstrap](https://github.com/twbs/bootstrap).
 
 Take full control of your front end development writing your code cleaner and faster.
 
