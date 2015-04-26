@@ -17,7 +17,7 @@ Please read Om's [build configuration](https://github.com/omcljs/om#build-config
 
 ### Requirements
 
-Depends heavily on Bootstrap (obsviously) and JQuery, and it has been tested with versions 3.3.0 and 1.11.0 respectively. Don't forget to include the links in the head section of your html document, like this:
+Depends heavily on Bootstrap (obviously) and JQuery, and it has been tested with versions 3.3.0 and 1.11.0 respectively. Don't forget to include the links in the head section of your html document, like this:
 
 ```html
 <html>
