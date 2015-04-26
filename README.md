@@ -17,36 +17,9 @@ Please read Om's [build configuration](https://github.com/omcljs/om#build-config
 
 ### Requirements
 
-Depends heavily on Bootstrap (obviously) and JQuery, and it has been tested with versions 3.3.0 and 1.11.0 respectively. Don't forget to include the links in the head section of your html document, like this:
+* Bootstrap (obviously). Tested with version 3.3.0.
 
-```html
-<html>
-  <head>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap.min.css">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap-theme.min.css">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://cdn.jsdelivr.net/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-  </head>
-  ...
-```
-
-And for the Datepicker and Autocomplete controls you need the links for the jquery scripts and styles:
-
-```html
-...
-    <link rel="stylesheet" href="../path/to/jquery-ui.css">
-    <link rel="stylesheet" href="../path/to/jquery-ui.theme.css">
-    <script src="../path/to/jquery.js"></script>
-    <script src="../path/to/jquery-ui.js"></script>
-...
-```
-You can build this jquery-ui.* files [here](http://jqueryui.com/download/) and make sure they have the necessary dependecies in order for these two controls to work properly. 
+* JQuery UI for the Datepicker and Autocomplete controls. Tested with version 1.11.
 
 ### Example
 
