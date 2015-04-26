@@ -44,7 +44,7 @@ Let's build a home page with a navigation bar and a jumbotron:
 
 And we get this:
 
-![](https://github.com/roboli/full-control/blob/new-readme/examples/my-example/images/jumbotron.png)
+![](https://github.com/roboli/full-control/blob/master/examples/my-example/images/jumbotron.png)
 
 ### Demo
 
