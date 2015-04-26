@@ -40,6 +40,7 @@ Let's build a home page with a navigation bar and a jumbotron:
  app-state
  {:target (. js/document (getElementById "app"))})
 ```
+![](https://github.com/roboli/full-control/tree/new-readme/examples/my-example/images/jumbotron.png)
 
 ### Demo
 
