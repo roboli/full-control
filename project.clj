@@ -5,7 +5,8 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2760"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
-                 [org.omcljs/om "0.8.8"]
+                 [org.omcljs/om "0.8.8" :exclusions [cljsjs/react]]
+                 [cljsjs/react "0.12.2-8"]
                  [camel-snake-kebab "0.2.5"]
                  [jayq "2.5.2"]]
 
