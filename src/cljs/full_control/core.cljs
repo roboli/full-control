@@ -45,9 +45,33 @@
   (did-mount [_]
     ((:did-mount-fn m)))
 
+  om/IShouldUpdate
+  (should-update [_ next-props next-state]
+    ((:should-update-fn m) next-props next-state))
+
+  om/IWillReceiveProps
+  (will-receive-props [_ next-props]
+    ((:will-receive-props-fn m) next-props))
+
+  om/IWillUpdate
+  (will-update [_ next-props next-state]
+    ((:will-update-fn m) next-props next-state))
+
+  om/IDidUpdate
+  (did-update [_ prev-props prev-state]
+    ((:did-update-fn m) prev-props prev-state))
+
   om/IRenderState
   (render-state [_ state]
-    ((:render-state-fn m) state)))
+    ((:render-state-fn m) state))
+
+  om/IDisplayName
+  (display-name [_]
+    ((:display-name-fn m)))
+
+  om/IWillUnmount
+  (will-unmount [_]
+    ((:will-unmount-fn m))))
 
 ;;;
 ;;; Om wrappers

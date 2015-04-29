@@ -33,22 +33,55 @@
   (let [[_ ibody :as init-state] (parse-protocol-fns 'init-state body) 
         [_ wbody :as will-mount] (parse-protocol-fns 'will-mount body)
         [_ dbody :as did-mount] (parse-protocol-fns 'did-mount body)
-        [rparams rbody :as render-state] (parse-protocol-fns 'render-state body)]
+        [sparams sbody :as should-update] (parse-protocol-fns 'should-update body)
+        [wrparams wrbody :as will-receive-props] (parse-protocol-fns 'will-receive-props body)
+        [wuparams wubody :as will-update] (parse-protocol-fns 'will-update body)
+        [duparams dubody :as did-update] (parse-protocol-fns 'did-update body)
+        [rsparams rsbody :as render-state] (parse-protocol-fns 'render-state body)
+        [_ dnbody :as display-name] (parse-protocol-fns 'display-name body)
+        [_ wumbody :as will-unmount] (parse-protocol-fns 'will-unmount body)]
     (if render-state
       `(defn ~name ~args
          (->Component
           {:init-state-fn (apply (fn ~args
                                    (fn [] ~@(or ibody {})))
                                  ~args)
+           
            :will-mount-fn (apply (fn ~args
                                    (fn [] ~@(or wbody [])))
                                  ~args)
+           
            :did-mount-fn (apply (fn ~args
                                   (fn [] ~@(or dbody [])))
                                 ~args)
+           
+           :should-update-fn (apply (fn ~args
+                                      (fn ~(or sparams []) ~@(or sbody [true])))
+                                    ~args)
+           
+           :will-receive-props-fn (apply (fn ~args
+                                           (fn ~(or wrparams []) ~@(or wrbody [])))
+                                         ~args)
+           
+           :will-update-fn (apply (fn ~args
+                                    (fn ~(or wuparams []) ~@(or wubody [])))
+                                  ~args)
+           
+           :did-update-fn (apply (fn ~args
+                                   (fn ~(or duparams []) ~@(or dubody [])))
+                                 ~args)
+           
            :render-state-fn (apply (fn ~args
-                                     (fn ~rparams ~(binding [*tags-fns* tags-fns]
-                                                     (apply (tag *tags-fns*) tag rbody))))
+                                     (fn ~(or rsparams []) ~(binding [*tags-fns* tags-fns]
+                                                              (apply (tag *tags-fns*) tag rsbody))))
+                                   ~args)
+
+           :display-name-fn (apply (fn ~args
+                                     (fn [] ~@(or dnbody [])))
+                                   ~args)
+
+           :will-unmount-fn (apply (fn ~args
+                                     (fn [] ~@(or wumbody [])))
                                    ~args)}))
       (throw (RuntimeException. "No render-state form provided")))))
 
