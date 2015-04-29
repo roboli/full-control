@@ -104,4 +104,5 @@
                   "examples/forms/out"
                   "examples/tabs/out"
                   "examples/random/out"
-                  "examples/pagers/out"])
+                  "examples/pagers/out"
+                  "target"])
