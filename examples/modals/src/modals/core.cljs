@@ -34,12 +34,12 @@
                 (fc/build msg-modal cursor {:opts {:ch (get-in st [:modal-msg-chs :ch])}})
                 (header (title3 "Methods"))
                 (row
-                 (column-6
+                 (column-2
                   (btn {:on-click #(b/modal-display :show "my-modal")}
                        "Open-1"))
-                 (column-6
+                 (column-6 {:offset-cols 4}
                   (row
-                   (column-6
+                   (column-4
                     (btn {:on-click #(b/modal-display :show "msg-modal")}
                          "Open-2"))
                    (column-6

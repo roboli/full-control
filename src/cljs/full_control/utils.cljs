@@ -81,6 +81,12 @@
   (if (:validation-state attrs)
     (get validation-states (:validation-state attrs))))
 
+(defn offset-css [attrs]
+  (if (:offset-cols attrs) (str "col-"
+                                (get sizes (:size (first (:sizes attrs))))
+                                "-offset-"
+                                (:offset-cols attrs))))
+
 (defn float-css [attrs]
   (if (:float attrs)
     (get float-class (:float attrs))))
@@ -123,9 +129,10 @@
        (apply conj-class-names (size-css "input-") attrs)
        (apply join-class-names)))
 
-(defn validation-state-class-names [attrs & class-names]
+(defn column-grid-class-names [attrs & class-names]
   (->> class-names
        (apply conj-class-names val-state-css attrs)
+       (apply conj-class-names offset-css attrs)
        (apply join-class-names)))
 
 (defn form-group-class-names [attrs & class-names]

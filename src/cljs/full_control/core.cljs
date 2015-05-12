@@ -16,7 +16,7 @@
                                                   col-size-css
                                                   column-class-names
                                                   input-class-names
-                                                  validation-state-class-names
+                                                  column-grid-class-names
                                                   float-class-names
                                                   table-class-names
                                                   form-group-class-names
@@ -308,7 +308,7 @@
   [attrs & body]
   {:pre [(map? attrs)]}
   (apply div* (generate-attrs (dissoc attrs :sizes)
-                              :defaults {:class-name (apply validation-state-class-names
+                              :defaults {:class-name (apply column-grid-class-names
                                                             attrs
                                                             (map col-size-css (:sizes attrs)))})
          body))
