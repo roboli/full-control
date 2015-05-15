@@ -379,12 +379,14 @@
    'frm               (partial process-form {:symbol-fn (return `frm*)
                                              :attrs-parser parse-attrs
                                              :expander (expand-tags-with
-                                                        :available #{'row})})
+                                                        :available #{'row
+                                                                     'group-for})})
 
    'frm-horizontal    (partial process-form {:symbol-fn (return `frm-horizontal*)
                                              :attrs-parser parse-attrs
                                              :expander (expand-tags-with
-                                                        :available #{'row})})
+                                                        :available #{'row
+                                                                     'group-for})})
 
    'frm-inline        (partial process-form {:symbol-fn (return `frm-inline*)
                                              :attrs-parser parse-inline-attrs
@@ -417,7 +419,8 @@
    'group              (partial process-control {:symbol-fn (return `form-group*)
                                                  :attrs-parser parse-attrs
                                                  :expander (expand-tags-with
-                                                            :available (concat row-tags
+                                                            :available (concat general-tags
+                                                                               row-tags
                                                                                form-tags)
                                                             :alter-tag-fns row-alter-fns)})
 
