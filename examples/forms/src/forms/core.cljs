@@ -29,48 +29,33 @@
                         (group-for :description
                                    (lbl)
                                    (txt {:max-length 15})
-                                   (help "*")))
-                       (column-6
-                        (group-for :price
-                                   (lbl)
-                                   (txt {:max-length 10})
-                                   (help "*"))))
-                      (row
-                       (column-6
+                                   (help "*"))
                         (group-for :brand-id
                                    (lbl "Brand")
                                    (dropdown
                                     (with-source [data (:brands cursor)]
                                       (option {:value (:id data)} (:name data))))
-                                   (help "*")))
-                       (column-6
-                        (group-for :comments
-                                   (lbl)
-                                   (txtarea)
-                                   (help "(optional)"))))
-                      (row
-                       (column-6
+                                   (help "*"))
                         (group-for :active
-                                   (checkbox))))
-                      (row
-                       (column-6
-                        (lbl "Extras")
-                        (checkbox-for [:extras :non-taxable])
-                        (checkbox-for [:extras :allow-credit])
-                        (checkbox-for [:extras :allow-discounts]))
-                       (column-6
-                        (lbl "Extras Inline")
-                        (br)
-                        (checkbox-inline-for [:extras :non-taxable])
-                        (checkbox-inline-for [:extras :allow-credit])
-                        (checkbox-inline-for [:extras :allow-discounts])))
-                      (row
-                       (column-6
+                                   (checkbox))
                         (group-for :type
                                    (lbl)
                                    (radio {:value "1"} "Service")
                                    (radio {:value "2"} "Asset")))
                        (column-6
+                        (group-for :price
+                                   (lbl)
+                                   (txt {:max-length 10})
+                                   (help "*"))
+                        (group-for :comments
+                                   (lbl)
+                                   (txtarea)
+                                   (help "(optional)"))
+                        (group
+                         (lbl "Extras")
+                         (checkbox-for [:extras :non-taxable])
+                         (checkbox-for [:extras :allow-credit])
+                         (checkbox-for [:extras :allow-discounts]))
                         (group-for :type
                                    (lbl "Type Inline")
                                    (br)
@@ -89,60 +74,49 @@
                         (group-for :description
                                    (lbl-4)
                                    (txt-6)
-                                   (help-2 "*")))
-                       (column-6
-                        (group-for :price
-                                   (lbl-4)
-                                   (txt-6 {:max-length 10})
-                                   (help-2 "*"))))
-                      (row
-                       (column-6
+                                   (help-2 "*"))
                         (group-for :brand-id
                                    (lbl-4 "Brand")
                                    (dropdown-6
                                     (with-source [data (:brands cursor)]
                                       (option {:value (:id data)} (:name data))))
-                                   (help-2 "*")))
-                       (column-6
-                        (group-for :comments
-                                   (lbl-4)
-                                   (txtarea-6)
-                                   (help-2 "(opt)"))))
-                      (row
-                       (column-6
+                                   (help-2 "*"))
                         (group-for :active
                                    (column-4)
-                                   (checkbox-6))))
-                      (row
-                       (column-6
-                        (row
+                                   (checkbox-6))
+                        (group
                          (lbl-4 "Extras")
                          (column-6
                           (checkbox-for [:extras :non-taxable])
                           (checkbox-for [:extras :allow-credit])
-                          (checkbox-for [:extras :allow-discounts]))))
-                       (column-6
-                        (row
-                         (lbl-4 "Extras Inline")
-                         (column-6
-                          (checkbox-inline-for [:extras :non-taxable] "NT")
-                          (checkbox-inline-for [:extras :allow-credit] "AC")
-                          (checkbox-inline-for [:extras :allow-discounts] "AD")))))
-                      (row
-                       (column-6
+                          (checkbox-for [:extras :allow-discounts])))
                         (group-for :type
                                    (lbl-4)
                                    (column-6
                                     (radio {:value "1"} "Service")
                                     (radio {:value "2"} "Asset"))))
                        (column-6
+                        (group-for :price
+                                   (lbl-4)
+                                   (txt-6 {:max-length 10})
+                                   (help-2 "*"))
+                        (group-for :comments
+                                   (lbl-4)
+                                   (txtarea-6)
+                                   (help-2 "(opt)"))
                         (group-for :type
                                    (lbl-4)
                                    (column-6
                                     (radio-inline {:value "1"
                                                    :name "type1"} "Service")
                                     (radio-inline {:value "2"
-                                                   :name "type1"} "Asset"))))))))))
+                                                   :name "type1"} "Asset")))
+                        (group
+                         (lbl-4 "Extras Inline")
+                         (column-6
+                          (checkbox-inline-for [:extras :non-taxable] "NT")
+                          (checkbox-inline-for [:extras :allow-credit] "AC")
+                          (checkbox-inline-for [:extras :allow-discounts] "AD"))))))))))
                 (row
                  (column-9
                   (panel
@@ -208,39 +182,34 @@
                                        (lbl)
                                        (txt {:max-length 15
                                              :disabled (get-in st [:description :disabled])})
-                                       (help "*")))
-                           (column-6
-                            (group-for {:korks :price
-                                        :validation-state (keyword (get-in st [:price :val-st]))}
-                                       (lbl)
-                                       (txt {:max-length 10
-                                             :disabled (get-in st [:price :disabled])})
-                                       (help "*"))))
-                          (row
-                           (column-6
+                                       (help "*"))
                             (group-for {:korks :brand-id
                                         :validation-state (keyword (get-in st [:brand-id :val-st]))}
                                        (lbl "Brand")
                                        (dropdown {:disabled (get-in st [:brand-id :disabled])}
                                                  (with-source [data (:brands cursor)]
                                                    (option {:value (:id data)} (:name data))))
-                                       (help "*")))
+                                       (help "*"))
+                            (group {:validation-state (keyword (get-in st [:extras :val-st]))}
+                                   (lbl "Extras")
+                                   (checkbox-for {:korks [:extras :non-taxable]
+                                                  :disabled (get-in st [:extras :disabled])})
+                                   (checkbox-for {:korks [:extras :allow-credit]
+                                                  :disabled (get-in st [:extras :disabled])})
+                                   (checkbox-for {:korks [:extras :allow-discounts]
+                                                  :disabled (get-in st [:extras :disabled])})                                   ))
                            (column-6
+                            (group-for {:korks :price
+                                        :validation-state (keyword (get-in st [:price :val-st]))}
+                                       (lbl)
+                                       (txt {:max-length 10
+                                             :disabled (get-in st [:price :disabled])})
+                                       (help "*"))
                             (group-for {:korks :comments
                                         :validation-state (keyword (get-in st [:comments :val-st]))}
                                        (lbl)
                                        (txtarea {:disabled (get-in st [:comments :disabled])})
-                                       (help "(optional)"))))
-                          (row
-                           (column-6 {:validation-state (keyword (get-in st [:extras :val-st]))}
-                                     (lbl "Extras")
-                                     (checkbox-for {:korks [:extras :non-taxable]
-                                                    :disabled (get-in st [:extras :disabled])})
-                                     (checkbox-for {:korks [:extras :allow-credit]
-                                                    :disabled (get-in st [:extras :disabled])})
-                                     (checkbox-for {:korks [:extras :allow-discounts]
-                                                    :disabled (get-in st [:extras :disabled])}))
-                           (column-6
+                                       (help "(optional)"))
                             (group-for {:korks :type
                                         :validation-state (keyword (get-in st [:type :val-st]))}
                                        (lbl)
@@ -259,78 +228,68 @@
                        (frm-horizontal
                         (with-record st
                           (row
-                           (lbl-4 {:size :sm} "Form")
-                           (checkbox-6-for {:korks :disabled
-                                            :size :sm}))
-                          (row
                            (column-12
+                            (group
+                             (lbl-4 {:size :sm} "Form")
+                             (checkbox-6-for {:korks :disabled
+                                              :size :sm}))
                             (group-for {:korks [:description :val-st]
                                         :size :sm}
                                        (lbl-4 "Description")
                                        (dropdown-6
                                         (with-source [data val-sts]
                                           (option {:value (:val data)} (:txt data)))))
-                            (row
+                            (group
                              (column-4)
                              (checkbox-6-for {:korks [:description :disabled]
-                                              :size :sm}))))
-                          (row
-                           (column-12
+                                              :size :sm}))
                             (group-for {:korks [:price :val-st]
                                         :size :sm}
                                        (lbl-4 "Price")
                                        (dropdown-6
                                         (with-source [data val-sts]
                                           (option {:value (:val data)} (:txt data)))))
-                            (row
+                            (group
                              (column-4)
                              (checkbox-6-for {:korks [:price :disabled]
-                                              :size :sm}))))
-                          (row
-                           (column-12
+                                              :size :sm}))
                             (group-for {:korks [:brand-id :val-st]
                                         :size :sm}
                                        (lbl-4 "Brands")
                                        (dropdown-6
                                         (with-source [data val-sts]
                                           (option {:value (:val data)} (:txt data)))))
-                            (row
+                            (group
                              (column-4)
                              (checkbox-6-for {:korks [:brand-id :disabled]
-                                              :size :sm}))))
-                          (row
-                           (column-12
+                                              :size :sm}))
                             (group-for {:korks [:comments :val-st]
                                         :size :sm}
                                        (lbl-4 "Comments")
                                        (dropdown-6
                                         (with-source [data val-sts]
                                           (option {:value (:val data)} (:txt data)))))
-                            (row
+                            (group
                              (column-4)
                              (checkbox-6-for {:korks [:comments :disabled]
-                                              :size :sm}))))
-                          (row
-                           (column-12
+                                              :size :sm}))
                             (group-for {:korks [:extras :val-st]
                                         :size :sm}
                                        (lbl-4 "Extras")
                                        (dropdown-6
                                         (with-source [data val-sts]
                                           (option {:value (:val data)} (:txt data)))))
-                            (row
+                            (group
                              (column-4)
                              (checkbox-6-for {:korks [:extras :disabled]
-                                              :size :sm}))))
-                          (row
-                           (column-12
+                                              :size :sm}))
                             (group-for {:korks [:type :val-st]
                                         :size :sm}
                                        (lbl-4 "Type")
                                        (dropdown-6
                                         (with-source [data val-sts]
                                           (option {:value (:val data)} (:txt data)))))
-                            (row
+                            (group
                              (column-4)
                              (checkbox-6-for {:korks [:type :disabled]
                                               :size :sm})))))))))))))
