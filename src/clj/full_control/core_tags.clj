@@ -67,6 +67,7 @@
 (def ^:private general-tags (concat '[with-controls
                                       space
                                       btn
+                                      btn-group
                                       lbl
                                       txt
                                       txtarea
@@ -135,6 +136,11 @@
    'btn                (partial process-control {:symbol-fn (return `btn*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
+
+   'btn-group          (partial process-control {:symbol-fn (return `btn-group*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander (expand-tags-with
+                                                            :available general-tags)})
 
    'lbl                (partial process-control {:symbol-fn (return `lbl*)
                                                  :attrs-parser parse-attrs

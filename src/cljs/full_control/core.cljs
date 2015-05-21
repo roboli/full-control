@@ -240,6 +240,12 @@
                               :defaults {:class-name "jumbotron"})
          body))
 
+(defn btn-group* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply div* (generate-attrs attrs
+                              :defaults {:class-name "btn-group"})
+         body))
+
 ;;;
 ;;; Date
 ;;;
