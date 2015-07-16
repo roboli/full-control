@@ -45,6 +45,9 @@
               :invisible "invisible"
               :hidden "hidden"})
 
+(def pull {:left "pull-left"
+           :right "pull-right"})
+
 (def sizes {:xs "xs"
             :sm "sm"
             :md "md"
@@ -66,6 +69,9 @@
 
 (defn display-css [attrs]
   (if (:display attrs) (get display (:display attrs))))
+
+(defn pull-css [attrs]
+  (if (:pull attrs) (get pull (:pull attrs))))
 
 (defn size-css [s]
   (fn [attrs]
@@ -117,6 +123,7 @@
 (defn general-class-names [attrs & class-names]
   (->> class-names
        (apply conj-class-names display-css attrs)
+       (apply conj-class-names pull-css attrs)
        (apply join-class-names)))
 
 (defn column-class-names [attrs & class-names]
