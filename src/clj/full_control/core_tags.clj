@@ -268,7 +268,8 @@
 
    'help-              (partial process-control {:symbol-fn symbol->qly-symbol
                                                  :attrs-parser parse-column-attrs
-                                                 :expander identity})
+                                                 :expander (expand-tags-with
+                                                            :available general-tags)})
 
    ;; Navbar
    'navbar             (partial process-navbar {:attrs-parser parse-attrs
@@ -496,10 +497,12 @@
 
    'group-help          (partial process-control {:symbol-fn (return `help*)
                                                   :attrs-parser parse-attrs
-                                                  :expander identity})
+                                                  :expander (expand-tags-with
+                                                             :available general-tags)})
 
    'group-help-         (partial process-control {:symbol-fn symbol->qly-symbol
                                                   :attrs-parser parse-column-attrs
-                                                  :expander identity})})
+                                                  :expander (expand-tags-with
+                                                             :available general-tags)})})
 
 (def tags-fns (merge om-tags-fns fc-tags-fns))
