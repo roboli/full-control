@@ -3,6 +3,7 @@
                                               gen-om-fns
                                               deflbl-col
                                               deftxt-col
+                                              defpassword-col
                                               deftxtarea-col
                                               defdropdown-col
                                               defcheckbox-col
@@ -620,6 +621,8 @@
 (deflbl-col 1 12)
 
 (deftxt-col 1 12)
+
+(defpassword-col 1 12)
 
 (deftxtarea-col 1 12)
 

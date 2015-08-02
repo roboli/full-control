@@ -164,6 +164,11 @@
    (partial column-control-defn "txt-" 'txt*)
    start end))
 
+(defmacro defpassword-col [start & [end]]
+  (dofun
+   (partial column-control-defn "password-" 'password*)
+   start end))
+
 (defmacro deftxtarea-col [start & [end]]
   (dofun
    (partial column-control-defn "txtarea-" 'txtarea*)
