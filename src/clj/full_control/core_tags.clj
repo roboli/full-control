@@ -29,6 +29,8 @@
                           lbl--for
                           txt-
                           txt--for
+                          password-
+                          password--for
                           txtarea-
                           txtarea--for
                           dropdown-
@@ -40,6 +42,7 @@
 
 (def ^:private form-tags '[lbl-for
                            txt-for
+                           password-for
                            txtarea-for
                            dropdown-for
                            checkbox-for
@@ -48,6 +51,7 @@
 (def ^:private form-group-tags '[group-column-
                                  group-lbl
                                  group-txt
+                                 group-password
                                  group-txtarea
                                  group-dropdown
                                  group-checkbox
@@ -58,6 +62,7 @@
                                  group-help
                                  group-lbl-
                                  group-txt-
+                                 group-password-
                                  group-txtarea-
                                  group-dropdown-
                                  group-checkbox-
@@ -70,6 +75,7 @@
                                       btn-group
                                       lbl
                                       txt
+                                      password
                                       txtarea
                                       dropdown
                                       checkbox
@@ -147,6 +153,10 @@
                                                  :expander identity})
 
    'txt                (partial process-control {:symbol-fn (return `txt*)
+                                                 :attrs-parser parse-attrs
+                                                 :expander identity})
+
+   'password           (partial process-control {:symbol-fn (return `password*)
                                                  :attrs-parser parse-attrs
                                                  :expander identity})
 
@@ -232,7 +242,15 @@
                                                  :attrs-parser parse-column-attrs
                                                  :expander identity})
 
+   'password-          (partial process-control {:symbol-fn symbol->qly-symbol
+                                                 :attrs-parser parse-column-attrs
+                                                 :expander identity})
+
    'txt--for           (partial process-field-text {:symbol-fn symbol-for->qly-symbol
+                                                    :attrs-parser parse-column-field-attrs
+                                                    :expander identity})
+
+   'password--for      (partial process-field-text {:symbol-fn symbol-for->qly-symbol
                                                     :attrs-parser parse-column-field-attrs
                                                     :expander identity})
 
@@ -409,6 +427,10 @@
                                                     :attrs-parser parse-korks-attrs
                                                     :expander identity})
 
+   'password-for       (partial process-field-text {:symbol-fn (return `password*)
+                                                    :attrs-parser parse-korks-attrs
+                                                    :expander identity})
+
    'txtarea-for        (partial process-field-text {:symbol-fn (return `txtarea*)
                                                     :attrs-parser parse-korks-attrs
                                                     :expander identity})
@@ -456,6 +478,12 @@
                                                      :attrs-parser parse-attrs})
 
    'group-txt-          (partial process-field-text {:symbol-fn symbol->qly-symbol
+                                                     :attrs-parser parse-column-attrs})
+
+   'group-password      (partial process-field-text {:symbol-fn (return `password*)
+                                                     :attrs-parser parse-attrs})
+
+   'group-password-     (partial process-field-text {:symbol-fn symbol->qly-symbol
                                                      :attrs-parser parse-column-attrs})
 
    'group-txtarea       (partial process-field-text {:symbol-fn (return `txtarea*)

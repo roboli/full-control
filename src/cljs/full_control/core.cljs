@@ -144,6 +144,14 @@
                                                                           "form-control")})
          body))
 
+(defn password* [attrs & body]
+  {:pre [(map? attrs)]}
+  (apply input* (generate-attrs attrs
+                                :defaults {:type "password"
+                                           :class-name (input-class-names attrs
+                                                                          "form-control")})
+         body))
+
 (defn txtarea* [attrs & body]
   {:pre [(map? attrs)]}
   (apply textarea* (generate-attrs attrs

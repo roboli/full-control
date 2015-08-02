@@ -26,6 +26,10 @@
   (fn [tag]
     (replace-tag-with-regexp #"txt-(?:\d|1[0-2])$" new-tag tag)))
 
+(defn- replace-password-col-tag-with [new-tag]
+  (fn [tag]
+    (replace-tag-with-regexp #"password-(?:\d|1[0-2])$" new-tag tag)))
+
 (defn- replace-txtarea-col-tag-with [new-tag]
   (fn [tag]
     (replace-tag-with-regexp #"txtarea-(?:\d|1[0-2])$" new-tag tag)))
@@ -62,6 +66,7 @@
 (def ^:private row-alter-fns [(replace-col-tag-with 'column-)
                               (replace-lbl-col-tag-with 'lbl-)
                               (replace-txt-col-tag-with 'txt-)
+                              (replace-password-col-tag-with 'password-)
                               (replace-txtarea-col-tag-with 'txtarea-)
                               (replace-dropdown-col-tag-with 'dropdown-)
                               (replace-checkbox-col-tag-with 'checkbox-)
@@ -69,12 +74,14 @@
                               (replace-help-col-tag-with 'help-)
                               (partial replace-tag-with-regexp #"lbl-(?:\d|1[0-2])-for$" 'lbl--for)
                               (partial replace-tag-with-regexp #"txt-(?:\d|1[0-2])-for$" 'txt--for)
+                              (partial replace-tag-with-regexp #"password-(?:\d|1[0-2])-for$" 'password--for)
                               (partial replace-tag-with-regexp #"txtarea-(?:\d|1[0-2])-for$" 'txtarea--for)
                               (partial replace-tag-with-regexp #"dropdown-(?:\d|1[0-2])-for$" 'dropdown--for)
                               (partial replace-tag-with-regexp #"checkbox-(?:\d|1[0-2])-for$" 'checkbox--for)])
 
 (def ^:private group-for-alter-fns [(replace-tag 'lbl 'group-lbl)
                                     (replace-tag 'txt 'group-txt)
+                                    (replace-tag 'password 'group-password)
                                     (replace-tag 'txtarea 'group-txtarea)
                                     (replace-tag 'dropdown 'group-dropdown)
                                     (replace-tag 'checkbox 'group-checkbox)
@@ -86,6 +93,7 @@
                                     (replace-col-tag-with 'group-column-)
                                     (replace-lbl-col-tag-with 'group-lbl-)
                                     (replace-txt-col-tag-with 'group-txt-)
+                                    (replace-password-col-tag-with 'group-password-)
                                     (replace-txtarea-col-tag-with 'group-txtarea-)
                                     (replace-dropdown-col-tag-with 'group-dropdown-)
                                     (replace-checkbox-col-tag-with 'group-checkbox-)

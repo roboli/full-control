@@ -36,6 +36,9 @@
                                     (with-source [data (:brands cursor)]
                                       (option {:value (:id data)} (:name data))))
                                    (help "*"))
+                        (group-for :description
+                                   (lbl "Secret")
+                                   (password {:max-length 15}))
                         (group-for :active
                                    (checkbox))
                         (group-for :type
