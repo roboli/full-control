@@ -181,7 +181,8 @@
 
    'help               (partial process-control {:symbol-fn (return `help*)
                                                  :attrs-parser parse-attrs
-                                                 :expander identity})
+                                                 :expander (expand-tags-with
+                                                            :available general-tags)})
 
    'pager              (partial process-control {:symbol-fn (return `pager*)
                                                  :attrs-parser parse-attrs
