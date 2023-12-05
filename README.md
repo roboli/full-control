@@ -1,4 +1,4 @@
-full-control
+full-control [Deprecated]
 ============
 
 A clojurescript Web UI DSL based on [Om](https://github.com/omcljs/om) and [Bootstrap](https://github.com/twbs/bootstrap).
